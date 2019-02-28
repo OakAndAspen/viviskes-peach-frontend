@@ -29,7 +29,7 @@ export default class Nav extends React.Component {
 
     render() {
         return (
-            <nav className="navbar navbar-expand-md sticky-top navbar-light bg-transparent">
+            <nav className="navbar navbar-expand-md navbar-light">
                 <div className="container">
                     <Link to="/" className="navbar-brand">
                         <img src="/images/banner.svg" height="30" alt="Viviskes"/>
@@ -40,10 +40,14 @@ export default class Nav extends React.Component {
                     </button>
                     <div className="collapse navbar-collapse" id="navbarNav">
                         <ul className="navbar-nav">
-                            {this.entries.map(entry =>
-                                <li className="nav-item">
-                                    <Link className="nav-link" to={entry.url}>{entry.title}</Link>
-                                </li>
+                            {this.entries.map(entry => {
+                                    let active = window.location.pathname === entry.url ? " active" : "";
+                                    return (
+                                        <li className="nav-item">
+                                            <Link className={"nav-link" + active} to={entry.url}>{entry.title}</Link>
+                                        </li>
+                                    );
+                                }
                             )}
                         </ul>
                     </div>
