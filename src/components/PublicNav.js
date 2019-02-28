@@ -43,7 +43,7 @@ export default class Nav extends React.Component {
                             {this.entries.map(entry => {
                                     let active = window.location.pathname === entry.url ? " active" : "";
                                     return (
-                                        <li className="nav-item">
+                                        <li className="nav-item" key={entry.url}>
                                             <Link className={"nav-link" + active} to={entry.url}>{entry.title}</Link>
                                         </li>
                                     );
