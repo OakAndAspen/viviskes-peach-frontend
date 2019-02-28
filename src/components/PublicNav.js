@@ -1,5 +1,6 @@
 import React from 'react';
 import "./Nav.css";
+import {Link} from 'react-router-dom';
 
 export default class Nav extends React.Component {
 
@@ -30,9 +31,9 @@ export default class Nav extends React.Component {
         return (
             <nav className="navbar navbar-expand-md sticky-top navbar-light bg-transparent">
                 <div className="container">
-                    <a className="navbar-brand" href="/">
+                    <Link to="/" className="navbar-brand">
                         <img src="/images/banner.svg" height="30" alt="Viviskes"/>
-                    </a>
+                    </Link>
                     <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
                             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                         <span className="navbar-toggler-icon"/>
@@ -41,7 +42,7 @@ export default class Nav extends React.Component {
                         <ul className="navbar-nav">
                             {this.entries.map(entry =>
                                 <li className="nav-item">
-                                    <a className="nav-link" href={entry.url}>{entry.title}</a>
+                                    <Link className="nav-link" to={entry.url}>{entry.title}</Link>
                                 </li>
                             )}
                         </ul>
