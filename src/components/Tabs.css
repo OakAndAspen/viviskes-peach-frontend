@@ -1,0 +1,14 @@
+#Tabs {
+    border: none;
+}
+
+#Tabs a {
+    color: black;
+    background-color: transparent;
+    border-color: #665e5c;
+    border-width: 0 0 1px 0;
+}
+
+#Tabs a.active {
+    border-width: 1px 1px 0 1px;
+}

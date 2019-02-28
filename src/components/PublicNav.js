@@ -29,7 +29,7 @@ export default class Nav extends React.Component {
 
     render() {
         return (
-            <nav className="navbar navbar-expand-md navbar-light">
+            <nav className="navbar navbar-expand-md navbar-light" id="PublicNav">
                 <div className="container">
                     <Link to="/" className="navbar-brand">
                         <img src="/images/banner.svg" height="30" alt="Viviskes"/>
