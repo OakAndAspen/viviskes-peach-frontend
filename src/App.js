@@ -16,7 +16,7 @@ const PrivateRoute = ({component: Component, ...rest}) => (
             ) : (
                 <Redirect
                     to={{
-                        pathname: '/',
+                        pathname: '/login',
                         state: {from: props.location}
                     }}
                 />
@@ -223,23 +223,22 @@ class Login extends React.Component {
 
     render() {
         if (this.state.authKey) {
-            return <Redirect to='/app/advanced-search'/>;
+            return <Redirect to='/intranet/forum'/>;
         }
 
         let style = {textAlign: 'center'};
 
         return (
             <div className='row'>
-                <form className='col-12 col-md-6 m-auto'>
-                    <img src={Config.imgFolder + '/logo.png'} className='img-fluid mt-3 mb-5' alt='MtgManager'/>
+                <form className='col-12 col-md-6 mx-auto my-4'>
+                    <h1 className="text-center">Connexion à l'intranet</h1>
                     <input type='text' id='email' className='form-control' placeholder='Email'
                            onKeyDown={this.keyDown} style={style}/>
-                    <input type='password' id='password' className='form-control my-2' placeholder='Password'
+                    <input type='password' id='password' className='form-control my-2' placeholder='Mot de passe'
                            onKeyDown={this.keyDown} style={style}/>
                     <button type='button' className='btn btn-info w-100' id='logIn' onClick={this.login}>
-                        Log in
+                        Connexion
                     </button>
-                    <p className="text-muted my-2">No account yet? <Link to="/signup">Sign up!</Link></p>
                     {this.state.loginError ?
                         <div className='alert alert-warning mt-3' role='alert'>
                             {this.state.loginError}

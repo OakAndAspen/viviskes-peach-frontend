@@ -10,3 +10,8 @@
 #PublicNav .nav-link.active {
     text-decoration: underline;
 }
+
+#PublicNav li i {
+    width: 25px;
+    text-align: center;
+}

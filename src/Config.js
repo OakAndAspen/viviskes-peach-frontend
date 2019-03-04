@@ -1,6 +1,6 @@
 export default {
-    apiUrl: 'http://localhost:8000/api',
-    //apiUrl: 'https://api.mtg.oakandaspen.ch/api',
-    imgFolder: 'https://images.mtg.oakandaspen.ch',
+    apiUrl: 'http://localhost:8000',
+    //apiUrl: 'https://api.viviskes.ch',
+    imgFolder: 'https://images.viviskes.ch',
     theme: {}
 };
