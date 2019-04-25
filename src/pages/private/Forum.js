@@ -24,7 +24,7 @@ export default class Forum extends React.Component {
             },
             {
                 read: true,
-                id: 1,
+                id: 2,
                 title: "Fleurs des villes",
                 lastPost: {
                     by: "Benjamin W.",
@@ -74,12 +74,13 @@ export default class Forum extends React.Component {
 
     renderRecentTopic(t) {
         return (
-            <Link className="list-group-item list-group-item-action"
+            <Link className="list-group-item list-group-item-action" key={t.id}
                   to={"/intranet/forum/" + t.category.id + "/" + t.id}>
                 <table>
+                    <tbody>
                     <tr>
                         <td rowSpan="2">
-                            <span className="badge badge-info mx-2">Non lu</span>
+                            <span className="badge badge-info mr-4">Non lu</span>
                         </td>
                         <td className="small-caps">
                             {t.category.title}
@@ -90,6 +91,7 @@ export default class Forum extends React.Component {
                     <tr>
                         <td>{t.lastPost.by} a posté le {t.lastPost.timestamp}</td>
                     </tr>
+                    </tbody>
                 </table>
             </Link>
         );
@@ -97,7 +99,7 @@ export default class Forum extends React.Component {
 
     renderCategory(c) {
         return (
-            <div className="col-6 col-md-4 pb-2">
+            <div className="col-6 col-md-4 pb-2" key={c.id}>
                 <Link type="button" className="btn btn-light w-100" to={"/intranet/forum/" + c.id}>
                     {!c.read && <FontAwesomeIcon icon={["fas", "dot-circle"]} className="text-info mr-2"/>}
                     {c.label}
