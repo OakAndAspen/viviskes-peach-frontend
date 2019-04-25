@@ -1,0 +1,16 @@
+.Avatar {
+    position: relative;
+    width: 100%;
+    border: 2px solid #CCCCCC;
+    min-width: 40px;
+    min-height: 40px;
+    border-radius: 50%;
+    background-position: center center;
+    background-size: cover;
+}
+
+.Avatar:after {
+    content: "";
+    display: block;
+    padding-bottom: 100%;
+}

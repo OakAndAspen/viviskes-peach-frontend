@@ -6,6 +6,7 @@ import './index.css';
 import App from './App';
 import $ from 'jquery';
 import * as serviceWorker from './serviceWorker';
+import moment from "moment";
 
 
 $.ajaxSetup({
@@ -20,6 +21,25 @@ $.ajaxSetup({
         } else {
             alert('An error occured (' + jqXHR.status + ' ' + jqXHR.statusText + ')');
         }
+    }
+});
+
+moment.updateLocale('en', {
+    relativeTime : {
+        future: "dans %s",
+        past:   "il y a %s",
+        s  : 'quelques secondes',
+        ss : '%d secondes',
+        m:  "une minute",
+        mm: "%d minutes",
+        h:  "une heure",
+        hh: "%d heures",
+        d:  "un jour",
+        dd: "%d jours",
+        M:  "un mois",
+        MM: "%d mois",
+        y:  "une année",
+        yy: "%d ans"
     }
 });
 

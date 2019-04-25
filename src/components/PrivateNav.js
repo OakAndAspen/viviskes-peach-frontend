@@ -70,7 +70,7 @@ export default class PrivateNav extends React.Component {
         };
 
         return (
-            <nav className="navbar navbar-expand-sm navbar-light" id="PublicNav">
+            <nav className="navbar navbar-expand-sm navbar-light" id="MenuNav">
                 <div className="container">
                     <Link to="/" className="navbar-brand">
                         <img src="/images/banner.svg" height="30" alt="Viviskes"/>
