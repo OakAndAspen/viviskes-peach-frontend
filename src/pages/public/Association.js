@@ -1,5 +1,6 @@
 import React from 'react';
 import Tabs from "../../components/Tabs";
+import PublicLayout from "../../components/PublicLayout";
 
 export default class Association extends React.Component {
 
@@ -19,23 +20,25 @@ export default class Association extends React.Component {
             }
         ];
         return (
-            <div className="container py-4">
-                <Tabs entries={entries}/>
-                <div className="tab-content">
-                    <div className="tab-pane active" id="qui-sommes-nous"
-                         role="tabpanel" aria-labelledby="qui-sommes-nous-tab">
-                        {this.renderQuiSommesNous()}
-                    </div>
-                    <div className="tab-pane" id="buts-objectifs"
-                         role="tabpanel" aria-labelledby="buts-objectifs-tab">
-                        {this.renderButsObjectifs()}
-                    </div>
-                    <div className="tab-pane" id="nos-membres"
-                         role="tabpanel" aria-labelledby="nos-membres-tab">
-                        {this.renderNosMembres()}
+            <PublicLayout>
+                <div className="container py-4">
+                    <Tabs entries={entries}/>
+                    <div className="tab-content">
+                        <div className="tab-pane active" id="qui-sommes-nous"
+                             role="tabpanel" aria-labelledby="qui-sommes-nous-tab">
+                            {this.renderQuiSommesNous()}
+                        </div>
+                        <div className="tab-pane" id="buts-objectifs"
+                             role="tabpanel" aria-labelledby="buts-objectifs-tab">
+                            {this.renderButsObjectifs()}
+                        </div>
+                        <div className="tab-pane" id="nos-membres"
+                             role="tabpanel" aria-labelledby="nos-membres-tab">
+                            {this.renderNosMembres()}
+                        </div>
                     </div>
                 </div>
-            </div>
+            </PublicLayout>
         );
     }
 

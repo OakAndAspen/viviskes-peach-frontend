@@ -1,10 +1,13 @@
 import React from 'react';
+import PrivateLayout from "../../components/PrivateLayout";
 
 export default class Mediatheque extends React.Component {
 
     render() {
         return (
-            <h1>Mediatheque</h1>
+            <PrivateLayout>
+                <h1>Mediatheque</h1>
+            </PrivateLayout>
         );
     }
 }

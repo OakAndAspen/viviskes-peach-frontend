@@ -1,6 +1,7 @@
 import React from 'react';
 import "./Nav.css";
 import {Link} from 'react-router-dom';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 
 export default class PrivateNav extends React.Component {
 
@@ -8,51 +9,66 @@ export default class PrivateNav extends React.Component {
         {
             url: '/intranet/forum',
             title: 'Forum',
-            icon: 'far fa-comments'
+            style: 'far',
+            icon: 'comments'
         },
         {
             url: '/intranet/calendrier',
             title: 'Calendrier',
-            icon: 'far fa-calendar-alt'
+            style: 'far',
+            icon: 'calendar-alt'
         },
         {
             url: '/intranet/bibliotheque',
             title: 'Bibliothèque',
-            icon: 'fas fa-book'
+            style: 'fas',
+            icon: 'book'
         },
         {
             url: '/intranet/mediatheque',
             title: 'Médiathèque',
-            icon: 'far fa-file-pdf'
+            style: 'far',
+            icon: 'file-pdf'
         },
         {
             url: '/intranet/articles',
             title: 'Articles',
-            icon: 'fas fa-feather-alt'
+            style: 'fas',
+            icon: 'feather-alt'
         },
         {
             url: '/intranet/partenaires',
             title: 'Partenaires',
-            icon: 'far fa-handshake'
+            style: 'far',
+            icon: 'handshake'
         },
         {
             url: '/intranet/membres',
             title: 'Membres',
-            icon: 'fas fa-user-friends'
+            style: 'fas',
+            icon: 'user-friends'
         },
         {
             url: '/intranet/profil',
             title: 'Profil',
-            icon: 'fas fa-user-circle'
+            style: 'fas',
+            icon: 'user-circle'
         },
         {
             url: '/logout',
             title: 'Déconnexion',
-            icon: 'fas fa-sign-out-alt'
+            style: 'fas',
+            icon: 'sign-out-alt'
         }
     ];
 
     render() {
+        let iconStyle= {
+            width: "25px",
+            display: "inline-block",
+            textAlign: "center"
+        };
+
         return (
             <nav className="navbar navbar-expand-sm navbar-light" id="PublicNav">
                 <div className="container">
@@ -70,7 +86,9 @@ export default class PrivateNav extends React.Component {
                                     return (
                                         <li className="nav-item" key={entry.url}>
                                             <Link className={"nav-link" + active} to={entry.url} title={entry.title}>
-                                                <i className={entry.icon}/>
+                                                <div style={iconStyle}>
+                                                    <FontAwesomeIcon icon={[entry.style, entry.icon]}/>
+                                                </div>
                                                 <span className="ml-3 d-sm-none">{entry.title}</span>
                                             </Link>
                                         </li>

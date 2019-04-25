@@ -1,5 +1,6 @@
 import React from 'react';
 import Tabs from "../../components/Tabs";
+import PublicLayout from "../../components/PublicLayout";
 
 export default class Contact extends React.Component {
 
@@ -23,27 +24,29 @@ export default class Contact extends React.Component {
             }
         ];
         return (
-            <div className="container py-4">
-                <Tabs entries={entries}/>
-                <div className="tab-content">
-                    <div className="tab-pane active" id="prestations"
-                         role="tabpanel" aria-labelledby="prestations-tab">
-                        {this.renderPrestations()}
-                    </div>
-                    <div className="tab-pane" id="rejoindre"
-                         role="tabpanel" aria-labelledby="rejoindre-tab">
-                        {this.renderRejoindre()}
-                    </div>
-                    <div className="tab-pane" id="formulaire"
-                         role="tabpanel" aria-labelledby="formulaire-tab">
-                        {this.renderFormulaire()}
-                    </div>
-                    <div className="tab-pane" id="acces"
-                         role="tabpanel" aria-labelledby="acces-tab">
-                        {this.renderAcces()}
+            <PublicLayout>
+                <div className="container py-4">
+                    <Tabs entries={entries}/>
+                    <div className="tab-content">
+                        <div className="tab-pane active" id="prestations"
+                             role="tabpanel" aria-labelledby="prestations-tab">
+                            {this.renderPrestations()}
+                        </div>
+                        <div className="tab-pane" id="rejoindre"
+                             role="tabpanel" aria-labelledby="rejoindre-tab">
+                            {this.renderRejoindre()}
+                        </div>
+                        <div className="tab-pane" id="formulaire"
+                             role="tabpanel" aria-labelledby="formulaire-tab">
+                            {this.renderFormulaire()}
+                        </div>
+                        <div className="tab-pane" id="acces"
+                             role="tabpanel" aria-labelledby="acces-tab">
+                            {this.renderAcces()}
+                        </div>
                     </div>
                 </div>
-            </div>
+            </PublicLayout>
         );
     }
 

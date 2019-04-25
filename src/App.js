@@ -1,9 +1,50 @@
 import React, {Component} from 'react';
-import {BrowserRouter as Router, Link, Redirect, Route, Switch} from 'react-router-dom';
+import {BrowserRouter as Router, Redirect, Route, Switch} from 'react-router-dom';
 import Loadable from 'react-loadable';
 import './App.css';
-import $ from 'jquery';
-import Config from './Config';
+import Footer from "./components/Footer";
+import {library} from "@fortawesome/fontawesome-svg-core";
+import {fab} from "@fortawesome/free-brands-svg-icons";
+import {far} from "@fortawesome/free-regular-svg-icons";
+import {fas} from "@fortawesome/free-solid-svg-icons";
+
+library.add(fab, far, fas);
+
+class App extends Component {
+    render() {
+        return (
+            <Router>
+                <div className='App'>
+                    <Switch>
+                        <Route exact path='/' component={publicRoutes.Accueil}/>
+                        <Route exact path='/association' component={publicRoutes.Association}/>
+                        <Route exact path='/histoire-vivante' component={publicRoutes.HistoireVivante}/>
+                        <Route exact path='/histoire-vivante/:article' component={publicRoutes.Article}/>
+                        <Route exact path='/galerie' component={publicRoutes.Galerie}/>
+                        <Route exact path='/galerie/:id' component={publicRoutes.Album}/>
+                        <Route exact path='/contact' component={publicRoutes.Contact}/>
+                        <Route exact path='/login' component={publicRoutes.Login}/>
+                        <Route exact path='/logout' component={publicRoutes.Logout}/>
+
+                        <PrivateRoute exact path='/intranet/forum' component={privateRoutes.Forum}/>
+                        <PrivateRoute exact path='/intranet/forum/:category' component={privateRoutes.Categorie}/>
+                        <PrivateRoute exact path='/intranet/forum/:category/:topic'
+                                      component={privateRoutes.Sujet}/>
+                        <PrivateRoute exact path='/intranet/partenaires' component={privateRoutes.Partenaires}/>
+                        <PrivateRoute exact path='/intranet/calendrier' component={privateRoutes.Calendrier}/>
+                        <PrivateRoute exact path='/intranet/calendrier/:event' component={privateRoutes.Evenement}/>
+                        <PrivateRoute exact path='/intranet/membres' component={privateRoutes.Membres}/>
+                        <PrivateRoute exact path='/intranet/articles' component={privateRoutes.Articles}/>
+                        <PrivateRoute exact path='/intranet/bibliotheque' component={privateRoutes.Bibliotheque}/>
+                        <PrivateRoute exact path='/intranet/mediatheque' component={privateRoutes.Mediatheque}/>
+                        <PrivateRoute exact path='/intranet/profil' component={privateRoutes.Profil}/>
+                    </Switch>
+                    <Footer/>
+                </div>
+            </Router>
+        );
+    }
+}
 
 const Loading = () => <div>Loading...</div>;
 
@@ -24,16 +65,6 @@ const PrivateRoute = ({component: Component, ...rest}) => (
         }
     />
 );
-
-const PublicNav = Loadable({
-    loader: () => import('./components/PublicNav'),
-    loading: Loading
-});
-
-const PrivateNav = Loadable({
-    loader: () => import('./components/PrivateNav'),
-    loading: Loading
-});
 
 const publicRoutes = {
     Accueil: Loadable({
@@ -62,6 +93,14 @@ const publicRoutes = {
     }),
     Contact: Loadable({
         loader: () => import('./pages/public/Contact'),
+        loading: Loading,
+    }),
+    Login: Loadable({
+        loader: () => import('./pages/public/Login'),
+        loading: Loading,
+    }),
+    Logout: Loadable({
+        loader: () => import('./pages/public/Logout'),
         loading: Loading,
     }),
 };
@@ -112,149 +151,5 @@ const privateRoutes = {
         loading: Loading,
     })
 };
-
-class App extends Component {
-    render() {
-        return (
-            <Router>
-                <div className='App'>
-                    <Switch>
-                        <Route path='/intranet' component={PrivateNav}/>
-                        <Route path='/' component={PublicNav}/>
-                    </Switch>
-                    <section>
-                        <Switch>
-                            <Route exact path='/' component={publicRoutes.Accueil}/>
-                            <Route exact path='/association' component={publicRoutes.Association}/>
-                            <Route exact path='/histoire-vivante' component={publicRoutes.HistoireVivante}/>
-                            <Route exact path='/histoire-vivante/:article' component={publicRoutes.Article}/>
-                            <Route exact path='/galerie' component={publicRoutes.Galerie}/>
-                            <Route exact path='/galerie/:id' component={publicRoutes.Album}/>
-                            <Route exact path='/contact' component={publicRoutes.Contact}/>
-                            <Route exact path='/login' component={Login}/>
-                            <Route exact path='/logout' component={Logout}/>
-
-                            <PrivateRoute exact path='/intranet/forum' component={privateRoutes.Forum}/>
-                            <PrivateRoute exact path='/intranet/forum/:category' component={privateRoutes.Categorie}/>
-                            <PrivateRoute exact path='/intranet/forum/:category/:topic'
-                                          component={privateRoutes.Sujet}/>
-                            <PrivateRoute exact path='/intranet/partenaires' component={privateRoutes.Partenaires}/>
-                            <PrivateRoute exact path='/intranet/calendrier' component={privateRoutes.Calendrier}/>
-                            <PrivateRoute exact path='/intranet/calendrier/:event' component={privateRoutes.Evenement}/>
-                            <PrivateRoute exact path='/intranet/membres' component={privateRoutes.Membres}/>
-                            <PrivateRoute exact path='/intranet/articles' component={privateRoutes.Articles}/>
-                            <PrivateRoute exact path='/intranet/bibliotheque' component={privateRoutes.Bibliotheque}/>
-                            <PrivateRoute exact path='/intranet/mediatheque' component={privateRoutes.Mediatheque}/>
-                            <PrivateRoute exact path='/intranet/profil' component={privateRoutes.Profil}/>
-                        </Switch>
-                    </section>
-                    <footer>
-                        <img src="/images/footer.png" alt="Footer" className="img-fluid"/>
-                        <div id="FooterText">
-                            <div className="container text-secondary text-center py-3">
-                                <div className="row">
-                                    <div className="col-md-4 text-md-right pr-md-4">
-                                        <h4>Contact</h4>
-                                        <p>
-                                            viviskes@gmail.com<br/>
-                                            CCP: 12-812812-7<br/>
-                                            IBAN: CH43 0900 0000 1281 2812 7
-                                        </p>
-                                    </div>
-                                    <div className="col-md-4 px-md-4">
-                                        <h4>Liens utiles</h4>
-                                        <p>
-                                            <Link to="/">Site internet</Link><br/>
-                                            <Link to="/intranet/forum">Intranet</Link>
-                                        </p>
-                                    </div>
-                                    <div className="col-md-4 text-md-left pl-md-4">
-                                        <h4>Copyrights</h4>
-                                        <p>
-                                            Site - Irina Despot<br/>
-                                            Artwork - Jonathan Schaffner<br/>
-                                            Contenu - Viviskes
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </footer>
-                </div>
-            </Router>
-        );
-    }
-}
-
-class Login extends React.Component {
-
-    constructor(props) {
-        super(props);
-        this.state = {
-            authKey: localStorage.authKey,
-            loginError: null
-        };
-        this.render();
-        this.keyDown = this.keyDown.bind(this);
-        this.login = this.login.bind(this);
-    }
-
-    keyDown(e) {
-        if (e.keyCode === 13) this.login();
-    }
-
-    login() {
-        let email = $('#email').val();
-        let password = $('#password').val();
-
-        $.ajax({
-            method: 'POST',
-            url: Config.apiUrl + '/login',
-            data: {email: email, password: password},
-            context: this
-        }).done((data) => {
-            if (data.error) this.setState({loginError: data.error});
-            else {
-                localStorage.authKey = data.authKey;
-                this.setState({authKey: data.authKey});
-            }
-        });
-    }
-
-    render() {
-        if (this.state.authKey) {
-            return <Redirect to='/intranet/forum'/>;
-        }
-
-        let style = {textAlign: 'center'};
-
-        return (
-            <div className='row'>
-                <form className='col-12 col-md-6 mx-auto my-4'>
-                    <h1 className="text-center">Connexion à l'intranet</h1>
-                    <input type='text' id='email' className='form-control' placeholder='Email'
-                           onKeyDown={this.keyDown} style={style}/>
-                    <input type='password' id='password' className='form-control my-2' placeholder='Mot de passe'
-                           onKeyDown={this.keyDown} style={style}/>
-                    <button type='button' className='btn btn-info w-100' id='logIn' onClick={this.login}>
-                        Connexion
-                    </button>
-                    {this.state.loginError ?
-                        <div className='alert alert-warning mt-3' role='alert'>
-                            {this.state.loginError}
-                        </div>
-                        : null}
-                </form>
-            </div>
-        );
-    }
-}
-
-class Logout extends React.Component {
-    render() {
-        localStorage.clear();
-        return <Redirect to='/'/>
-    }
-}
 
 export default App;

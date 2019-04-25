@@ -1,10 +1,13 @@
 import React from 'react';
+import PublicLayout from "../../components/PublicLayout";
 
 export default class Album extends React.Component {
 
     render() {
         return (
-            <h1>Album</h1>
+            <PublicLayout>
+                <h1>Album</h1>
+            </PublicLayout>
         );
     }
 }
