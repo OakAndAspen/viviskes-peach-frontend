@@ -1,0 +1,7 @@
+.TableLayout tr:not(:last-child) td {
+    border-bottom: 1px solid #DDDDDD;
+}
+
+.TableLayout td {
+    padding: 12px;
+}

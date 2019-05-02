@@ -5,10 +5,10 @@ import ForumBreadcrumbs from "../../components/ForumBreadcrumbs";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import $ from "jquery";
 import ModalLayout from "../../components/ModalLayout";
-import "./Sujet.css";
 import CF from "../../CustomFunctions";
 import moment from "moment";
 import Avatar from "../../components/Avatar";
+import TableLayout from "../../components/TableLayout";
 
 export default class Sujet extends React.Component {
 
@@ -44,11 +44,9 @@ export default class Sujet extends React.Component {
                             </button>
                         </div>
                     </div>
-                    <table className="table table-light rounded">
-                        <tbody>
+                    <TableLayout>
                         {this.state.topic.messages.map(m => this.renderMessage(m))}
-                        </tbody>
-                    </table>
+                    </TableLayout>
                     <a className="btn btn-light btn-outline-info w-100 my-2" href="#MenuNav">
                         <FontAwesomeIcon icon="angle-double-up"/>
                         <span className="mx-2">Remonter en haut de la page</span>
