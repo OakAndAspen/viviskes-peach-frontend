@@ -147,7 +147,7 @@ const privateRoutes = {
         loading: Loading,
     }),
     Profil: Loadable({
-        loader: () => import('./pages/private/Forum'),
+        loader: () => import('./pages/private/Profil'),
         loading: Loading,
     })
 };
