@@ -10,12 +10,14 @@ export default class ModalLayout extends React.Component {
             top: "0",
             left: "0",
             width: "100%",
-            height: "100%"
+            height: "100%",
+            zIndex: "100",
+            overflow: "auto"
         };
 
         return (
             <div style={style}>
-                <div className="container pt-4">
+                <div className="container py-4">
                     <div className="row">
                         <div className="col-12 col-md-8 col-lg-6 mx-auto">
                             <div className="card">
