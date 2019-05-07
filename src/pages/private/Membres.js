@@ -7,12 +7,33 @@ import ModalLayout from "../../components/ModalLayout";
 
 export default class Membres extends React.Component {
 
+    messages = {
+        emptyField: "Tous les champs sont obligatoires.",
+        pwsDontMatch: "Les mots de passe ne correspondent pas.",
+        success: "Le nouveau membre a été enregistré!"
+    };
+
     state = {
         allUsers: [],
         search: "",
-        modal: false,
-        user: null
+        detailsModal: false,
+        createModal: false,
+        user: null,
+        alert: null,
+        alertType: "danger",
+        form: {
+            firstName: "",
+            lastName: "",
+            email: "",
+            password1: "",
+            password2: ""
+        }
     };
+
+    constructor(props) {
+        super(props);
+        this.send = this.send.bind(this);
+    }
 
     componentDidMount() {
         this.getAllUsers();
@@ -23,14 +44,14 @@ export default class Membres extends React.Component {
             url: Config.apiUrl + "/users",
             method: "GET",
             success: res => {
-                res.sort((a, b) => a.firstName - b.firstName);
+                res.sort((a, b) => a.firstName.localeCompare(b.firstName));
                 this.setState({allUsers: res});
             }
         });
     }
 
     showDetails(id) {
-        this.setState({modal: true});
+        this.setState({detailsModal: true});
         $.ajax({
             url: Config.apiUrl + "/users/" + id,
             method: "GET",
@@ -43,10 +64,10 @@ export default class Membres extends React.Component {
     filterUsers() {
         let search = this.state.search.toLowerCase();
         let filtered = this.state.allUsers.filter(u => {
-            if (u.firstName.toLowerCase().includes(search) || u.lastName.toLowerCase().includes(search) ||
-                u.celticName.toLowerCase().includes(search)) {
+            if (u.firstName.toLowerCase().includes(search) || u.lastName.toLowerCase().includes(search)) {
                 return true;
             }
+            if (u.celticName && u.celticName.toLowerCase().includes(search)) return true;
             return false;
         });
         return filtered;
@@ -54,8 +75,45 @@ export default class Membres extends React.Component {
 
     getFullName(u) {
         let fullName = u.firstName + " " + u.lastName;
-        if(u.celticName) fullName += " (" + u.celticName + ")";
+        if (u.celticName) fullName += " (" + u.celticName + ")";
         return fullName;
+    }
+
+    updateField(field, value) {
+        let form = this.state.form;
+        form[field] = value;
+        this.setState({form: form});
+    }
+
+    checkErrors() {
+        let f = this.state.form;
+
+        if (!f.firstName || !f.lastName || !f.email || !f.password1 || !f.password2) {
+            this.setState({alert: this.messages.emptyField, alertType: "danger"});
+            return false;
+        }
+
+        if (f.password1 !== f.password2) {
+            this.setState({alert: this.messages.pwsDontMatch, alertType: "danger"});
+            return false;
+        }
+        return true;
+    }
+
+    send() {
+        if (!this.checkErrors()) return null;
+        let data = this.state.form;
+        data.password = this.state.password1;
+
+        $.ajax({
+            url: Config.apiUrl + "/users",
+            method: "POST",
+            data: data,
+            success: res => {
+                this.setState({alert: this.messages.success, alertType: "success"});
+                this.getAllUsers();
+            }
+        });
     }
 
     render() {
@@ -63,21 +121,33 @@ export default class Membres extends React.Component {
             <PrivateLayout>
                 <div className="container py-4">
                     <div className="row">
-                        <div className="col-12 col-md-6 mx-auto">
-                            {this.renderSearch()}
+                        <div className="col-12 col-md-8 col-lg-6 mx-auto">
+                            {this.renderSearchAndNew()}
                             {this.renderList()}
                         </div>
                     </div>
                 </div>
-                {this.renderModal()}
+                {this.renderDetailsModal()}
+                {this.renderCreateModal()}
             </PrivateLayout>
         );
     }
 
-    renderSearch() {
+    renderSearchAndNew() {
         return (
-            <input type="text" placeholder="Cherche un membre..." className="form-control my-2"
-                   value={this.state.search} onChange={e => this.setState({search: e.target.value})}/>
+            <div className="row">
+                <div className="col-12 col-sm-6">
+                    <input type="text" placeholder="Cherche un membre..." className="form-control my-2"
+                           value={this.state.search} onChange={e => this.setState({search: e.target.value})}/>
+                </div>
+                <div className="col-12 col-sm-6">
+                    <button type="button" className="btn btn-info w-100 my-2"
+                            onClick={() => this.setState({createModal: true})}>
+                        <FontAwesomeIcon icon={"plus"} className="mr-2"/>
+                        <span>Nouveau membre</span>
+                    </button>
+                </div>
+            </div>
         );
     }
 
@@ -85,21 +155,24 @@ export default class Membres extends React.Component {
         return (
             <ul className="list-group">
                 {this.filterUsers().map(u =>
-                    <button type="button" className="list-group-item list-group-item-action" key={u.id}
+                    <button type="button" className="list-group-item list-group-item-action d-flex" key={u.id}
                             onClick={() => this.showDetails(u.id)}>
-                        <FontAwesomeIcon icon={["fal", "user-circle"]}/>
+                        <span><FontAwesomeIcon icon={["fal", "user-circle"]}/></span>
                         <span className="mx-3">{this.getFullName(u)}</span>
+                        <span className="ml-auto text-info" title={"Plus d'informations sur " + u.firstName}>
+                            <FontAwesomeIcon icon={["fal", "info-square"]}/>
+                        </span>
                     </button>
                 )}
             </ul>
         );
     }
 
-    renderModal() {
-        if (!this.state.modal) return null;
+    renderDetailsModal() {
+        if (!this.state.detailsModal) return null;
 
         if (!this.state.user) return (
-            <ModalLayout title="Chargement..." onClose={() => this.setState({modal: false, user: null})}>
+            <ModalLayout title="Chargement..." onClose={() => this.setState({detailsModal: false, user: null})}>
                 <h1 className="text-center"><FontAwesomeIcon icon={["fal", "axe"]} className="fa-spin"/></h1>
             </ModalLayout>
         );
@@ -107,9 +180,9 @@ export default class Membres extends React.Component {
         let u = this.state.user;
         return (
             <ModalLayout title={this.getFullName(u)}
-                         onClose={() => this.setState({modal: false, user: null})}>
+                         onClose={() => this.setState({detailsModal: false, user: null})}>
                 <img className="card-img-top mb-2 rounded" src={"/images/membres/" + u.id + ".jpg"}
-                     alt={this.getFullName(u)}/>
+                     alt="Pas d'image de profil"/>
 
                 <table className="table table-borderless">
                     <tbody>
@@ -149,6 +222,48 @@ export default class Membres extends React.Component {
                     </tr>}
                     </tbody>
                 </table>
+            </ModalLayout>
+        );
+    }
+
+    renderCreateModal() {
+        if (!this.state.createModal) return null;
+        let f = this.state.form;
+        return (
+            <ModalLayout title="Nouveau membre"
+                         onClose={() => this.setState({createModal: false})}>
+                <div className="row">
+                    <div className="col-12 col-sm-6">
+                        <input type="text" placeholder="Prénom" className="form-control my-1"
+                               value={f.firstName} onChange={e => this.updateField("firstName", e.target.value)}/>
+                    </div>
+                    <div className="col-12 col-sm-6">
+                        <input type="text" placeholder="Nom" className="form-control my-1"
+                               value={f.lastName} onChange={e => this.updateField("lastName", e.target.value)}/>
+                    </div>
+                    <div className="col-12">
+                        <input type="text" placeholder="Email" className="form-control my-1"
+                               value={f.email} onChange={e => this.updateField("email", e.target.value)}/>
+                    </div>
+                    <div className="col-12 col-sm-6">
+                        <input type="password" placeholder="Mot de passe" className="form-control my-1"
+                               value={f.password1} onChange={e => this.updateField("password1", e.target.value)}/>
+                    </div>
+                    <div className="col-12 col-sm-6">
+                        <input type="password" placeholder="Répéter le mot de passe" className="form-control my-1"
+                               value={f.password2} onChange={e => this.updateField("password2", e.target.value)}/>
+                    </div>
+                    {this.state.alert &&
+                    <div className="col-12">
+                        <div className={"my-1 alert alert-" + this.state.alertType}>{this.state.alert}</div>
+                    </div>
+                    }
+                    <div className="col-12">
+                        <button type="button" className="btn btn-info w-100 my-1" onClick={this.send}>
+                            Enregistrer
+                        </button>
+                    </div>
+                </div>
             </ModalLayout>
         );
     }
