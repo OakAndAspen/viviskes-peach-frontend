@@ -1,4 +1,4 @@
-.App * {
+.App *, .custom-select option {
     font-family: "Alegreya Sans", sans-serif;
 }
 
