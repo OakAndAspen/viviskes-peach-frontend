@@ -4,7 +4,6 @@ import Config from "../../Config";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import $ from "jquery";
 import moment from "moment";
-import {Link} from "react-router-dom";
 
 export default class HistoireVivante extends React.Component {
 

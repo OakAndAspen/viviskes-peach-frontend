@@ -2,7 +2,7 @@
     font-family: "Alegreya Sans", sans-serif;
 }
 
-h1, h2, h3, h4, h5, h6, .small-caps .badge{
+h1, h2, h3, h4, h5, h6, .small-caps {
     font-variant: small-caps;
 }
 
@@ -12,4 +12,8 @@ h1, h2, h3, h4, h5, h6, .small-caps .badge{
 
 a {
     color: #17A2B8;
+}
+
+.badge {
+    font-variant: all-small-caps;
 }
