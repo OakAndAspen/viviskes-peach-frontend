@@ -4,6 +4,7 @@ import Config from "../../Config";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import $ from "jquery";
 import moment from "moment";
+import Loader from "../../components/Loader";
 
 export default class HistoireVivante extends React.Component {
 
@@ -66,14 +67,16 @@ export default class HistoireVivante extends React.Component {
         return (
             <PublicLayout>
                 <div className="container py-4">
-                    <div className="row">
-                        <div className="col-12 col-md-4 order-md-2">
-                            {this.renderTags()}
+                    {!this.state.articles.length ? <Loader/> :
+                        <div className="row">
+                            <div className="col-12 col-md-4 order-md-2">
+                                {this.renderTags()}
+                            </div>
+                            <div className="col-12 col-md-8">
+                                {this.renderArticles()}
+                            </div>
                         </div>
-                        <div className="col-12 col-md-8">
-                            {this.renderArticles()}
-                        </div>
-                    </div>
+                    }
                 </div>
             </PublicLayout>
         );
