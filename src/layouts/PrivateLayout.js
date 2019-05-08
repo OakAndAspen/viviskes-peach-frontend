@@ -1,8 +1,7 @@
 import React from 'react';
-import PublicNav from "./PublicNav";
+import PrivateNav from "../components/PrivateNav";
 
-export default class PublicLayout extends React.Component {
-
+export default class PrivateLayout extends React.Component {
     render() {
         let sectionStyle = {
             backgroundColor: "rgba(255,255,255,0.6)"
@@ -10,7 +9,7 @@ export default class PublicLayout extends React.Component {
 
         return (
             <div>
-                <PublicNav/>
+                <PrivateNav/>
                 <section style={sectionStyle}>
                     {this.props.children}
                 </section>

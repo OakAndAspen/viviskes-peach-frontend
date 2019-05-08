@@ -1,5 +1,5 @@
 import React from 'react';
-import PublicLayout from "../../components/PublicLayout";
+import PublicLayout from "../../layouts/PublicLayout";
 import Config from "../../Config";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import $ from "jquery";
@@ -106,7 +106,7 @@ export default class HistoireVivante extends React.Component {
                             onClick={() => this.props.history.push("/histoire-vivante/" + a.id)}>
                         <FontAwesomeIcon icon={"feather-alt"} className="text-secondary mr-4"/>
                         <div>
-                            <h4 className="m-0">{a.title}</h4>
+                            <h5 className="m-0">{a.title}</h5>
                             <small className="small-caps text-muted">
                                 {"Par " + a.author.firstName + " " + a.author.lastName + " | " +
                                 moment(a.created).format("DD.MM.YYYY")}

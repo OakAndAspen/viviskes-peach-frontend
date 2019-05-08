@@ -1,9 +1,9 @@
 import React from 'react';
-import PrivateLayout from "../../components/PrivateLayout";
+import PrivateLayout from "../../layouts/PrivateLayout";
 import $ from "jquery";
 import Config from "../../Config";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import ModalLayout from "../../components/ModalLayout";
+import ModalLayout from "../../layouts/ModalLayout";
 
 export default class Membres extends React.Component {
 

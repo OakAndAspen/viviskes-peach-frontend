@@ -1,5 +1,5 @@
 import React from 'react';
-import PrivateLayout from "../../components/PrivateLayout";
+import PrivateLayout from "../../layouts/PrivateLayout";
 import Config from "../../Config";
 import $ from "jquery";
 import {Link} from "react-router-dom";

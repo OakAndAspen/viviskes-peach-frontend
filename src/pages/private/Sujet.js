@@ -1,14 +1,14 @@
 import React from 'react';
-import PrivateLayout from "../../components/PrivateLayout";
+import PrivateLayout from "../../layouts/PrivateLayout";
 import Config from "../../Config";
 import ForumBreadcrumbs from "../../components/ForumBreadcrumbs";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import $ from "jquery";
-import ModalLayout from "../../components/ModalLayout";
+import ModalLayout from "../../layouts/ModalLayout";
 import CF from "../../CustomFunctions";
 import moment from "moment";
 import Avatar from "../../components/Avatar";
-import TableLayout from "../../components/TableLayout";
+import TableLayout from "../../layouts/TableLayout";
 
 export default class Sujet extends React.Component {
 

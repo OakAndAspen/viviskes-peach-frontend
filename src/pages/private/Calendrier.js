@@ -1,10 +1,10 @@
 import React from 'react';
-import PrivateLayout from "../../components/PrivateLayout";
+import PrivateLayout from "../../layouts/PrivateLayout";
 import Config from "../../Config";
 import $ from "jquery";
 import moment from "moment";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import TableLayout from "../../components/TableLayout";
+import TableLayout from "../../layouts/TableLayout";
 
 export default class Calendrier extends React.Component {
 

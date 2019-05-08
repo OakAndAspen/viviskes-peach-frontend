@@ -1,10 +1,10 @@
 import React from 'react';
-import PrivateLayout from "../../components/PrivateLayout";
-import TableLayout from "../../components/TableLayout";
+import PrivateLayout from "../../layouts/PrivateLayout";
+import TableLayout from "../../layouts/TableLayout";
 import Config from "../../Config";
 import $ from "jquery";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import ModalLayout from "../../components/ModalLayout";
+import ModalLayout from "../../layouts/ModalLayout";
 
 export default class Partenaires extends React.Component {
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import PublicLayout from "../../components/PublicLayout";
+import PublicLayout from "../../layouts/PublicLayout";
 import Config from "../../Config";
 import $ from "jquery";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
@@ -51,6 +51,7 @@ export default class Accueil extends React.Component {
                 <div className="container py-4">
                     <div className="row">
                         <div className="col-lg-8">
+                            <h2>À propos de Viviskes</h2>
                             <p>Si nous devions résumer en une seule question tout ce qui motive les quelques quarante
                                 membres de l’association Viviskes, cela serait : comment vivaient les Celtes ?</p>
 
@@ -109,7 +110,7 @@ export default class Accueil extends React.Component {
                     <li className="list-group-item">
                         <div className="d-flex align-items-center">
                             <FontAwesomeIcon icon={["far", "handshake"]} className="text-secondary"/>
-                            <span className="ml-3 display-4 small-caps">{p.label}</span>
+                            <span className="ml-3 small-caps">{p.label}</span>
                             {p.url &&
                             <a href={"http://" + p.url} className="ml-auto" title={p.url}
                                target="_blank" rel="noopener noreferrer">

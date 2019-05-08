@@ -2,7 +2,7 @@ import React from "react";
 import Config from "../../Config";
 import {Redirect} from "react-router-dom";
 import $ from 'jquery';
-import PublicLayout from "../../components/PublicLayout";
+import PublicLayout from "../../layouts/PublicLayout";
 
 export default class Login extends React.Component {
 

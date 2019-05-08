@@ -1,6 +1,6 @@
 import React from 'react';
 import Tabs from "../../components/Tabs";
-import PublicLayout from "../../components/PublicLayout";
+import PublicLayout from "../../layouts/PublicLayout";
 
 export default class Association extends React.Component {
 
@@ -49,7 +49,6 @@ export default class Association extends React.Component {
                     <img src="/images/divers/quiSommesNous.png" alt="Qui sommes-nous?" className="img-fluid"/>
                 </div>
                 <div className="col-md-8">
-                    <h1>Qui sommes-nous?</h1>
                     <p>Viviskes est avant tout la rencontre de quelques quarante passionnés de l’Antiquité celtique
                         venant de divers horizons pour reconstituer la vie quotidienne et guerrière des Celtes de la
                         période laténienne (450-50 av. J.-C.). Ces objectifs sont atteints grâce à une approche
@@ -83,7 +82,6 @@ export default class Association extends React.Component {
                     <img src="/images/divers/butsObjectifs.png" alt="Nos buts et objectifs" className="img-fluid"/>
                 </div>
                 <div className="col-md-8">
-                    <h1>Nos buts et objectifs</h1>
                     <p>Passionnés par l’Antiquité celte, nous cherchons à reconstituer le plus fidèlement l’équipement,
                         l’armement et le costume et les pratiques guerrières celtes. Il s’agit d’une part de développer
                         et de maintenir une exigence d’historicité de la part de nos membres et de l’autre de
@@ -110,7 +108,7 @@ export default class Association extends React.Component {
     renderNosMembres() {
         return (
             <div>
-                <h1>Nos membres</h1>
+
             </div>
         );
     }

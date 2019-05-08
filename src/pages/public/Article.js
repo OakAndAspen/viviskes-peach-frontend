@@ -1,5 +1,5 @@
 import React from 'react';
-import PublicLayout from "../../components/PublicLayout";
+import PublicLayout from "../../layouts/PublicLayout";
 import Config from "../../Config";
 import $ from "jquery";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
@@ -50,7 +50,7 @@ export default class Article extends React.Component {
         return (
             <div className="card">
                 <div className="card-body">
-                    <h4 className="card-title m-0">{a.title}</h4>
+                    <h2 className="card-title m-0">{a.title}</h2>
                 </div>
                 <ul className="list-group list-group-flush">
                     <li className="list-group-item text-muted small-caps">

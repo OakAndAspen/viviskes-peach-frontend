@@ -1,11 +1,11 @@
 import React from 'react';
-import PrivateLayout from "../../components/PrivateLayout";
+import PrivateLayout from "../../layouts/PrivateLayout";
 import Config from "../../Config";
 import $ from "jquery";
 import {Link} from "react-router-dom";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import ForumBreadcrumbs from "../../components/ForumBreadcrumbs";
-import ModalLayout from "../../components/ModalLayout";
+import ModalLayout from "../../layouts/ModalLayout";
 
 export default class Categorie extends React.Component {
 
