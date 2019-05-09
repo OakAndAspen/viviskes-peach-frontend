@@ -3,17 +3,13 @@ import {Link} from "react-router-dom";
 
 export default class Footer extends React.Component {
     render() {
-        let footerStyle = {
-            backgroundColor: "rgba(255,255,255,0.6)"
-        };
-
         let textStyle = {
             backgroundColor: "#000",
             fontVariant: "all-small-caps"
         };
 
         return (
-            <footer style={footerStyle}>
+            <footer>
                 <img src="/images/footer.png" alt="Footer" className="img-fluid"/>
                 <div id="FooterText" style={textStyle}>
                     <div className="container text-secondary text-center py-3">

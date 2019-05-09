@@ -15,31 +15,33 @@ class App extends Component {
     render() {
         return (
             <Router>
-                <div className='App'>
-                    <Switch>
-                        <Route exact path='/' component={publicRoutes.Accueil}/>
-                        <Route exact path='/association' component={publicRoutes.Association}/>
-                        <Route exact path='/histoire-vivante' component={publicRoutes.HistoireVivante}/>
-                        <Route exact path='/histoire-vivante/:article' component={publicRoutes.Article}/>
-                        <Route exact path='/galerie' component={publicRoutes.Galerie}/>
-                        <Route exact path='/galerie/:id' component={publicRoutes.Album}/>
-                        <Route exact path='/contact' component={publicRoutes.Contact}/>
-                        <Route exact path='/login' component={publicRoutes.Login}/>
-                        <Route exact path='/logout' component={publicRoutes.Logout}/>
+                <div className='App h-100 d-flex flex-column'>
+                    <section className="mb-auto">
+                        <Switch>
+                            <Route exact path='/' component={publicRoutes.Accueil}/>
+                            <Route exact path='/association' component={publicRoutes.Association}/>
+                            <Route exact path='/histoire-vivante' component={publicRoutes.HistoireVivante}/>
+                            <Route exact path='/histoire-vivante/:article' component={publicRoutes.Article}/>
+                            <Route exact path='/galerie' component={publicRoutes.Galerie}/>
+                            <Route exact path='/galerie/:id' component={publicRoutes.Album}/>
+                            <Route exact path='/contact' component={publicRoutes.Contact}/>
+                            <Route exact path='/login' component={publicRoutes.Login}/>
+                            <Route exact path='/logout' component={publicRoutes.Logout}/>
 
-                        <PrivateRoute exact path='/intranet/forum' component={privateRoutes.Forum}/>
-                        <PrivateRoute exact path='/intranet/forum/:category' component={privateRoutes.Categorie}/>
-                        <PrivateRoute exact path='/intranet/forum/:category/:topic'
-                                      component={privateRoutes.Sujet}/>
-                        <PrivateRoute exact path='/intranet/partenaires' component={privateRoutes.Partenaires}/>
-                        <PrivateRoute exact path='/intranet/calendrier' component={privateRoutes.Calendrier}/>
-                        <PrivateRoute exact path='/intranet/calendrier/:event' component={privateRoutes.Evenement}/>
-                        <PrivateRoute exact path='/intranet/membres' component={privateRoutes.Membres}/>
-                        <PrivateRoute exact path='/intranet/articles' component={privateRoutes.Articles}/>
-                        <PrivateRoute exact path='/intranet/bibliotheque' component={privateRoutes.Bibliotheque}/>
-                        <PrivateRoute exact path='/intranet/mediatheque' component={privateRoutes.Mediatheque}/>
-                        <PrivateRoute exact path='/intranet/profil' component={privateRoutes.Profil}/>
-                    </Switch>
+                            <PrivateRoute exact path='/intranet/forum' component={privateRoutes.Forum}/>
+                            <PrivateRoute exact path='/intranet/forum/:category' component={privateRoutes.Categorie}/>
+                            <PrivateRoute exact path='/intranet/forum/:category/:topic'
+                                          component={privateRoutes.Sujet}/>
+                            <PrivateRoute exact path='/intranet/partenaires' component={privateRoutes.Partenaires}/>
+                            <PrivateRoute exact path='/intranet/calendrier' component={privateRoutes.Calendrier}/>
+                            <PrivateRoute exact path='/intranet/calendrier/:event' component={privateRoutes.Evenement}/>
+                            <PrivateRoute exact path='/intranet/membres' component={privateRoutes.Membres}/>
+                            <PrivateRoute exact path='/intranet/articles' component={privateRoutes.Articles}/>
+                            <PrivateRoute exact path='/intranet/bibliotheque' component={privateRoutes.Bibliotheque}/>
+                            <PrivateRoute exact path='/intranet/mediatheque' component={privateRoutes.Mediatheque}/>
+                            <PrivateRoute exact path='/intranet/profil' component={privateRoutes.Profil}/>
+                        </Switch>
+                    </section>
                     <Footer/>
                 </div>
             </Router>
