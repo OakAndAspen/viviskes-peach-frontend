@@ -3,8 +3,8 @@ import PublicLayout from "../../layouts/PublicLayout";
 import Config from "../../Config";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import $ from "jquery";
-import moment from "moment";
 import Loader from "../../components/Loader";
+import CF from "../../CustomFunctions";
 
 export default class HistoireVivante extends React.Component {
 
@@ -109,7 +109,7 @@ export default class HistoireVivante extends React.Component {
                             <h5 className="m-0">{a.title}</h5>
                             <small className="small-caps text-muted">
                                 {"Par " + a.author.firstName + " " + a.author.lastName + " | " +
-                                moment(a.created).format("DD.MM.YYYY")}
+                                CF.getDate(a.created)}
                             </small>
                         </div>
                     </button>

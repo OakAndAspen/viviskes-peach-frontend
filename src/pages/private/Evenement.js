@@ -3,7 +3,7 @@ import PrivateLayout from "../../layouts/PrivateLayout";
 import $ from "jquery";
 import Config from "../../Config";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import moment from "moment";
+import CF from "../../CustomFunctions";
 
 export default class Evenement extends React.Component {
 
@@ -64,12 +64,12 @@ export default class Evenement extends React.Component {
     renderDate(event) {
         let date = [
             <FontAwesomeIcon icon={["far", "calendar-alt"]} className="mr-2"/>,
-            <span>{moment(event.start).format("DD.MM.YYYY")}</span>
+            <span>{CF.getDate(event.start)}</span>
         ];
 
         if (event.end && event.end !== event.start) {
             date.push(<FontAwesomeIcon icon="arrow-right" className="mx-2"/>);
-            date.push(<span>{moment(event.end).format("DD.MM.YYYY")}</span>);
+            date.push(<span>{CF.getDate(event.end)}</span>);
         }
         return date;
     }

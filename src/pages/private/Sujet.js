@@ -1,6 +1,5 @@
 import React from 'react';
 import $ from "jquery";
-import moment from "moment";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import CF from "../../CustomFunctions";
 import Config from "../../Config";
@@ -74,8 +73,8 @@ export default class Sujet extends React.Component {
                 </td>
                 <td>
                     <div className="d-flex">
-                        <span className="text-muted small-caps">{CF.getShortName(m.author)}</span>
-                        <span className="text-muted ml-auto">{moment(m.created).fromNow()}</span> <br/>
+                        <span className="text-muted small-caps">{CF.getName(m.author, true)}</span>
+                        <span className="text-muted ml-auto">{CF.fromNow(m.created)}</span> <br/>
                     </div>
                     <span>{m.content}</span>
                 </td>

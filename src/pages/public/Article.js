@@ -2,11 +2,9 @@ import React from 'react';
 import PublicLayout from "../../layouts/PublicLayout";
 import Config from "../../Config";
 import $ from "jquery";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import moment from "moment";
 import Loader from "../../components/Loader";
-import {Link} from "react-router-dom";
 import Breadcrumbs from "../../components/Breadcrumbs";
+import CF from "../../CustomFunctions";
 
 let ReactDOMServer = require('react-dom/server');
 let HtmlToReactParser = require('html-to-react').Parser;
@@ -56,7 +54,7 @@ export default class Article extends React.Component {
                 </div>
                 <ul className="list-group list-group-flush">
                     <li className="list-group-item text-muted small-caps">
-                        {a.author.firstName} {a.author.lastName}, {moment(a.created).format("DD.MM.YYYY")}
+                        {a.author.firstName} {a.author.lastName}, {CF.getDate(a.created)}
                     </li>
                 </ul>
                 <div className="card-body">

@@ -2,9 +2,9 @@ import React from 'react';
 import PrivateLayout from "../../layouts/PrivateLayout";
 import Config from "../../Config";
 import $ from "jquery";
-import moment from "moment";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import TableLayout from "../../layouts/TableLayout";
+import CF from "../../CustomFunctions";
 
 export default class Calendrier extends React.Component {
 
@@ -21,7 +21,7 @@ export default class Calendrier extends React.Component {
             url: Config.apiUrl + "/calendar",
             method: "GET",
             success: res => {
-                res.sort((a, b) => moment(a.start) - moment(b.start));
+                res.sort((a, b) => a.start.localeCompare(b.start));
                 this.setState({events: res});
             }
         });
@@ -52,7 +52,7 @@ export default class Calendrier extends React.Component {
                                         <FontAwesomeIcon icon="eye" className="mr-2"/>
                                                 {Config.privacy[e.privacy]}
                                                 <FontAwesomeIcon icon="calendar" className="mx-2"/>
-                                                {moment(e.start).format("DD.MM.YYYY")} ({moment(e.start).fromNow()})
+                                                {CF.getDate(e.start)} ({CF.fromNow(e.start)})
                                     </span>
                                         </td>
                                     </tr>

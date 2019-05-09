@@ -21,8 +21,8 @@ export default class PrivateNav extends React.Component {
         {
             url: '/intranet/bibliotheque',
             title: 'Bibliothèque',
-            style: 'fas',
-            icon: 'book'
+            style: 'far',
+            icon: 'books'
         },
         {
             url: '/intranet/mediatheque',
@@ -84,7 +84,7 @@ export default class PrivateNav extends React.Component {
                             {this.entries.map(entry => {
                                     let active = window.location.pathname === entry.url ? " active" : "";
                                     return (
-                                        <li className="nav-item" key={entry.url}>
+                                        <li className="nav-item small-caps" key={entry.url}>
                                             <Link className={"nav-link" + active} to={entry.url} title={entry.title}>
                                                 <div style={iconStyle}>
                                                     <FontAwesomeIcon icon={[entry.style, entry.icon]}/>

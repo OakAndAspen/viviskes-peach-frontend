@@ -8,6 +8,7 @@ import {fab} from "@fortawesome/free-brands-svg-icons";
 import {fal} from "@fortawesome/pro-light-svg-icons";
 import {far} from "@fortawesome/pro-regular-svg-icons";
 import {fas} from "@fortawesome/pro-solid-svg-icons";
+import Loader from "./components/Loader";
 
 library.add(fab, far, fas, fal);
 
@@ -49,8 +50,6 @@ class App extends Component {
     }
 }
 
-const Loading = () => <div>Loading...</div>;
-
 const PrivateRoute = ({component: Component, ...rest}) => (
     <Route
         {...rest}
@@ -72,86 +71,86 @@ const PrivateRoute = ({component: Component, ...rest}) => (
 const publicRoutes = {
     Accueil: Loadable({
         loader: () => import('./pages/public/Accueil'),
-        loading: Loading,
+        loading: Loader,
     }),
     Association: Loadable({
         loader: () => import('./pages/public/Association'),
-        loading: Loading,
+        loading: Loader,
     }),
     HistoireVivante: Loadable({
         loader: () => import('./pages/public/HistoireVivante'),
-        loading: Loading,
+        loading: Loader,
     }),
     Article: Loadable({
         loader: () => import('./pages/public/Article'),
-        loading: Loading,
+        loading: Loader,
     }),
     Galerie: Loadable({
         loader: () => import('./pages/public/Galerie'),
-        loading: Loading,
+        loading: Loader,
     }),
     Album: Loadable({
         loader: () => import('./pages/public/Album'),
-        loading: Loading,
+        loading: Loader,
     }),
     Contact: Loadable({
         loader: () => import('./pages/public/Contact'),
-        loading: Loading,
+        loading: Loader,
     }),
     Login: Loadable({
         loader: () => import('./pages/public/Login'),
-        loading: Loading,
+        loading: Loader,
     }),
     Logout: Loadable({
         loader: () => import('./pages/public/Logout'),
-        loading: Loading,
+        loading: Loader,
     }),
 };
 
 const privateRoutes = {
     Forum: Loadable({
         loader: () => import('./pages/private/Forum'),
-        loading: Loading,
+        loading: Loader,
     }),
     Categorie: Loadable({
         loader: () => import('./pages/private/Categorie'),
-        loading: Loading,
+        loading: Loader,
     }),
     Sujet: Loadable({
         loader: () => import('./pages/private/Sujet'),
-        loading: Loading,
+        loading: Loader,
     }),
     Partenaires: Loadable({
         loader: () => import('./pages/private/Partenaires'),
-        loading: Loading,
+        loading: Loader,
     }),
     Calendrier: Loadable({
         loader: () => import('./pages/private/Calendrier'),
-        loading: Loading,
+        loading: Loader,
     }),
     Evenement: Loadable({
         loader: () => import('./pages/private/Evenement'),
-        loading: Loading,
+        loading: Loader,
     }),
     Membres: Loadable({
         loader: () => import('./pages/private/Membres'),
-        loading: Loading,
+        loading: Loader,
     }),
     Articles: Loadable({
         loader: () => import('./pages/private/Articles'),
-        loading: Loading,
+        loading: Loader,
     }),
     Bibliotheque: Loadable({
         loader: () => import('./pages/private/Bibliotheque'),
-        loading: Loading,
+        loading: Loader,
     }),
     Mediatheque: Loadable({
         loader: () => import('./pages/private/Mediatheque'),
-        loading: Loading,
+        loading: Loader,
     }),
     Profil: Loadable({
         loader: () => import('./pages/private/Profil'),
-        loading: Loading,
+        loading: Loader,
     })
 };
 

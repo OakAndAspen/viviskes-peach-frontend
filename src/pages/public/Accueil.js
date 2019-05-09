@@ -3,8 +3,7 @@ import PublicLayout from "../../layouts/PublicLayout";
 import Config from "../../Config";
 import $ from "jquery";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import moment from "moment";
-import {Link} from "react-router-dom";
+import CF from "../../CustomFunctions";
 
 export default class Accueil extends React.Component {
 
@@ -36,8 +35,8 @@ export default class Accueil extends React.Component {
             method: "GET",
             success: res => {
                 res = res
-                    .filter(e => moment(e.start).isAfter(moment()) && e.privacy === "p")
-                    .sort((a, b) => a.start - b.start);
+                    .filter(e => CF.isFuture(e.start) && e.privacy === "p")
+                    .sort((a, b) => a.start.localeCompare(b.start));
                 this.setState({events: res});
             }
         });
@@ -88,8 +87,8 @@ export default class Accueil extends React.Component {
                                 <span className="mr-2">{e.location}</span>
                                 <FontAwesomeIcon icon={"calendar-day"} className="mr-2"/>
                                 <span className="mr-2">
-                                    {moment(e.start).format("DD.MM.YYYY") +
-                                    (e.end ? " - " + moment(e.end).format("DD.MM.YYYY") : "")}
+                                    {CF.getDate(e.start) +
+                                    (e.end ? " - " + CF.getDate(e.end) : "")}
                                 </span>
                             </span>
                             </div>
