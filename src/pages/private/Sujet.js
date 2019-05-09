@@ -1,14 +1,15 @@
 import React from 'react';
-import PrivateLayout from "../../layouts/PrivateLayout";
-import Config from "../../Config";
-import ForumBreadcrumbs from "../../components/ForumBreadcrumbs";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import $ from "jquery";
-import ModalLayout from "../../layouts/ModalLayout";
-import CF from "../../CustomFunctions";
 import moment from "moment";
-import Avatar from "../../components/Avatar";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import CF from "../../CustomFunctions";
+import Config from "../../Config";
+import PrivateLayout from "../../layouts/PrivateLayout";
+import ModalLayout from "../../layouts/ModalLayout";
 import TableLayout from "../../layouts/TableLayout";
+import Breadcrumbs from "../../components/Breadcrumbs";
+import Avatar from "../../components/Avatar";
+import Loader from "../../components/Loader";
 
 export default class Sujet extends React.Component {
 
@@ -29,13 +30,20 @@ export default class Sujet extends React.Component {
     }
 
     render() {
-        if (!this.state.topic) return <h1>Loading...</h1>;
+        if (!this.state.topic) return <Loader/>;
+        let topic = this.state.topic;
+        let levels = [
+            {label: "Forum", url: "/intranet/forum"},
+            {label: topic.category.label, url: "/intranet/forum/" + topic.category.id},
+            {label: topic.title}
+        ];
+
         return (
             <PrivateLayout>
-                <ForumBreadcrumbs category={this.state.topic.category} topic={{label: this.state.topic.title}}/>
+                <Breadcrumbs levels={levels}/>
                 <div className="container py-4" id="Sujet">
                     <div className="d-flex justify-content-between mb-2">
-                        <h3>{this.state.topic.title}</h3>
+                        <h3>{topic.title}</h3>
                         <div>
                             <button className="btn btn-info ml-auto"
                                     onClick={() => this.setState({modal: true})}>
@@ -45,7 +53,7 @@ export default class Sujet extends React.Component {
                         </div>
                     </div>
                     <TableLayout>
-                        {this.state.topic.messages.map(m => this.renderMessage(m))}
+                        {topic.messages.map(m => this.renderMessage(m))}
                     </TableLayout>
                     <a className="btn btn-light btn-outline-info w-100 my-2" href="#MenuNav">
                         <FontAwesomeIcon icon="angle-double-up"/>

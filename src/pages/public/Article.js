@@ -6,6 +6,7 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import moment from "moment";
 import Loader from "../../components/Loader";
 import {Link} from "react-router-dom";
+import Breadcrumbs from "../../components/Breadcrumbs";
 
 let ReactDOMServer = require('react-dom/server');
 let HtmlToReactParser = require('html-to-react').Parser;
@@ -31,13 +32,14 @@ export default class Article extends React.Component {
     }
 
     render() {
+        let levels = [
+            {label: "Articles", url: "/histoire-vivante"},
+            {label: this.state.article ? this.state.article.title : "Chargement..."}
+        ];
         return (
             <PublicLayout>
+                <Breadcrumbs levels={levels}/>
                 <div className="container py-4">
-                    <Link to="/histoire-vivante" className="btn btn-info my-4">
-                        <FontAwesomeIcon icon={"angle-double-left"} className="mr-2"/>
-                        Retour aux articles
-                    </Link>
                     {!this.state.article ? <Loader/> : this.renderArticle()}
                 </div>
             </PublicLayout>

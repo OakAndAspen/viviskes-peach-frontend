@@ -1,11 +1,11 @@
 import React from 'react';
-import PrivateLayout from "../../layouts/PrivateLayout";
 import Config from "../../Config";
 import $ from "jquery";
 import {Link} from "react-router-dom";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import ForumBreadcrumbs from "../../components/ForumBreadcrumbs";
+import PrivateLayout from "../../layouts/PrivateLayout";
 import ModalLayout from "../../layouts/ModalLayout";
+import Breadcrumbs from "../../components/Breadcrumbs";
 
 export default class Categorie extends React.Component {
 
@@ -28,9 +28,14 @@ export default class Categorie extends React.Component {
     }
 
     render() {
+        let levels = [
+            {label: "Forum", url: "/intranet/forum"},
+            {label: this.state.category.label}
+        ];
+
         return (
             <PrivateLayout>
-                <ForumBreadcrumbs category={{label: this.state.category.label}}/>
+                <Breadcrumbs levels={levels}/>
                 <div className="container py-4">
                     <div className="d-flex justify-content-between">
                         <h1>{this.state.category.label}</h1>
