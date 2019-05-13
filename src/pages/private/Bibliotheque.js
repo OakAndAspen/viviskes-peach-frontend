@@ -212,8 +212,8 @@ export default class Bibliotheque extends React.Component {
                         <th>du</th>
                         <th>au</th>
                     </tr>
-                    {book.loans.sort((a, b) => b.start - a.start).map(l =>
-                        <tr>
+                    {book.loans.sort((a, b) => b.start - a.start).map((l, i) =>
+                        <tr key={i}>
                             <td>{CF.getName(l.user)}</td>
                             <td>{CF.getDate(l.start)}</td>
                             <td>{CF.getDate(l.end) ||
@@ -230,7 +230,7 @@ export default class Bibliotheque extends React.Component {
                             <select className="form-control" value={this.state.selectedUser}
                                     onChange={e => this.setState({selectedUser: e.target.value})}>
                                 {this.state.allUsers.map(u =>
-                                    <option value={u.id}>{CF.getName(u)}</option>
+                                    <option value={u.id} key={u.id}>{CF.getName(u)}</option>
                                 )}
                             </select>
                         </td>

@@ -76,7 +76,7 @@ export default class Accueil extends React.Component {
         return (
             <ul className="list-group">
                 {this.state.events.map(e =>
-                    <button className="list-group-item list-group-item-action"
+                    <button className="list-group-item list-group-item-action" key={e.id}
                             onClick={() => this.setState({selectedEvent: e.id})}>
                         <div className="d-flex align-items-center ">
                             <FontAwesomeIcon icon={["far", "calendar-alt"]} className="text-secondary display-3 mr-4"/>
@@ -106,7 +106,7 @@ export default class Accueil extends React.Component {
         return (
             <ul className="list-group">
                 {this.state.partners.map(p =>
-                    <li className="list-group-item">
+                    <li className="list-group-item" key={p.id}>
                         <div className="d-flex align-items-center">
                             <FontAwesomeIcon icon={["far", "handshake"]} className="text-secondary"/>
                             <span className="ml-3 small-caps">{p.label}</span>

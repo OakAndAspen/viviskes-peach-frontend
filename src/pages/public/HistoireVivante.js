@@ -103,7 +103,8 @@ export default class HistoireVivante extends React.Component {
             <ul className="list-group">
                 {this.filterArticles().map(a =>
                     <button className="list-group-item list-group-item-action d-flex align-items-center"
-                            onClick={() => this.props.history.push("/histoire-vivante/" + a.id)}>
+                            onClick={() => this.props.history.push("/histoire-vivante/" + a.id)}
+                            key={a.id}>
                         <FontAwesomeIcon icon={"feather-alt"} className="text-secondary mr-4"/>
                         <div>
                             <h5 className="m-0">{a.title}</h5>

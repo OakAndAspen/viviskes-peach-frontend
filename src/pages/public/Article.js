@@ -6,7 +6,6 @@ import Loader from "../../components/Loader";
 import Breadcrumbs from "../../components/Breadcrumbs";
 import CF from "../../CustomFunctions";
 
-let ReactDOMServer = require('react-dom/server');
 let HtmlToReactParser = require('html-to-react').Parser;
 
 export default class Article extends React.Component {

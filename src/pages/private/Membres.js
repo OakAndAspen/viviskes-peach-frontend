@@ -182,7 +182,7 @@ export default class Membres extends React.Component {
             <ModalLayout title={this.getFullName(u)}
                          onClose={() => this.setState({detailsModal: false, user: null})}>
                 <img className="card-img-top mb-2 rounded" src={"/images/membres/" + u.id + ".jpg"}
-                     alt="Pas d'image de profil"/>
+                     alt={u.firstName + " n'a pas encore choisi d'avatar."}/>
 
                 <table className="table table-borderless">
                     <tbody>

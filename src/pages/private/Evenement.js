@@ -120,7 +120,7 @@ export default class Evenement extends React.Component {
                     {dates.map(d => {
                         let date = moment(d);
                         return (
-                            <td className="text-secondary small-caps text-center">
+                            <td className="text-secondary small-caps text-center" key={d}>
                                 {date.format("ddd")} <br/>
                                 {date.format("DD.MM")}
                             </td>

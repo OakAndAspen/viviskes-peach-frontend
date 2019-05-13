@@ -14,9 +14,9 @@ export default class Breadcrumbs extends React.Component {
                 <div className="container">
                     <FontAwesomeIcon icon={["fal", "map-signs"]} className="mx-2 text-secondary"/>
                     {this.props.levels.map((level, i) => {
-                        if (i === this.props.levels.length - 1) return <span>{level.label}</span>;
+                        if (i === this.props.levels.length - 1) return <span key={level.label}>{level.label}</span>;
                         return (
-                            <span className="d-inline-flex align-items-center">
+                            <span className="d-inline-flex align-items-center" key={level.label}>
                                 <Link to={level.url}>{level.label}</Link>
                                 <FontAwesomeIcon icon={["far", "angle-right"]} className="mx-2 text-secondary"/>
                             </span>
