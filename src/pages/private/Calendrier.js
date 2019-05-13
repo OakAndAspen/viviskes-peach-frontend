@@ -5,11 +5,15 @@ import $ from "jquery";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import TableLayout from "../../layouts/TableLayout";
 import CF from "../../CustomFunctions";
+import UnreadBadge from "../../components/UnreadBadge";
+import Breadcrumbs from "../../components/Breadcrumbs";
+import ParticipationBadge from "../../components/ParticipationBadge";
 
 export default class Calendrier extends React.Component {
 
     state = {
-        events: []
+        futureEvents: [],
+        pastEvents: []
     };
 
     componentDidMount() {
@@ -22,49 +26,58 @@ export default class Calendrier extends React.Component {
             method: "GET",
             success: res => {
                 res.sort((a, b) => a.start.localeCompare(b.start));
-                this.setState({events: res});
+                let futureEvents = res.filter(e => CF.isFuture(e.start));
+                let pastEvents = res.filter(e => !CF.isFuture(e.start));
+                this.setState({
+                    futureEvents: futureEvents,
+                    pastEvents: pastEvents,
+                });
             }
         });
     }
 
     render() {
+        let levels = [{label: "Calendrier"}];
         return (
             <PrivateLayout>
+                <Breadcrumbs levels={levels}/>
                 <div className="container py-4">
                     <div className="row">
                         <div className="col-12 col-lg-6">
-                            <h1>Prochains évènements</h1>
-                            <TableLayout hoverable={true}>
-                                {this.state.events.map(e =>
-                                    <tr key={e.id} className="pointer"
-                                        onClick={() => this.props.history.push("/intranet/calendrier/" + e.id)}>
-                                        <td className="text-center">
-                                            <FontAwesomeIcon icon="dot-circle" className="text-info"/>
-                                        </td>
-                                        <td className="text-center">
-                                            <FontAwesomeIcon icon={["far", "calendar-plus"]} className="ml-2"/>
-                                            <FontAwesomeIcon icon={["far", "calendar-check"]} className="ml-2"/>
-                                            <FontAwesomeIcon icon={["far", "calendar-times"]} className="ml-2"/>
-                                        </td>
-                                        <td>
-                                            <span className="small-caps">{e.title}</span><br/>
-                                            <span className="text-muted">
-                                        <FontAwesomeIcon icon="eye" className="mr-2"/>
-                                                {Config.privacy[e.privacy]}
-                                                <FontAwesomeIcon icon="calendar" className="mx-2"/>
-                                                {CF.getDate(e.start)} ({CF.fromNow(e.start)})
-                                    </span>
-                                        </td>
-                                    </tr>
-                                )}
-                            </TableLayout>
+                            <h2 className="text-center">Prochains évènements</h2>
+                            {this.renderEvents(this.state.futureEvents)}
                         </div>
                         <div className="col-12 col-lg-6">
-                            <h1>Evénements passés</h1>
+                            <h2 className="text-center">Evènements passés</h2>
+                            {this.renderEvents(this.state.pastEvents)}
                         </div>
                     </div>
                 </div>
             </PrivateLayout>
+        );
+    }
+
+    renderEvents(events) {
+        return (
+            <TableLayout hoverable={true}>
+                {events.map(e =>
+                    <tr key={e.id} className="pointer"
+                        onClick={() => this.props.history.push("/intranet/calendrier/" + e.id)}>
+                        <td className="text-center">
+                            <UnreadBadge read={e.read}/>
+                        </td>
+                        <td>
+                            <span className="small-caps">{e.title}</span><br/>
+                            <span className="text-muted">
+                                        <FontAwesomeIcon icon="eye" className="mr-2"/>
+                                {Config.privacy[e.privacy]}
+                                <FontAwesomeIcon icon="calendar" className="mx-2"/>
+                                {CF.getDate(e.start)} ({CF.fromNow(e.start)})
+                                    </span>
+                        </td>
+                    </tr>
+                )}
+            </TableLayout>
         );
     }
 }
