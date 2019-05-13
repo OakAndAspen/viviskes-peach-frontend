@@ -14,16 +14,47 @@ export default class Sujet extends React.Component {
 
     state = {
         topic: null,
-        modal: false
+        modal: false,
+        message: "",
+        loading: false
     };
 
+    constructor(props) {
+        super(props);
+        this.send = this.send.bind(this);
+    }
+
     componentDidMount() {
-        let id = this.props.match.params.topic;
+        this.getTopic();
+    }
+
+    getTopic() {
         $.ajax({
-            url: Config.apiUrl + "/topic/" + id,
+            url: Config.apiUrl + "/topic/" + this.props.match.params.topic,
             method: "GET",
             success: res => {
                 this.setState({topic: res});
+            }
+        });
+    }
+
+    send() {
+        if (!this.state.message) return null;
+
+        this.setState({loading: true});
+
+        let data = {
+            topic: this.state.topic.id,
+            content: this.state.message
+        };
+
+        $.ajax({
+            url: Config.apiUrl + "/message",
+            method: "POST",
+            data: data,
+            success: res => {
+                this.getTopic();
+                this.setState({loading: false, message: ""});
             }
         });
     }
@@ -44,41 +75,52 @@ export default class Sujet extends React.Component {
                     <div className="d-flex justify-content-between mb-2">
                         <h3>{topic.title}</h3>
                         <div>
-                            <button className="btn btn-info ml-auto"
-                                    onClick={() => this.setState({modal: true})}>
-                                <FontAwesomeIcon icon="pen-fancy" className="mr-2"/>
-                                Répondre
-                            </button>
+
                         </div>
                     </div>
-                    <TableLayout>
-                        {topic.messages.map(m => this.renderMessage(m))}
-                    </TableLayout>
-                    <a className="btn btn-light btn-outline-info w-100 my-2" href="#MenuNav">
-                        <FontAwesomeIcon icon="angle-double-up"/>
-                        <span className="mx-2">Remonter en haut de la page</span>
-                        <FontAwesomeIcon icon="angle-double-up"/>
-                    </a>
+                    {LinkToBottom}
+                    {this.renderMessages()}
+                    {this.renderForm()}
+                    {LinkToTop}
                 </div>
                 {this.state.modal && this.renderModal()}
             </PrivateLayout>
         );
     }
 
-    renderMessage(m) {
+    renderMessages() {
         return (
-            <tr key={m.id}>
-                <td>
-                    <Avatar/>
-                </td>
-                <td>
-                    <div className="d-flex">
-                        <span className="text-muted small-caps">{CF.getName(m.author, true)}</span>
-                        <span className="text-muted ml-auto">{CF.fromNow(m.created)}</span> <br/>
-                    </div>
-                    <span>{m.content}</span>
-                </td>
-            </tr>
+            <TableLayout>
+                {this.state.topic.messages.map(m =>
+                    <tr key={m.id}>
+                        <td><Avatar/></td>
+                        <td>
+                            <div className="d-flex mb-2">
+                                <span className="text-muted small-caps">{CF.getName(m.author, true)}</span>
+                                <span className="text-muted ml-auto">{CF.fromNow(m.created)}</span> <br/>
+                            </div>
+                            <span>{m.content}</span>
+                        </td>
+                    </tr>
+                )}
+            </TableLayout>
+        );
+    }
+
+    renderForm() {
+        return (
+            <div className="input-group mt-2">
+                <textarea className="form-control" placeholder="Ma réponse..." value={this.state.message}
+                          onChange={e => this.setState({message: e.target.value})}/>
+                <div className="input-group-append">
+                    <button className="btn btn-info ml-auto w-100" onClick={this.send}>
+                        {this.state.loading ?
+                            <FontAwesomeIcon icon="axe" className="fa-spin mr-2"/> :
+                            <FontAwesomeIcon icon="paper-plane" className="mr-2"/>}
+                        <span className="d-none d-sm-inline">Envoyer</span>
+                    </button>
+                </div>
+            </div>
         );
     }
 
@@ -86,18 +128,26 @@ export default class Sujet extends React.Component {
         return (
             <ModalLayout title="Répondre" onClose={() => this.setState({modal: false})}>
                 <textarea className="form-control my-2" placeholder="Message"/>
-                <button className="btn btn-info w-100">Poster</button>
+                <button type="button" className="btn btn-info w-100">Poster</button>
             </ModalLayout>
         );
     }
-
-    renderAvatar(id) {
-        let style = {
-            borderRadius: "50%"
-        };
-
-        return (
-            <img src={"/images/membres/" + id + ".jpg"} alt={"User n°" + id} style={style} className="img-fluid"/>
-        );
-    }
 }
+
+const LinkToBottom = (
+    <a className="btn btn-outline-info w-100 my-2" id="PageTop" href="#PageBottom">
+        <div className="d-flex align-items-center justify-content-center">
+            <FontAwesomeIcon icon={["fal", "angle-double-down"]}/>
+            <span className="small-caps mx-2">Aller au bas de la page</span>
+            <FontAwesomeIcon icon={["fal", "angle-double-down"]}/>
+        </div>
+    </a>
+);
+
+const LinkToTop = (
+    <a className="btn btn-outline-info w-100 my-2" id="PageBottom" href="#PageTop">
+        <FontAwesomeIcon icon={["fal", "angle-double-up"]}/>
+        <span className="small-caps mx-2">Remonter en haut de la page</span>
+        <FontAwesomeIcon icon={["fal", "angle-double-up"]}/>
+    </a>
+);

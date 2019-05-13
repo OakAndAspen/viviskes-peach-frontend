@@ -4,42 +4,23 @@ import Config from "../../Config";
 import $ from "jquery";
 import {Link} from "react-router-dom";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import UnreadBadge from "../../components/UnreadBadge";
+import CF from "../../CustomFunctions";
+import Breadcrumbs from "../../components/Breadcrumbs";
 
 export default class Forum extends React.Component {
 
     state = {
-        recentTopics: [
-            {
-                read: false,
-                id: 1,
-                title: "Fleurs des bois",
-                lastPost: {
-                    by: "Benjamin W.",
-                    timestamp: "04.03.2019 20:45"
-                },
-                category: {
-                    id: 4,
-                    title: "Costume"
-                }
-            },
-            {
-                read: true,
-                id: 2,
-                title: "Fleurs des villes",
-                lastPost: {
-                    by: "Benjamin W.",
-                    timestamp: "04.03.2019 20:45"
-                },
-                category: {
-                    id: 6,
-                    title: "Habits"
-                }
-            }
-        ],
+        recentTopics: [],
         categories: [],
     };
 
     componentDidMount() {
+        this.getCategories();
+        this.getTopics();
+    }
+
+    getCategories() {
         $.ajax({
             url: Config.apiUrl + "/category",
             method: "GET",
@@ -49,19 +30,32 @@ export default class Forum extends React.Component {
         });
     }
 
+    getTopics() {
+        $.ajax({
+            url: Config.apiUrl + "/topic",
+            method: "GET",
+            success: res => {
+                res = res.sort((a,b) => b.lastMessage.created.localeCompare(a.lastMessage.created));
+                res = res.slice(0,5);
+                this.setState({recentTopics: res});
+            }
+        });
+    }
+
     render() {
         return (
             <PrivateLayout>
+                <Breadcrumbs levels={[{label: "Forum"}]}/>
                 <div className="container py-4">
                     <div className="row">
-                        <div className="col-12 col-md-6 mb-2">
-                            <h2>Sujets récents</h2>
+                        <div className="col-12 col-md-8 mb-2">
+                            <h2 className="text-center my-3">Sujets récents</h2>
                             <ul className="list-group">
                                 {this.state.recentTopics.map(t => this.renderRecentTopic(t))}
                             </ul>
                         </div>
-                        <div className="col-12 col-md-6 mb-2">
-                            <h2>Catégories</h2>
+                        <div className="col-12 col-md-4 mb-2">
+                            <h2 className="text-center my-3">Catégories</h2>
                             <div className="row">
                                 {this.state.categories.map(c => this.renderCategory(c))}
                             </div>
@@ -74,35 +68,32 @@ export default class Forum extends React.Component {
 
     renderRecentTopic(t) {
         return (
-            <Link className="list-group-item list-group-item-action" key={t.id}
+            <Link className="list-group-item list-group-item-action d-flex align-items-center" key={t.id}
                   to={"/intranet/forum/" + t.category.id + "/" + t.id}>
-                <table>
-                    <tbody>
-                    <tr>
-                        <td rowSpan="2">
-                            <span className="badge badge-info mr-4">Non lu</span>
-                        </td>
-                        <td className="small-caps">
-                            {t.category.title}
-                            <FontAwesomeIcon icon="angle-double-right" className="mx-2"/>
-                            {t.title}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>{t.lastPost.by} a posté le {t.lastPost.timestamp}</td>
-                    </tr>
-                    </tbody>
-                </table>
+                <div className="pr-3">
+                    <UnreadBadge read={t.read}/>
+                </div>
+                <div>
+                    <span className="small-caps">
+                        {t.category.label}
+                        <FontAwesomeIcon icon={["fal", "angle-double-right"]} className="mx-2"/>
+                        {t.title}
+                    </span>
+                    <span className="d-block">
+                    {CF.getName(t.lastMessage.author, true)} a posté {CF.fromNow(t.lastMessage.created)}
+                    </span>
+                </div>
             </Link>
         );
     }
 
     renderCategory(c) {
         return (
-            <div className="col-6 col-md-4 pb-2" key={c.id}>
-                <Link type="button" className="btn btn-light w-100" to={"/intranet/forum/" + c.id}>
-                    {!c.read && <FontAwesomeIcon icon={["fas", "dot-circle"]} className="text-info mr-2"/>}
-                    {c.label}
+            <div className="col-6 pb-2" key={c.id}>
+                <Link type="button" to={"/intranet/forum/" + c.id}
+                      className="btn btn-light w-100 d-flex align-items-center justify-content-center">
+                    {!c.read && <span className="mr-2"><UnreadBadge read={c.read}/></span>}
+                    <span className="display-4 small-caps">{c.label}</span>
                 </Link>
             </div>
         );

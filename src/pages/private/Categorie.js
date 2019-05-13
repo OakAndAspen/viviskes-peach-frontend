@@ -6,28 +6,65 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import PrivateLayout from "../../layouts/PrivateLayout";
 import ModalLayout from "../../layouts/ModalLayout";
 import Breadcrumbs from "../../components/Breadcrumbs";
+import UnreadBadge from "../../components/UnreadBadge";
+import Loader from "../../components/Loader";
+import CF from "../../CustomFunctions";
 
 export default class Categorie extends React.Component {
 
     state = {
         modal: false,
-        category: {
-            topics: []
-        }
+        category: null,
+        title: "",
+        message: ""
     };
 
+    constructor(props) {
+        super(props);
+        this.send = this.send.bind(this);
+    }
+
     componentDidMount() {
-        let id = this.props.match.params.category;
+        this.getCategory();
+    }
+
+    getCategory() {
         $.ajax({
-            url: Config.apiUrl + "/category/" + id,
+            url: Config.apiUrl + "/category/" + this.props.match.params.category,
             method: "GET",
             success: res => {
+                res.topics = res.topics.sort((a, b) => b.lastMessage.created.localeCompare(a.lastMessage.created));
                 this.setState({category: res});
             }
         });
     }
 
+    send() {
+        if (!this.state.title || !this.state.message) return null;
+        let data = {
+            category: this.state.category.id,
+            title: this.state.title,
+            message: this.state.message
+        };
+
+        $.ajax({
+            url: Config.apiUrl + "/topic",
+            method: "POST",
+            data: data,
+            success: res => {
+                this.getCategory();
+                this.setState({
+                    modal: false,
+                    title: "",
+                    message: ""
+                });
+            }
+        });
+    }
+
     render() {
+        if (!this.state.category) return <Loader/>;
+
         let levels = [
             {label: "Forum", url: "/intranet/forum"},
             {label: this.state.category.label}
@@ -58,33 +95,28 @@ export default class Categorie extends React.Component {
 
     renderTopic(t) {
         return (
-            <Link className="list-group-item list-group-item-action" key={t.id}
-                  to={"/intranet/forum/" + t.category.id + "/" + t.id}>
-                <table>
-                    <tbody>
-                    <tr>
-                        <td rowSpan="2">
-                            <span className="badge badge-info mr-4">Non lu</span>
-                        </td>
-                        <td className="small-caps">
-                            {t.title}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Benjamin W. a posté il y a 6 heures</td>
-                    </tr>
-                    </tbody>
-                </table>
+            <Link className="list-group-item list-group-item-action d-flex align-items-center justify-content-start"
+                  to={"/intranet/forum/" + t.category.id + "/" + t.id} key={t.id}>
+                <div className="pr-3"><UnreadBadge read={t.read}/></div>
+                <div>
+                    <span className="d-block small-caps">{t.title}</span>
+                    <span className="d-block">
+                        {CF.getName(t.lastMessage.author, true) + " a posté " + CF.fromNow(t.lastMessage.created)}
+                    </span>
+                </div>
             </Link>
         );
     }
 
     renderModal() {
         return (
-            <ModalLayout title="Créer un sujet" onClose={() => this.setState({modal: false})}>
-                <input type="text" className="form-control my-2" placeholder="Titre du sujet"/>
-                <textarea className="form-control my-2" placeholder="Premier message"/>
-                <button className="btn btn-info w-100">Poster</button>
+            <ModalLayout title="Créer un sujet"
+                         onClose={() => this.setState({modal: false, title: "", message: ""})}>
+                <input type="text" className="form-control my-2" placeholder="Titre du sujet"
+                       value={this.state.title} onChange={e => this.setState({title: e.target.value})}/>
+                <textarea className="form-control my-2" placeholder="Premier message"
+                          value={this.state.message} onChange={e => this.setState({message: e.target.value})}/>
+                <button type="button" className="btn btn-info w-100" onClick={this.send}>Poster</button>
             </ModalLayout>
         );
     }
