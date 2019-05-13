@@ -7,7 +7,6 @@ import TableLayout from "../../layouts/TableLayout";
 import CF from "../../CustomFunctions";
 import UnreadBadge from "../../components/UnreadBadge";
 import Breadcrumbs from "../../components/Breadcrumbs";
-import ParticipationBadge from "../../components/ParticipationBadge";
 
 export default class Calendrier extends React.Component {
 

@@ -1,13 +1,35 @@
 import React from 'react';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import Config from "../Config";
 
 export default class ParticipationBadge extends React.Component {
-    render() {
-        let part = Config.participation[this.props.status];
+    participation = {
+        o: {
+            label: "J'organise",
+            icon: "plus",
+            color: "primary"
+        },
+        d: {
+            label: "Je participe",
+            icon: "check",
+            color: "success"
+        },
+        n: {
+            label: "Je ne participe pas",
+            icon: "times",
+            color: "danger"
+        },
+        t: {
+            label: "Participation indéfinie",
+            icon: "question",
+            color: "secondary"
+        }
+    };
 
-        return <FontAwesomeIcon icon={["fal", part.icon]}
+    render() {
+        let part = this.participation[this.props.status];
+
+        return <FontAwesomeIcon icon={["fas", part.icon]}
                                 title={part.label}
-                                className="text-info display-4"/>;
+                                className={"display-4 text-" + part.color}/>;
     }
 }

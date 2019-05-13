@@ -40,7 +40,9 @@ moment.updateLocale('en', {
         MM: "%d mois",
         y:  "une année",
         yy: "%d ans"
-    }
+    },
+    weekdays : ["Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"],
+    weekdaysShort : ["Dim", "Lun", "Mar", "Mer", "Jeu", "Ven", "Sam"]
 });
 
 ReactDOM.render(<App />, document.getElementById('root'));

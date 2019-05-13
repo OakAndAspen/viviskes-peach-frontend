@@ -7,23 +7,5 @@ export default {
         p: "Privé",
         u: "Public",
         i: "Interne"
-    },
-    participation: {
-        o: {
-            label: "J'organise",
-            icon: "calendar-plus"
-        },
-        d: {
-            label: "Je participe",
-            icon: "calendar-check"
-        },
-        n: {
-            label: "Je ne participe pas",
-            icon: "calendar-times"
-        },
-        t: {
-            label: "Participation indéfinie",
-            icon: "calendar-exclamation"
-        }
     }
 };
