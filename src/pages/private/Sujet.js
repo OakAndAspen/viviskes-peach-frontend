@@ -9,6 +9,7 @@ import TableLayout from "../../layouts/TableLayout";
 import Breadcrumbs from "../../components/Breadcrumbs";
 import Avatar from "../../components/Avatar";
 import Loader from "../../components/Loader";
+import PinnedBadge from "../../components/PinnedBadge";
 
 export default class Sujet extends React.Component {
 
@@ -22,6 +23,7 @@ export default class Sujet extends React.Component {
     constructor(props) {
         super(props);
         this.send = this.send.bind(this);
+        this.togglePinned = this.togglePinned.bind(this);
     }
 
     componentDidMount() {
@@ -59,6 +61,20 @@ export default class Sujet extends React.Component {
         });
     }
 
+    togglePinned() {
+        let topic = this.state.topic;
+        topic.pinned = !topic.pinned;
+        this.setState({topic: topic});
+
+        $.ajax({
+            url: Config.apiUrl + "/topic/" + this.state.topic.id,
+            method: "PATCH",
+            data: {
+                pinned: this.state.topic.pinned
+            }
+        });
+    }
+
     render() {
         if (!this.state.topic) return <Loader/>;
         let topic = this.state.topic;
@@ -72,11 +88,11 @@ export default class Sujet extends React.Component {
             <PrivateLayout>
                 <Breadcrumbs levels={levels}/>
                 <div className="container py-4" id="Sujet">
-                    <div className="d-flex justify-content-between mb-2">
+                    <div className="d-flex justify-content-start align-items-top mb-2">
+                        <span onClick={this.togglePinned} className="mr-3 display-3 pointer">
+                            <PinnedBadge pinned={topic.pinned}/>
+                        </span>
                         <h3>{topic.title}</h3>
-                        <div>
-
-                        </div>
                     </div>
                     {LinkToBottom}
                     {this.renderMessages()}

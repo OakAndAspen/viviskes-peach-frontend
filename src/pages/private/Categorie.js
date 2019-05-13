@@ -9,6 +9,7 @@ import Breadcrumbs from "../../components/Breadcrumbs";
 import UnreadBadge from "../../components/UnreadBadge";
 import Loader from "../../components/Loader";
 import CF from "../../CustomFunctions";
+import PinnedBadge from "../../components/PinnedBadge";
 
 export default class Categorie extends React.Component {
 
@@ -34,6 +35,7 @@ export default class Categorie extends React.Component {
             method: "GET",
             success: res => {
                 res.topics = res.topics.sort((a, b) => b.lastMessage.created.localeCompare(a.lastMessage.created));
+                res.topics = res.topics.sort((a, b) => b.pinned - a.pinned);
                 this.setState({category: res});
             }
         });
@@ -98,6 +100,7 @@ export default class Categorie extends React.Component {
             <Link className="list-group-item list-group-item-action d-flex align-items-center justify-content-start"
                   to={"/intranet/forum/" + t.category.id + "/" + t.id} key={t.id}>
                 <div className="pr-3"><UnreadBadge read={t.read}/></div>
+                <div className="pr-3"><PinnedBadge pinned={t.pinned}/></div>
                 <div>
                     <span className="d-block small-caps">{t.title}</span>
                     <span className="d-block">

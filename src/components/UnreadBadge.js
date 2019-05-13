@@ -3,10 +3,10 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
 export default class UnreadBadge extends React.Component {
     render() {
-        if (this.props.read) return <FontAwesomeIcon icon={["fal", "circle"]}
-                                                     className="text-light display-4"
-                                                     title="Y'a du nouveau!"/>;
-        return <FontAwesomeIcon icon={["fal", "exclamation-circle"]}
+        let style = this.props.read ? "fal" : "fas";
+        let title = !this.props.read && "Y'a du nouveau!";
+
+        return <FontAwesomeIcon icon={[style, "circle"]} title={title}
                                 className="text-info display-4"/>;
     }
 }
