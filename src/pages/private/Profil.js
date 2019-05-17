@@ -19,7 +19,8 @@ export default class Profil extends React.Component {
         password1: "",
         password2: "",
         alert: null,
-        alertType: "danger"
+        alertType: "danger",
+        filename: "Choisis une image..."
     };
 
     constructor(props) {
@@ -55,10 +56,66 @@ export default class Profil extends React.Component {
         });
     }
 
+    changeImage(e) {
+        let files = e.target.files;
+        if (!files.length) return null;
+        let file = files[0];
+        this.setState({filename: file.name});
+
+        let formData = new FormData();
+        formData.append("file", file);
+        formData.append("name", "my-super-name-2.jpg");
+        $.ajax({
+            url: Config.apiUrl + "/files",
+            method: "POST",
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: res => {
+                console.log(res);
+            }
+        });
+    }
+
     updateField(field, value) {
         let user = this.state.user;
         user[field] = value;
         this.setState({user: user});
+    }
+
+    checkErrors() {
+        if (this.state.password1 || this.state.password2) {
+            if (this.state.password1 !== this.state.password2) {
+                this.setState({alert: this.messages.pwsDontMatch, alertType: "danger"});
+                return false;
+            }
+        }
+
+        let u = this.state.user;
+        if (!u.firstName || !u.lastName || !u.email) {
+            this.setState({alert: this.messages.emptyField, alertType: "danger"});
+            return false;
+        }
+
+        return true;
+    }
+
+    send() {
+        if (!this.checkErrors()) return null;
+        let data = this.state.user;
+        if (this.state.password1) data.password = this.state.password1;
+
+        $.ajax({
+            url: Config.apiUrl + "/users/profile",
+            method: "PATCH",
+            data: data,
+            success: res => {
+                this.setState({
+                    alert: this.messages.success,
+                    alertType: "success",
+                });
+            }
+        });
     }
 
     render() {
@@ -119,41 +176,6 @@ export default class Profil extends React.Component {
                 </div>
             </div>
         );
-    }
-
-    checkErrors() {
-        if (this.state.password1 || this.state.password2) {
-            if (this.state.password1 !== this.state.password2) {
-                this.setState({alert: this.messages.pwsDontMatch, alertType: "danger"});
-                return false;
-            }
-        }
-
-        let u = this.state.user;
-        if (!u.firstName || !u.lastName || !u.email) {
-            this.setState({alert: this.messages.emptyField, alertType: "danger"});
-            return false;
-        }
-
-        return true;
-    }
-
-    send() {
-        if (!this.checkErrors()) return null;
-        let data = this.state.user;
-        if (this.state.password1) data.password = this.state.password1;
-
-        $.ajax({
-            url: Config.apiUrl + "/users/profile",
-            method: "PATCH",
-            data: data,
-            success: res => {
-                this.setState({
-                    alert: this.messages.success,
-                    alertType: "success",
-                });
-            }
-        });
     }
 
     renderMember(u) {
@@ -248,14 +270,18 @@ export default class Profil extends React.Component {
             <div className="row">
                 <div className="col-12">
                     <h2>Image de profil</h2>
-                    <div className="alert alert-warning">Attention! Cette image apparaît sur la page publique des
-                        membres.
+                    <div className="alert alert-warning">
+                        Attention! Cette image apparaît sur la page publique des membres.
                         Choisis une photo présentable en costume, pas trop pixellisée et si possible carrée.
                     </div>
-                    <div className="custom-file mb-2">
-                        <input type="file" className="custom-file-input" id="customFile"/>
-                        <label className="custom-file-label" htmlFor="customFile">Choose file</label>
-                    </div>
+                    <form method="POST" action={Config.apiUrl + "/files"}>
+                        <div className="custom-file mb-2">
+                            <input type="file" className="custom-file-input" id="customFile"
+                                   onChange={e => this.changeImage(e)}/>
+                            <label className="custom-file-label" htmlFor="customFile">{this.state.filename}</label>
+                        </div>
+                        <button type="submit" className="btn btn-dark w-100 mb-2">Send</button>
+                    </form>
                     <img src="/images/membres/1.jpg" alt="Avatar" className="img-fluid rounded"/>
                 </div>
             </div>
