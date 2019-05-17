@@ -4,6 +4,8 @@ import {Redirect} from "react-router-dom";
 import $ from 'jquery';
 import PublicLayout from "../../layouts/PublicLayout";
 
+// TODO: Récupération du mot de passe
+
 export default class Login extends React.Component {
 
     constructor(props) {

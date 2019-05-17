@@ -7,6 +7,11 @@ import ModalLayout from "../../layouts/ModalLayout";
 import CKEditor from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
+// TODO: Supprimer un article (demander confirmation!)
+// TODO: Gestion des tags
+// TODO: Gestion des images
+// TODO: Validation par admin
+
 export default class Articles extends React.Component {
 
     messages = {

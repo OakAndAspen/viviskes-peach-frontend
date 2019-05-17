@@ -8,6 +8,9 @@ import CF from "../../CustomFunctions";
 import UnreadBadge from "../../components/UnreadBadge";
 import Breadcrumbs from "../../components/Breadcrumbs";
 
+// TODO: Créer un nouvel évènement
+// TODO: Description interne et publique
+
 export default class Calendrier extends React.Component {
 
     state = {

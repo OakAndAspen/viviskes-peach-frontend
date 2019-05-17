@@ -1,6 +1,8 @@
 import React from 'react';
 import PrivateLayout from "../../layouts/PrivateLayout";
 
+// TODO: Médiathèque
+
 export default class Mediatheque extends React.Component {
 
     render() {

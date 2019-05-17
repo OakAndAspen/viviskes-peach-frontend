@@ -3,6 +3,8 @@ import PrivateLayout from "../../layouts/PrivateLayout";
 import Config from "../../Config";
 import $ from "jquery";
 
+// TODO: Modifier l'image de profil
+
 export default class Profil extends React.Component {
 
     messages = {
