@@ -78,11 +78,21 @@ export default class Sujet extends React.Component {
     render() {
         if (!this.state.topic) return <Loader/>;
         let topic = this.state.topic;
-        let levels = [
-            {label: "Forum", url: "/intranet/forum"},
-            {label: topic.category.label, url: "/intranet/forum/" + topic.category.id},
-            {label: topic.title}
-        ];
+        let levels = [];
+        if(topic.category) {
+            levels = [
+                {label: "Forum", url: "/intranet/forum"},
+                {label: topic.category.label, url: "/intranet/forum/" + topic.category.id},
+                {label: topic.title}
+            ];
+        } else {
+            levels = [
+                {label: "Calendrier", url: "/intranet/calendrier"},
+                {label: topic.event.title, url: "/intranet/calendrier/" + topic.event.id},
+                {label: topic.title}
+            ];
+        }
+
 
         return (
             <PrivateLayout>

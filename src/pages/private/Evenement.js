@@ -1,26 +1,42 @@
 import React from 'react';
-import PrivateLayout from "../../layouts/PrivateLayout";
 import $ from "jquery";
 import Config from "../../Config";
 import moment from "moment";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import CF from "../../CustomFunctions";
-import Loader from "../../components/Loader";
-import Breadcrumbs from "../../components/Breadcrumbs";
+import {Link} from "react-router-dom";
+import PrivateLayout from "../../layouts/PrivateLayout";
 import TableLayout from "../../layouts/TableLayout";
 import ParticipationBadge from "../../components/ParticipationBadge";
+import UnreadBadge from "../../components/UnreadBadge";
+import PinnedBadge from "../../components/PinnedBadge";
+import TopicForm from "../../components/TopicForm";
+import Loader from "../../components/Loader";
+import Breadcrumbs from "../../components/Breadcrumbs";
 
 export default class Evenement extends React.Component {
 
     state = {
-        event: null
+        event: null,
+        modal: false
     };
 
+    constructor(props) {
+        super(props);
+        this.getEvent = this.getEvent.bind(this);
+    }
+
     componentDidMount() {
+        this.getEvent();
+    }
+
+    getEvent() {
         $.ajax({
             url: Config.apiUrl + "/calendar/" + this.props.match.params.event,
             method: "GET",
             success: res => {
+                res.topics = res.topics.sort((a, b) => b.lastMessage.created.localeCompare(a.lastMessage.created));
+                res.topics = res.topics.sort((a, b) => b.pinned - a.pinned);
                 this.setState({event: res});
             }
         });
@@ -38,17 +54,25 @@ export default class Evenement extends React.Component {
                 <Breadcrumbs levels={levels}/>
                 <div className="container py-4">
                     <div className="row">
-                        <div className="col-12 col-md-6">
+                        <div className="col-12 col-md-6 py-2">
                             {this.renderDetails(event)}
                         </div>
-                        <div className="col-12 col-md-6">
-                            <h1>Discussions</h1>
+                        <div className="col-12 col-md-6 py-2">
+                            <button className="btn btn-info w-100 mb-2" onClick={() => this.setState({modal: true})}>
+                                <FontAwesomeIcon icon={"plus"} className="mr-2"/>
+                                Nouveau sujet
+                            </button>
+                            {this.renderTopics()}
                         </div>
-                        <div className="col-12">
+                        <div className="col-12 py-2">
                             {this.renderParticipants(event)}
                         </div>
                     </div>
                 </div>
+                {this.state.modal &&
+                <TopicForm onSend={this.getEvent} event={this.state.event}
+                           onClose={() => this.setState({modal: false})}/>
+                }
             </PrivateLayout>
         );
     }
@@ -114,29 +138,50 @@ export default class Evenement extends React.Component {
 
         return (
             <div className="w-100 overflow-auto my-3">
-            <TableLayout>
-                <tr>
-                    <td/>
-                    {dates.map(d => {
-                        let date = moment(d);
-                        return (
-                            <td className="text-secondary small-caps text-center" key={d}>
-                                {date.format("ddd")} <br/>
-                                {date.format("DD.MM")}
-                            </td>
-                        );
-                    })}
-                </tr>
-                {members.map(m =>
+                <TableLayout>
                     <tr>
-                        <td>{CF.getName(m.user, true)}</td>
-                        {m.participations.map(p =>
-                            <td className="text-center"><ParticipationBadge status={p.status}/></td>
-                        )}
+                        <td/>
+                        {dates.map(d => {
+                            let date = moment(d);
+                            return (
+                                <td className="text-secondary small-caps text-center" key={d}>
+                                    {date.format("ddd")} <br/>
+                                    {date.format("DD.MM")}
+                                </td>
+                            );
+                        })}
                     </tr>
-                )}
-            </TableLayout>
+                    {members.map(m =>
+                        <tr>
+                            <td>{CF.getName(m.user, true)}</td>
+                            {m.participations.map(p =>
+                                <td className="text-center"><ParticipationBadge status={p.status}/></td>
+                            )}
+                        </tr>
+                    )}
+                </TableLayout>
             </div>
+        );
+    }
+
+    renderTopics() {
+        return (
+            <ul className="list-group">
+                {this.state.event.topics.map(t =>
+                    <Link
+                        className="list-group-item list-group-item-action d-flex align-items-center justify-content-start"
+                        to={"/intranet/forum/topic/" + t.id} key={t.id}>
+                        <div className="pr-3"><UnreadBadge read={t.read}/></div>
+                        <div className="pr-3"><PinnedBadge pinned={t.pinned}/></div>
+                        <div>
+                            <span className="d-block small-caps">{t.title}</span>
+                            <span className="d-block">
+                        {CF.getName(t.lastMessage.author, true) + " a posté " + CF.fromNow(t.lastMessage.created)}
+                            </span>
+                        </div>
+                    </Link>
+                )}
+            </ul>
         );
     }
 }

@@ -69,13 +69,13 @@ export default class Forum extends React.Component {
     renderRecentTopic(t) {
         return (
             <Link className="list-group-item list-group-item-action d-flex align-items-center" key={t.id}
-                  to={"/intranet/forum/" + t.category.id + "/" + t.id}>
+                  to={"/intranet/forum/topic/" + t.id}>
                 <div className="pr-3">
                     <UnreadBadge read={t.read}/>
                 </div>
                 <div>
                     <span className="small-caps">
-                        {t.category.label}
+                        {t.category ? t.category.label : t.event.title}
                         <FontAwesomeIcon icon={["fal", "angle-double-right"]} className="mx-2"/>
                         {t.title}
                     </span>

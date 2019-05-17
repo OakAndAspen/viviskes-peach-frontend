@@ -31,7 +31,7 @@ class App extends Component {
 
                             <PrivateRoute exact path='/intranet/forum' component={privateRoutes.Forum}/>
                             <PrivateRoute exact path='/intranet/forum/:category' component={privateRoutes.Categorie}/>
-                            <PrivateRoute exact path='/intranet/forum/:category/:topic'
+                            <PrivateRoute exact path='/intranet/forum/topic/:topic'
                                           component={privateRoutes.Sujet}/>
                             <PrivateRoute exact path='/intranet/partenaires' component={privateRoutes.Partenaires}/>
                             <PrivateRoute exact path='/intranet/calendrier' component={privateRoutes.Calendrier}/>

@@ -1,28 +1,26 @@
 import React from 'react';
-import Config from "../../Config";
 import $ from "jquery";
+import Config from "../../Config";
+import CF from "../../CustomFunctions";
 import {Link} from "react-router-dom";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import PrivateLayout from "../../layouts/PrivateLayout";
-import ModalLayout from "../../layouts/ModalLayout";
 import Breadcrumbs from "../../components/Breadcrumbs";
 import UnreadBadge from "../../components/UnreadBadge";
 import Loader from "../../components/Loader";
-import CF from "../../CustomFunctions";
 import PinnedBadge from "../../components/PinnedBadge";
+import TopicForm from "../../components/TopicForm";
 
 export default class Categorie extends React.Component {
 
     state = {
         modal: false,
-        category: null,
-        title: "",
-        message: ""
+        category: null
     };
 
     constructor(props) {
         super(props);
-        this.send = this.send.bind(this);
+        this.getCategory = this.getCategory.bind(this);
     }
 
     componentDidMount() {
@@ -37,29 +35,6 @@ export default class Categorie extends React.Component {
                 res.topics = res.topics.sort((a, b) => b.lastMessage.created.localeCompare(a.lastMessage.created));
                 res.topics = res.topics.sort((a, b) => b.pinned - a.pinned);
                 this.setState({category: res});
-            }
-        });
-    }
-
-    send() {
-        if (!this.state.title || !this.state.message) return null;
-        let data = {
-            category: this.state.category.id,
-            title: this.state.title,
-            message: this.state.message
-        };
-
-        $.ajax({
-            url: Config.apiUrl + "/topic",
-            method: "POST",
-            data: data,
-            success: res => {
-                this.getCategory();
-                this.setState({
-                    modal: false,
-                    title: "",
-                    message: ""
-                });
             }
         });
     }
@@ -90,7 +65,10 @@ export default class Categorie extends React.Component {
                         {this.state.category.topics.map(t => this.renderTopic(t))}
                     </ul>
                 </div>
-                {this.state.modal && this.renderModal()}
+                {this.state.modal &&
+                <TopicForm onSend={this.getCategory} category={this.state.category}
+                           onClose={() => this.setState({modal: false})}/>
+                }
             </PrivateLayout>
         );
     }
@@ -98,7 +76,7 @@ export default class Categorie extends React.Component {
     renderTopic(t) {
         return (
             <Link className="list-group-item list-group-item-action d-flex align-items-center justify-content-start"
-                  to={"/intranet/forum/" + t.category.id + "/" + t.id} key={t.id}>
+                  to={"/intranet/forum/topic/" + t.id} key={t.id}>
                 <div className="pr-3"><UnreadBadge read={t.read}/></div>
                 <div className="pr-3"><PinnedBadge pinned={t.pinned}/></div>
                 <div>
@@ -108,19 +86,6 @@ export default class Categorie extends React.Component {
                     </span>
                 </div>
             </Link>
-        );
-    }
-
-    renderModal() {
-        return (
-            <ModalLayout title="Créer un sujet"
-                         onClose={() => this.setState({modal: false, title: "", message: ""})}>
-                <input type="text" className="form-control my-2" placeholder="Titre du sujet"
-                       value={this.state.title} onChange={e => this.setState({title: e.target.value})}/>
-                <textarea className="form-control my-2" placeholder="Premier message"
-                          value={this.state.message} onChange={e => this.setState({message: e.target.value})}/>
-                <button type="button" className="btn btn-info w-100" onClick={this.send}>Poster</button>
-            </ModalLayout>
         );
     }
 }
