@@ -1,8 +1,29 @@
 import React from 'react';
 import Tabs from "../../components/Tabs";
 import PublicLayout from "../../layouts/PublicLayout";
+import $ from "jquery";
+import Config from "../../Config";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
 export default class Association extends React.Component {
+
+    state = {
+        members: []
+    };
+
+    componentDidMount() {
+        this.getMembers();
+    }
+
+    getMembers() {
+        $.ajax({
+            url: Config.apiUrl + "/public/members",
+            method: "GET",
+            success: res => {
+                this.setState({members: res});
+            }
+        });
+    }
 
     render() {
         let entries = [
@@ -24,16 +45,13 @@ export default class Association extends React.Component {
                 <div className="container py-4">
                     <Tabs entries={entries}/>
                     <div className="tab-content">
-                        <div className="tab-pane active" id="qui-sommes-nous"
-                             role="tabpanel" aria-labelledby="qui-sommes-nous-tab">
+                        <div className="tab-pane active" id="qui-sommes-nous">
                             {this.renderQuiSommesNous()}
                         </div>
-                        <div className="tab-pane" id="buts-objectifs"
-                             role="tabpanel" aria-labelledby="buts-objectifs-tab">
+                        <div className="tab-pane" id="buts-objectifs">
                             {this.renderButsObjectifs()}
                         </div>
-                        <div className="tab-pane" id="nos-membres"
-                             role="tabpanel" aria-labelledby="nos-membres-tab">
+                        <div className="tab-pane" id="nos-membres">
                             {this.renderNosMembres()}
                         </div>
                     </div>
@@ -46,9 +64,10 @@ export default class Association extends React.Component {
         return (
             <div className="row">
                 <div className="col-md-4">
-                    <img src="/images/divers/quiSommesNous.png" alt="Qui sommes-nous?" className="img-fluid"/>
+                    <img src="/images/divers/quiSommesNous.png" alt="Qui sommes-nous?"
+                         className="img-fluid rounded mb-3"/>
                 </div>
-                <div className="col-md-8">
+                <div className="col-md-8 text-justify">
                     <p>Viviskes est avant tout la rencontre de quelques quarante passionnés de l’Antiquité celtique
                         venant de divers horizons pour reconstituer la vie quotidienne et guerrière des Celtes de la
                         période laténienne (450-50 av. J.-C.). Ces objectifs sont atteints grâce à une approche
@@ -79,9 +98,10 @@ export default class Association extends React.Component {
         return (
             <div className="row">
                 <div className="col-md-4">
-                    <img src="/images/divers/butsObjectifs.png" alt="Nos buts et objectifs" className="img-fluid"/>
+                    <img src="/images/divers/butsObjectifs.png" alt="Nos buts et objectifs"
+                         className="img-fluid rounded mb-3"/>
                 </div>
-                <div className="col-md-8">
+                <div className="col-md-8 text-justify">
                     <p>Passionnés par l’Antiquité celte, nous cherchons à reconstituer le plus fidèlement l’équipement,
                         l’armement et le costume et les pratiques guerrières celtes. Il s’agit d’une part de développer
                         et de maintenir une exigence d’historicité de la part de nos membres et de l’autre de
@@ -108,7 +128,31 @@ export default class Association extends React.Component {
     renderNosMembres() {
         return (
             <div>
-
+                {this.state.members.map(u => {
+                    if (!u.hasPhoto) return null;
+                    return (
+                        <div className="col-6 col-md-4 col-lg-3">
+                            <div className="card h-100">
+                                <img className="card-img-top" alt={u.celticName}
+                                     src={Config.apiUrl + "/uploads/users/" + u.id + ".jpg"}/>
+                                <div className="card-body text-center">
+                                    <span className="card-title display-4">{u.celticName}</span>
+                                </div>
+                            </div>
+                        </div>
+                    );
+                })}
+                <div className="col-12 small-caps display-4 my-4">
+                    {this.state.members.map(u => {
+                        if (u.hasPhoto) return null;
+                        return (
+                            <span>
+                                <FontAwesomeIcon icon={["fal", "swords"]}/>
+                                <span className="mx-2">{u.celticName}</span>
+                            </span>
+                        );
+                    })}
+                </div>
             </div>
         );
     }
