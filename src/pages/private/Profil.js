@@ -2,6 +2,7 @@ import React from 'react';
 import PrivateLayout from "../../layouts/PrivateLayout";
 import Config from "../../Config";
 import $ from "jquery";
+import ImageUpload from "../../components/ImageUpload";
 
 // TODO: Modifier l'image de profil
 
@@ -52,27 +53,6 @@ export default class Profil extends React.Component {
             success: res => {
                 res = res.sort((a, b) => a.firstName - b.firstName);
                 this.setState({allUsers: res});
-            }
-        });
-    }
-
-    changeImage(e) {
-        let files = e.target.files;
-        if (!files.length) return null;
-        let file = files[0];
-        this.setState({filename: file.name});
-
-        let formData = new FormData();
-        formData.append("file", file);
-        formData.append("name", "my-super-name-2.jpg");
-        $.ajax({
-            url: Config.apiUrl + "/files",
-            method: "POST",
-            data: formData,
-            processData: false,
-            contentType: false,
-            success: res => {
-                console.log(res);
             }
         });
     }
@@ -274,15 +254,10 @@ export default class Profil extends React.Component {
                         Attention! Cette image apparaît sur la page publique des membres.
                         Choisis une photo présentable en costume, pas trop pixellisée et si possible carrée.
                     </div>
-                    <form method="POST" action={Config.apiUrl + "/files"}>
-                        <div className="custom-file mb-2">
-                            <input type="file" className="custom-file-input" id="customFile"
-                                   onChange={e => this.changeImage(e)}/>
-                            <label className="custom-file-label" htmlFor="customFile">{this.state.filename}</label>
-                        </div>
-                        <button type="submit" className="btn btn-dark w-100 mb-2">Send</button>
-                    </form>
-                    <img src="/images/membres/1.jpg" alt="Avatar" className="img-fluid rounded"/>
+                </div>
+                <div className="col-12 py-2">
+                    <ImageUpload to={Config.apiUrl+"/users/image"} method="POST"
+                                default={Config.apiUrl+"/uploads/users/"+this.state.user.id+".jpg"}/>
                 </div>
             </div>
         );
