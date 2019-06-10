@@ -3,7 +3,7 @@ import PrivateLayout from "../../layouts/PrivateLayout";
 import Config from "../../Config";
 import $ from "jquery";
 import {Link} from "react-router-dom";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {FontAwesomeIcon as FAI} from "@fortawesome/react-fontawesome";
 import UnreadBadge from "../../components/UnreadBadge";
 import CF from "../../CustomFunctions";
 import Breadcrumbs from "../../components/Breadcrumbs";
@@ -78,7 +78,7 @@ export default class Forum extends React.Component {
                 <div>
                     <span className="small-caps">
                         {t.category ? t.category.label : t.event.title}
-                        <FontAwesomeIcon icon={["fal", "angle-double-right"]} className="mx-2"/>
+                        <FAI icon={["fal", "angle-double-right"]} className="mx-2"/>
                         {t.title}
                     </span>
                     <span className="d-block">

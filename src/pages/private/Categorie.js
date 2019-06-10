@@ -3,7 +3,7 @@ import $ from "jquery";
 import Config from "../../Config";
 import CF from "../../CustomFunctions";
 import {Link} from "react-router-dom";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {FontAwesomeIcon as FAI} from "@fortawesome/react-fontawesome";
 import PrivateLayout from "../../layouts/PrivateLayout";
 import Breadcrumbs from "../../components/Breadcrumbs";
 import UnreadBadge from "../../components/UnreadBadge";
@@ -56,7 +56,7 @@ export default class Categorie extends React.Component {
                         <div>
                             <button className="btn btn-info ml-auto"
                                     onClick={() => this.setState({modal: true})}>
-                                <FontAwesomeIcon icon="plus" className="mr-2"/>
+                                <FAI icon="plus" className="mr-2"/>
                                 Créer un nouveau sujet
                             </button>
                         </div>

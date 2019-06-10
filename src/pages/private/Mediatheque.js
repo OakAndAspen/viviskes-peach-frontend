@@ -95,7 +95,6 @@ export default class Mediatheque extends React.Component {
         this.setState({filename: file.name});
     }
 
-
     onPreview(document) {
 
     }

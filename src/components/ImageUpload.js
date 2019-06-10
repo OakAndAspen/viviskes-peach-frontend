@@ -1,7 +1,7 @@
 import React from 'react';
 import $ from "jquery";
 import Config from "../Config";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {FontAwesomeIcon as FAI} from "@fortawesome/react-fontawesome";
 import Loader from "./Loader";
 
 
@@ -44,7 +44,7 @@ export default class ImageUpload extends React.Component {
             <div className="p-3 border-secondary rounded" style={style}>
                 <div className="text-center mb-2">
                     {!this.state.fileUrl ? <Loader/> : (this.state.fileUrl === "default" ?
-                            <FontAwesomeIcon icon={["fal", "image"]} className="display-1"/> :
+                            <FAI icon={["fal", "image"]} className="display-1"/> :
                             <img src={this.state.fileUrl} className="img-fluid rounded" alt="Loading"/>
                     )}
                 </div>

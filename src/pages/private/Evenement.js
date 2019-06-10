@@ -2,7 +2,7 @@ import React from 'react';
 import $ from "jquery";
 import Config from "../../Config";
 import moment from "moment";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {FontAwesomeIcon as FAI} from "@fortawesome/react-fontawesome";
 import CF from "../../CustomFunctions";
 import {Link} from "react-router-dom";
 import PrivateLayout from "../../layouts/PrivateLayout";
@@ -64,7 +64,7 @@ export default class Evenement extends React.Component {
                         </div>
                         <div className="col-12 col-md-6 py-2">
                             <button className="btn btn-info w-100 mb-2" onClick={() => this.setState({modal: true})}>
-                                <FontAwesomeIcon icon={"plus"} className="mr-2"/>
+                                <FAI icon={"plus"} className="mr-2"/>
                                 Nouveau sujet
                             </button>
                             {this.renderTopics()}
@@ -92,7 +92,7 @@ export default class Evenement extends React.Component {
                 <ul className="list-group list-group-flush">
                     <li className="list-group-item">{this.renderDate(event)}</li>
                     <li className="list-group-item">
-                        <FontAwesomeIcon icon="eye" className="mr-2"/>
+                        <FAI icon="eye" className="mr-2"/>
                         {Config.privacy[event.privacy]}
                     </li>
                 </ul>
@@ -103,11 +103,11 @@ export default class Evenement extends React.Component {
     renderDate(event) {
         return (
             <span>
-                <FontAwesomeIcon icon={["far", "calendar-alt"]} className="mr-2"/>
+                <FAI icon={["far", "calendar-alt"]} className="mr-2"/>
                 <span>{CF.getDate(event.start)}</span>
                 {(event.end && event.end !== event.start) &&
                 <span>
-                    <FontAwesomeIcon icon="arrow-right" className="mx-2"/>
+                    <FAI icon="arrow-right" className="mx-2"/>
                     <span>{CF.getDate(event.end)}</span>
                 </span>
                 }

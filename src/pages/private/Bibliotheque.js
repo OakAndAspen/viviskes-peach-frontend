@@ -2,7 +2,7 @@ import React from 'react';
 import PrivateLayout from "../../layouts/PrivateLayout";
 import $ from "jquery";
 import Config from "../../Config";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {FontAwesomeIcon as FAI} from "@fortawesome/react-fontawesome";
 import ModalLayout from "../../layouts/ModalLayout";
 import Loader from "../../components/Loader";
 import CF from "../../CustomFunctions";
@@ -167,7 +167,7 @@ export default class Bibliotheque extends React.Component {
                 <div className="col-12 col-sm-6">
                     <button type="button" className="btn btn-info w-100 my-2"
                             onClick={() => this.setState({createModal: true})}>
-                        <FontAwesomeIcon icon={"plus"} className="mr-2"/>
+                        <FAI icon={"plus"} className="mr-2"/>
                         <span>Ajouter un livre</span>
                     </button>
                 </div>
@@ -181,11 +181,11 @@ export default class Bibliotheque extends React.Component {
                 {this.filterBooks().map(b =>
                     <button type="button" className="list-group-item list-group-item-action d-flex align-items-center"
                             key={b.id} onClick={() => this.showDetails(b.id)}>
-                        <FontAwesomeIcon icon={["fal", "book"]}
+                        <FAI icon={["fal", "book"]}
                                          title={this.isLoaned(b) ? "Emprunté" : "Disponible"}
                                          className={"text-" + (this.isLoaned(b) ? "warning" : "success")}/>
                         <span className="mx-3">{b.name}</span>
-                        <FontAwesomeIcon icon={["fal", "info-square"]} className="ml-auto text-info"
+                        <FAI icon={["fal", "info-square"]} className="ml-auto text-info"
                                          title={"Voir le détail des emprunts"}/>
                     </button>
                 )}
@@ -220,7 +220,7 @@ export default class Bibliotheque extends React.Component {
                             <td>{CF.getDate(l.start)}</td>
                             <td>{CF.getDate(l.end) ||
                             <button className="btn btn-info" onClick={() => this.sendLoan(l.user.id, book.id)}>
-                                <FontAwesomeIcon icon={["far", "check"]}/>
+                                <FAI icon={["far", "check"]}/>
                                 <span className="ml-1">Rendu</span>
                             </button>
                             }</td>

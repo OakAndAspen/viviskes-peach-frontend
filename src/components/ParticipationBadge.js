@@ -1,5 +1,5 @@
 import React from 'react';
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {FontAwesomeIcon as FAI} from "@fortawesome/react-fontawesome";
 
 export default class ParticipationBadge extends React.Component {
     participation = {
@@ -28,7 +28,7 @@ export default class ParticipationBadge extends React.Component {
     render() {
         let part = this.participation[this.props.status];
 
-        return <FontAwesomeIcon icon={["fas", part.icon]}
+        return <FAI icon={["fas", part.icon]}
                                 title={part.label}
                                 className={"display-4 text-" + part.color}/>;
     }

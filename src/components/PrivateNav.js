@@ -1,7 +1,7 @@
 import React from 'react';
 import "./Nav.css";
 import {Link} from 'react-router-dom';
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
+import {FontAwesomeIcon as FAI} from '@fortawesome/react-fontawesome'
 
 export default class PrivateNav extends React.Component {
 
@@ -87,7 +87,7 @@ export default class PrivateNav extends React.Component {
                                         <li className="nav-item small-caps" key={entry.url}>
                                             <Link className={"nav-link" + active} to={entry.url} title={entry.title}>
                                                 <div style={iconStyle}>
-                                                    <FontAwesomeIcon icon={[entry.style, entry.icon]}/>
+                                                    <FAI icon={[entry.style, entry.icon]}/>
                                                 </div>
                                                 <span className="ml-3 d-sm-none">{entry.title}</span>
                                             </Link>

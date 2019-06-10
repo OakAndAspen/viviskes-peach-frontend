@@ -3,7 +3,7 @@ import PrivateLayout from "../../layouts/PrivateLayout";
 import TableLayout from "../../layouts/TableLayout";
 import Config from "../../Config";
 import $ from "jquery";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {FontAwesomeIcon as FAI} from "@fortawesome/react-fontawesome";
 import ModalLayout from "../../layouts/ModalLayout";
 
 export default class Partenaires extends React.Component {
@@ -107,7 +107,7 @@ export default class Partenaires extends React.Component {
                         <div className="ml-auto">
                             <button type="button" className="btn btn-info"
                                     onClick={() => this.setState({modal: true})}>
-                                <FontAwesomeIcon icon="plus"/>
+                                <FAI icon="plus"/>
                                 <span className="ml-2">Nouveau partenaire</span>
                             </button>
                         </div>
@@ -127,13 +127,13 @@ export default class Partenaires extends React.Component {
                         <td>{p.label}</td>
                         <td><a href={"https://" + p.url}>{p.url}</a></td>
                         <td>
-                            <FontAwesomeIcon icon="pencil-alt" className="pointer text-info"
+                            <FAI icon="pencil-alt" className="pointer text-info"
                                              onClick={() => this.setState({modal: true, currentPartner: p})}/>
                         </td>
                         <td>
                             {(this.state.loading === p.id) ?
-                                <FontAwesomeIcon icon="spinner" className="pointer text-danger fa-spin"/> :
-                                <FontAwesomeIcon icon={"trash-alt"} className="pointer text-danger"
+                                <FAI icon="spinner" className="pointer text-danger fa-spin"/> :
+                                <FAI icon={"trash-alt"} className="pointer text-danger"
                                                  onClick={() => this.delete(p.id)}/>
                             }
                         </td>

@@ -2,7 +2,7 @@ import React from 'react';
 import PrivateLayout from "../../layouts/PrivateLayout";
 import $ from "jquery";
 import Config from "../../Config";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {FontAwesomeIcon as FAI} from "@fortawesome/react-fontawesome";
 import ModalLayout from "../../layouts/ModalLayout";
 import CKEditor from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
@@ -141,7 +141,7 @@ export default class Articles extends React.Component {
                 <div className="col-12 col-sm-6">
                     <button type="button" className="btn btn-info w-100 my-2"
                             onClick={() => this.setState({modal: true})}>
-                        <FontAwesomeIcon icon={"pen-fancy"} className="mr-2"/>
+                        <FAI icon={"pen-fancy"} className="mr-2"/>
                         <span>Nouvel article</span>
                     </button>
                 </div>
@@ -155,10 +155,10 @@ export default class Articles extends React.Component {
                 {this.filterArticles().map(a =>
                     <button type="button" className="list-group-item list-group-item-action d-flex" key={a.id}
                             onClick={() => this.showDetails(a.id)}>
-                        <span><FontAwesomeIcon icon={["fal", "feather-alt"]}/></span>
+                        <span><FAI icon={["fal", "feather-alt"]}/></span>
                         <span className="mx-3">{a.title}</span>
                         <span className="ml-auto text-info" title="Modifier l'article">
-                            <FontAwesomeIcon icon={["fal", "pen"]}/>
+                            <FAI icon={["fal", "pen"]}/>
                         </span>
                     </button>
                 )}

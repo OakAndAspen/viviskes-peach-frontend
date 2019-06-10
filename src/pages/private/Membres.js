@@ -2,7 +2,7 @@ import React from 'react';
 import PrivateLayout from "../../layouts/PrivateLayout";
 import $ from "jquery";
 import Config from "../../Config";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {FontAwesomeIcon as FAI} from "@fortawesome/react-fontawesome";
 import ModalLayout from "../../layouts/ModalLayout";
 
 // TODO: Archiver un membre (seulement admin)
@@ -145,7 +145,7 @@ export default class Membres extends React.Component {
                 <div className="col-12 col-sm-6">
                     <button type="button" className="btn btn-info w-100 my-2"
                             onClick={() => this.setState({createModal: true})}>
-                        <FontAwesomeIcon icon={"plus"} className="mr-2"/>
+                        <FAI icon={"plus"} className="mr-2"/>
                         <span>Nouveau membre</span>
                     </button>
                 </div>
@@ -159,10 +159,10 @@ export default class Membres extends React.Component {
                 {this.filterUsers().map(u =>
                     <button type="button" className="list-group-item list-group-item-action d-flex" key={u.id}
                             onClick={() => this.showDetails(u.id)}>
-                        <span><FontAwesomeIcon icon={["fal", "user-circle"]}/></span>
+                        <span><FAI icon={["fal", "user-circle"]}/></span>
                         <span className="mx-3">{this.getFullName(u)}</span>
                         <span className="ml-auto text-info" title={"Plus d'informations sur " + u.firstName}>
-                            <FontAwesomeIcon icon={["fal", "info-square"]}/>
+                            <FAI icon={["fal", "info-square"]}/>
                         </span>
                     </button>
                 )}
@@ -175,7 +175,7 @@ export default class Membres extends React.Component {
 
         if (!this.state.user) return (
             <ModalLayout title="Chargement..." onClose={() => this.setState({detailsModal: false, user: null})}>
-                <h1 className="text-center"><FontAwesomeIcon icon={["fal", "axe"]} className="fa-spin"/></h1>
+                <h1 className="text-center"><FAI icon={["fal", "axe"]} className="fa-spin"/></h1>
             </ModalLayout>
         );
 

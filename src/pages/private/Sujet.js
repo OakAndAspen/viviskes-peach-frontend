@@ -1,6 +1,6 @@
 import React from 'react';
 import $ from "jquery";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {FontAwesomeIcon as FAI} from "@fortawesome/react-fontawesome";
 import CF from "../../CustomFunctions";
 import Config from "../../Config";
 import PrivateLayout from "../../layouts/PrivateLayout";
@@ -146,8 +146,8 @@ export default class Sujet extends React.Component {
                 <div className="input-group-append">
                     <button className="btn btn-info ml-auto w-100" onClick={this.send}>
                         {this.state.loading ?
-                            <FontAwesomeIcon icon="axe" className="fa-spin mr-2"/> :
-                            <FontAwesomeIcon icon="paper-plane" className="mr-2"/>}
+                            <FAI icon="axe" className="fa-spin mr-2"/> :
+                            <FAI icon="paper-plane" className="mr-2"/>}
                         <span className="d-none d-sm-inline">Envoyer</span>
                     </button>
                 </div>
@@ -168,17 +168,17 @@ export default class Sujet extends React.Component {
 const LinkToBottom = (
     <a className="btn btn-outline-info w-100 my-2" id="PageTop" href="#PageBottom">
         <div className="d-flex align-items-center justify-content-center">
-            <FontAwesomeIcon icon={["fal", "angle-double-down"]}/>
+            <FAI icon={["fal", "angle-double-down"]}/>
             <span className="small-caps mx-2">Aller au bas de la page</span>
-            <FontAwesomeIcon icon={["fal", "angle-double-down"]}/>
+            <FAI icon={["fal", "angle-double-down"]}/>
         </div>
     </a>
 );
 
 const LinkToTop = (
     <a className="btn btn-outline-info w-100 my-2" id="PageBottom" href="#PageTop">
-        <FontAwesomeIcon icon={["fal", "angle-double-up"]}/>
+        <FAI icon={["fal", "angle-double-up"]}/>
         <span className="small-caps mx-2">Remonter en haut de la page</span>
-        <FontAwesomeIcon icon={["fal", "angle-double-up"]}/>
+        <FAI icon={["fal", "angle-double-up"]}/>
     </a>
 );

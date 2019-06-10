@@ -1,5 +1,5 @@
 import React from 'react';
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome/index";
+import {FontAwesomeIcon as FAI} from "@fortawesome/react-fontawesome/index";
 
 export default class ModalLayout extends React.Component {
 
@@ -24,7 +24,7 @@ export default class ModalLayout extends React.Component {
                                 <div className="card-body pb-0">
                                     <div className="d-flex justify-content-between">
                                         <h5 className="card-title">{this.props.title}</h5>
-                                        <FontAwesomeIcon icon="times" className="pointer" onClick={this.props.onClose}/>
+                                        <FAI icon="times" className="pointer" onClick={this.props.onClose}/>
                                     </div>
                                 </div>
                                 <div className="card-body pt-0">

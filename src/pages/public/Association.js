@@ -3,7 +3,7 @@ import Tabs from "../../components/Tabs";
 import PublicLayout from "../../layouts/PublicLayout";
 import $ from "jquery";
 import Config from "../../Config";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {FontAwesomeIcon as FAI} from "@fortawesome/react-fontawesome";
 
 export default class Association extends React.Component {
 
@@ -147,7 +147,7 @@ export default class Association extends React.Component {
                         if (u.hasPhoto) return null;
                         return (
                             <span>
-                                <FontAwesomeIcon icon={["fal", "swords"]}/>
+                                <FAI icon={["fal", "swords"]}/>
                                 <span className="mx-2">{u.celticName}</span>
                             </span>
                         );

@@ -2,7 +2,7 @@ import React from 'react';
 import PublicLayout from "../../layouts/PublicLayout";
 import Config from "../../Config";
 import $ from "jquery";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {FontAwesomeIcon as FAI} from "@fortawesome/react-fontawesome";
 import CF from "../../CustomFunctions";
 
 export default class Accueil extends React.Component {
@@ -79,20 +79,20 @@ export default class Accueil extends React.Component {
                     <button className="list-group-item list-group-item-action" key={e.id}
                             onClick={() => this.setState({selectedEvent: e.id})}>
                         <div className="d-flex align-items-center ">
-                            <FontAwesomeIcon icon={["far", "calendar-alt"]} className="text-secondary display-3 mr-4"/>
+                            <FAI icon={["far", "calendar-alt"]} className="text-secondary display-3 mr-4"/>
                             <div>
                                 <h4 className="small-caps">{e.title}</h4>
                                 <span className="small-caps text-muted">
-                                <FontAwesomeIcon icon={"map-marker-alt"} className="mr-2"/>
+                                <FAI icon={"map-marker-alt"} className="mr-2"/>
                                 <span className="mr-2">{e.location}</span>
-                                <FontAwesomeIcon icon={"calendar-day"} className="mr-2"/>
+                                <FAI icon={"calendar-day"} className="mr-2"/>
                                 <span className="mr-2">
                                     {CF.getDate(e.start) +
                                     (e.end ? " - " + CF.getDate(e.end) : "")}
                                 </span>
                             </span>
                             </div>
-                            <FontAwesomeIcon icon={["far", "info-circle"]} className="text-info display-3 ml-auto"
+                            <FAI icon={["far", "info-circle"]} className="text-info display-3 ml-auto"
                                              title="Plus d'infos..."/>
                         </div>
                         {this.state.selectedEvent === e.id && <div className="mt-3">{e.description}</div>}
@@ -108,12 +108,12 @@ export default class Accueil extends React.Component {
                 {this.state.partners.map(p =>
                     <li className="list-group-item" key={p.id}>
                         <div className="d-flex align-items-center">
-                            <FontAwesomeIcon icon={["far", "handshake"]} className="text-secondary"/>
+                            <FAI icon={["far", "handshake"]} className="text-secondary"/>
                             <span className="ml-3 small-caps">{p.label}</span>
                             {p.url &&
                             <a href={"http://" + p.url} className="ml-auto" title={p.url}
                                target="_blank" rel="noopener noreferrer">
-                                <FontAwesomeIcon icon={["far", "external-link"]}/>
+                                <FAI icon={["far", "external-link"]}/>
                             </a>
                             }
                         </div>

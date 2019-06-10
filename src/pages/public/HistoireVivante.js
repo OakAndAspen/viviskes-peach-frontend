@@ -1,7 +1,7 @@
 import React from 'react';
 import PublicLayout from "../../layouts/PublicLayout";
 import Config from "../../Config";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {FontAwesomeIcon as FAI} from "@fortawesome/react-fontawesome";
 import $ from "jquery";
 import Loader from "../../components/Loader";
 import CF from "../../CustomFunctions";
@@ -105,7 +105,7 @@ export default class HistoireVivante extends React.Component {
                     <button className="list-group-item list-group-item-action d-flex align-items-center"
                             onClick={() => this.props.history.push("/histoire-vivante/" + a.id)}
                             key={a.id}>
-                        <FontAwesomeIcon icon={"feather-alt"} className="text-secondary mr-4"/>
+                        <FAI icon={"feather-alt"} className="text-secondary mr-4"/>
                         <div>
                             <h5 className="m-0">{a.title}</h5>
                             <small className="small-caps text-muted">

@@ -2,7 +2,7 @@ import React from 'react';
 import PrivateLayout from "../../layouts/PrivateLayout";
 import Config from "../../Config";
 import $ from "jquery";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {FontAwesomeIcon as FAI} from "@fortawesome/react-fontawesome";
 import TableLayout from "../../layouts/TableLayout";
 import CF from "../../CustomFunctions";
 import UnreadBadge from "../../components/UnreadBadge";
@@ -71,9 +71,9 @@ export default class Calendrier extends React.Component {
                         <td>
                             <span className="small-caps">{e.title}</span><br/>
                             <span className="text-muted">
-                                        <FontAwesomeIcon icon="eye" className="mr-2"/>
+                                        <FAI icon="eye" className="mr-2"/>
                                 {Config.privacy[e.privacy]}
-                                <FontAwesomeIcon icon="calendar" className="mx-2"/>
+                                <FAI icon="calendar" className="mx-2"/>
                                 {CF.getDate(e.start)} ({CF.fromNow(e.start)})
                                     </span>
                         </td>
