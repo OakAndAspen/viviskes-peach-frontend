@@ -40,6 +40,7 @@ class App extends Component {
                             <PrivateRoute exact path='/intranet/articles' component={privateRoutes.Articles}/>
                             <PrivateRoute exact path='/intranet/bibliotheque' component={privateRoutes.Bibliotheque}/>
                             <PrivateRoute exact path='/intranet/mediatheque' component={privateRoutes.Mediatheque}/>
+                            <PrivateRoute exact path='/intranet/mediatheque/:folder' component={privateRoutes.Mediatheque}/>
                             <PrivateRoute exact path='/intranet/profil' component={privateRoutes.Profil}/>
                         </Switch>
                     </section>
