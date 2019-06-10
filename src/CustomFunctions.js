@@ -11,22 +11,22 @@ export default {
     },
 
     getDate(date) {
-        if(!date) return "";
+        if (!date) return "";
         return moment(date).format("DD.MM.YYYY");
     },
 
     fromNow(date) {
-        if(!date) return "";
+        if (!date) return "";
         return moment(date).fromNow();
     },
 
     toNow(date) {
-        if(!date) return "";
+        if (!date) return "";
         return moment(date).toNow();
     },
 
     isFuture(date) {
-        if(!date) return null;
+        if (!date) return null;
         return moment(date).isAfter(moment());
     },
 

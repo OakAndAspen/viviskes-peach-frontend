@@ -18,7 +18,8 @@ export default class Mediatheque extends React.Component {
         creatingFolder: false,
         renameModal: false,
         currentMedia: null,
-        currentMediaType: null
+        currentMediaType: null,
+        downloadLink: ""
     };
 
     constructor(props) {
@@ -93,6 +94,22 @@ export default class Mediatheque extends React.Component {
         if (!files.length) return null;
         let file = files[0];
         this.setState({filename: file.name});
+
+        let formData = new FormData();
+        formData.append("file", file);
+        formData.append("name", file.name);
+        formData.append("folder", this.state.folder.id);
+
+        $.ajax({
+            url: Config.apiUrl + "/documents",
+            method: "POST",
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: res => {
+                this.getFolder(this.state.folder.id);
+            }
+        });
     }
 
     onPreview(document) {
@@ -125,7 +142,17 @@ export default class Mediatheque extends React.Component {
     }
 
     onDownload(media, type) {
-
+        $.ajax({
+            url: Config.apiUrl + "/" + type + "s/download/" + media.id,
+            method: "GET",
+            success: res => {
+                this.setState({downloadLink: Config.apiUrl + "/" + res.url}, () => {
+                    console.log(this.state.downloadLink);
+                    console.log($('#DownloadLink').attr("href"));
+                    //$('#DownloadLink').click();
+                });
+            }
+        });
     }
 
     render() {
@@ -137,6 +164,7 @@ export default class Mediatheque extends React.Component {
                     {this.renderTable()}
                 </div>
                 {this.renderRenameModal()}
+                <a href={this.state.downloadLink} download id="DownloadLink" className="d-block">Download</a>
             </PrivateLayout>
         );
     }
@@ -207,12 +235,12 @@ export default class Mediatheque extends React.Component {
                     <th className="px-3 py-2 text-right">Actions</th>
                 </tr>
                 {folder.folders.map(f =>
-                    <MediaElement media={f} type="folder"
+                    <MediaElement media={f} type="folder" key={f.id}
                                   onRename={() => this.onRename(f, "folder")}
                                   onDownload={() => this.onDownload(f, "folder")}/>
                 )}
                 {folder.documents.map(d =>
-                    <MediaElement media={d} type="document"
+                    <MediaElement media={d} type="document" key={d.id}
                                   onPreview={() => this.onPreview(d)}
                                   onRename={() => this.onRename(d, "document")}
                                   onDownload={() => this.onDownload(d, "document")}/>
