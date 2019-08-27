@@ -5,8 +5,6 @@ import Config from "../../Config";
 import {FontAwesomeIcon as FAI} from "@fortawesome/react-fontawesome";
 import ModalLayout from "../../layouts/ModalLayout";
 
-// TODO: Archiver un membre (seulement admin)
-
 export default class Membres extends React.Component {
 
     messages = {

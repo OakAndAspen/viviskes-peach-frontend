@@ -8,8 +8,6 @@ import UnreadBadge from "../../components/UnreadBadge";
 import CF from "../../CustomFunctions";
 import Breadcrumbs from "../../components/Breadcrumbs";
 
-// TODO: Gestion des catégories
-
 export default class Forum extends React.Component {
 
     state = {

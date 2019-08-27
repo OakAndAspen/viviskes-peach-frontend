@@ -14,11 +14,6 @@ import TopicForm from "../../components/TopicForm";
 import Loader from "../../components/Loader";
 import Breadcrumbs from "../../components/Breadcrumbs";
 
-// TODO: Modifier l'évènement
-// TODO: Indiquer sa participation
-// TODO: Gestion de la galerie
-// TODO: Description interne et publique
-
 export default class Evenement extends React.Component {
 
     state = {

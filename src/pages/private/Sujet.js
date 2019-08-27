@@ -11,11 +11,6 @@ import Avatar from "../../components/Avatar";
 import Loader from "../../components/Loader";
 import PinnedBadge from "../../components/PinnedBadge";
 
-// TODO: Bouton "Epingler / désépingler"
-// TODO: Modification du titre
-// TODO: Editer un message
-// TODO: Mettre des images
-
 export default class Sujet extends React.Component {
 
     state = {

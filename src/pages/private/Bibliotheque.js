@@ -7,8 +7,6 @@ import ModalLayout from "../../layouts/ModalLayout";
 import Loader from "../../components/Loader";
 import CF from "../../CustomFunctions";
 
-// TODO: Modifier ou supprimer un livre
-
 export default class Bibliotheque extends React.Component {
 
     messages = {

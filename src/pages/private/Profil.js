@@ -4,9 +4,6 @@ import Config from "../../Config";
 import $ from "jquery";
 import ImageUpload from "../../components/ImageUpload";
 
-// TODO: Modifier l'image de profil
-// TODO: Combattant ou non
-
 export default class Profil extends React.Component {
 
     messages = {
