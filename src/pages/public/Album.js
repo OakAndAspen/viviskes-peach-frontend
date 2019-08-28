@@ -1,5 +1,5 @@
-import React from 'react';
-import PublicLayout from "../../layouts/PublicLayout";
+import PublicLayout from "layouts/PublicLayout";
+import React from "react";
 
 export default class Album extends React.Component {
 

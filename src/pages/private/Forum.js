@@ -1,12 +1,12 @@
-import React from 'react';
-import PrivateLayout from "../../layouts/PrivateLayout";
-import Config from "../../Config";
-import $ from "jquery";
-import {Link} from "react-router-dom";
 import {FontAwesomeIcon as FAI} from "@fortawesome/react-fontawesome";
-import UnreadBadge from "../../components/UnreadBadge";
-import CF from "../../CustomFunctions";
-import Breadcrumbs from "../../components/Breadcrumbs";
+import Breadcrumbs from "components/Breadcrumbs";
+import UnreadBadge from "components/UnreadBadge";
+import {apiUrl} from "config";
+import $ from "jquery";
+import PrivateLayout from "layouts/PrivateLayout";
+import React from "react";
+import {Link} from "react-router-dom";
+import {fromNow, getName} from "utils";
 
 export default class Forum extends React.Component {
 
@@ -22,7 +22,7 @@ export default class Forum extends React.Component {
 
     getCategories() {
         $.ajax({
-            url: Config.apiUrl + "/category",
+            url: apiUrl + "/category",
             method: "GET",
             success: res => {
                 this.setState({categories: res});
@@ -32,7 +32,7 @@ export default class Forum extends React.Component {
 
     getTopics() {
         $.ajax({
-            url: Config.apiUrl + "/topic",
+            url: apiUrl + "/topic",
             method: "GET",
             success: res => {
                 res = res.sort((a,b) => b.lastMessage.created.localeCompare(a.lastMessage.created));
@@ -80,7 +80,7 @@ export default class Forum extends React.Component {
                         {t.title}
                     </span>
                     <span className="d-block">
-                    {CF.getName(t.lastMessage.author, true)} a posté {CF.fromNow(t.lastMessage.created)}
+                    {getName(t.lastMessage.author, true)} a posté {fromNow(t.lastMessage.created)}
                     </span>
                 </div>
             </Link>

@@ -1,9 +1,9 @@
-import React from 'react';
-import Tabs from "../../components/Tabs";
-import PublicLayout from "../../layouts/PublicLayout";
-import $ from "jquery";
-import Config from "../../Config";
 import {FontAwesomeIcon as FAI} from "@fortawesome/react-fontawesome";
+import Tabs from "components/Tabs";
+import {apiUrl} from "config";
+import $ from "jquery";
+import PublicLayout from "layouts/PublicLayout";
+import React from "react";
 
 export default class Association extends React.Component {
 
@@ -17,7 +17,7 @@ export default class Association extends React.Component {
 
     getMembers() {
         $.ajax({
-            url: Config.apiUrl + "/public/members",
+            url: apiUrl + "/public/members",
             method: "GET",
             success: res => {
                 this.setState({members: res});
@@ -134,7 +134,7 @@ export default class Association extends React.Component {
                         <div className="col-6 col-md-4 col-lg-3">
                             <div className="card h-100">
                                 <img className="card-img-top" alt={u.celticName}
-                                     src={Config.apiUrl + "/uploads/users/" + u.id + ".jpg"}/>
+                                     src={apiUrl + "/uploads/users/" + u.id + ".jpg"}/>
                                 <div className="card-body text-center">
                                     <span className="card-title display-4">{u.celticName}</span>
                                 </div>

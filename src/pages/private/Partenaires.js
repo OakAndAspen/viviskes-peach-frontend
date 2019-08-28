@@ -1,10 +1,10 @@
-import React from 'react';
-import PrivateLayout from "../../layouts/PrivateLayout";
-import TableLayout from "../../layouts/TableLayout";
-import Config from "../../Config";
-import $ from "jquery";
 import {FontAwesomeIcon as FAI} from "@fortawesome/react-fontawesome";
-import ModalLayout from "../../layouts/ModalLayout";
+import {apiUrl} from "config";
+import $ from "jquery";
+import ModalLayout from "layouts/ModalLayout";
+import PrivateLayout from "layouts/PrivateLayout";
+import TableLayout from "layouts/TableLayout";
+import React from "react";
 
 export default class Partenaires extends React.Component {
 
@@ -40,7 +40,7 @@ export default class Partenaires extends React.Component {
 
     getPartners() {
         $.ajax({
-            url: Config.apiUrl + "/partners",
+            url: apiUrl + "/partners",
             method: "GET",
             success: res => {
                 this.setState({partners: res});
@@ -76,7 +76,7 @@ export default class Partenaires extends React.Component {
         let cp = this.state.currentPartner;
 
         $.ajax({
-            url: Config.apiUrl + "/partners" + (cp.id ? "/" + cp.id : ""),
+            url: apiUrl + "/partners" + (cp.id ? "/" + cp.id : ""),
             method: cp.id ? "PATCH" : "POST",
             data: cp,
             success: res => {
@@ -89,7 +89,7 @@ export default class Partenaires extends React.Component {
     delete(id) {
         this.setState({loading: id});
         $.ajax({
-            url: Config.apiUrl + "/partners/" + id,
+            url: apiUrl + "/partners/" + id,
             method: "DELETE",
             success: res => {
                 this.getPartners();

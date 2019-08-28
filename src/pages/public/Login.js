@@ -1,8 +1,8 @@
-import React from "react";
-import Config from "../../Config";
-import {Redirect} from "react-router-dom";
+import {apiUrl} from "config";
 import $ from 'jquery';
-import PublicLayout from "../../layouts/PublicLayout";
+import PublicLayout from "layouts/PublicLayout";
+import React from "react";
+import {Redirect} from "react-router-dom";
 
 export default class Login extends React.Component {
 
@@ -27,7 +27,7 @@ export default class Login extends React.Component {
 
         $.ajax({
             method: 'POST',
-            url: Config.apiUrl + '/login',
+            url: apiUrl + '/login',
             data: {email: email, password: password},
             context: this
         }).done((data) => {

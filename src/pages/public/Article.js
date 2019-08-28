@@ -1,10 +1,10 @@
-import React from 'react';
-import PublicLayout from "../../layouts/PublicLayout";
-import Config from "../../Config";
+import Breadcrumbs from "components/Breadcrumbs";
+import Loader from "components/Loader";
+import {apiUrl} from "config";
 import $ from "jquery";
-import Loader from "../../components/Loader";
-import Breadcrumbs from "../../components/Breadcrumbs";
-import CF from "../../CustomFunctions";
+import PublicLayout from "layouts/PublicLayout";
+import React from "react";
+import {getDate} from "utils";
 
 let HtmlToReactParser = require('html-to-react').Parser;
 
@@ -20,7 +20,7 @@ export default class Article extends React.Component {
 
     getArticle() {
         $.ajax({
-            url: Config.apiUrl + "/articles/" + this.props.match.params.article,
+            url: apiUrl + "/articles/" + this.props.match.params.article,
             method: "GET",
             success: res => {
                 this.setState({article: res});
@@ -53,7 +53,7 @@ export default class Article extends React.Component {
                 </div>
                 <ul className="list-group list-group-flush">
                     <li className="list-group-item text-muted small-caps">
-                        {a.author.firstName} {a.author.lastName}, {CF.getDate(a.created)}
+                        {a.author.firstName} {a.author.lastName}, {getDate(a.created)}
                     </li>
                 </ul>
                 <div className="card-body">

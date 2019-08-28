@@ -1,15 +1,15 @@
-import React from 'react';
-import $ from "jquery";
-import Config from "../../Config";
-import CF from "../../CustomFunctions";
-import {Link} from "react-router-dom";
 import {FontAwesomeIcon as FAI} from "@fortawesome/react-fontawesome";
-import PrivateLayout from "../../layouts/PrivateLayout";
-import Breadcrumbs from "../../components/Breadcrumbs";
-import UnreadBadge from "../../components/UnreadBadge";
-import Loader from "../../components/Loader";
-import PinnedBadge from "../../components/PinnedBadge";
-import TopicForm from "../../components/TopicForm";
+import Breadcrumbs from "components/Breadcrumbs";
+import Loader from "components/Loader";
+import PinnedBadge from "components/PinnedBadge";
+import TopicForm from "components/TopicForm";
+import UnreadBadge from "components/UnreadBadge";
+import {apiUrl} from "config";
+import $ from "jquery";
+import PrivateLayout from "layouts/PrivateLayout";
+import React from "react";
+import {Link} from "react-router-dom";
+import {fromNow, getName} from "utils";
 
 export default class Categorie extends React.Component {
 
@@ -29,7 +29,7 @@ export default class Categorie extends React.Component {
 
     getCategory() {
         $.ajax({
-            url: Config.apiUrl + "/category/" + this.props.match.params.category,
+            url: apiUrl + "/category/" + this.props.match.params.category,
             method: "GET",
             success: res => {
                 res.topics = res.topics.sort((a, b) => b.lastMessage.created.localeCompare(a.lastMessage.created));
@@ -82,7 +82,7 @@ export default class Categorie extends React.Component {
                 <div>
                     <span className="d-block small-caps">{t.title}</span>
                     <span className="d-block">
-                        {CF.getName(t.lastMessage.author, true) + " a posté " + CF.fromNow(t.lastMessage.created)}
+                        {getName(t.lastMessage.author, true) + " a posté " + fromNow(t.lastMessage.created)}
                     </span>
                 </div>
             </Link>

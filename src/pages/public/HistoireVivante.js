@@ -1,10 +1,10 @@
-import React from 'react';
-import PublicLayout from "../../layouts/PublicLayout";
-import Config from "../../Config";
 import {FontAwesomeIcon as FAI} from "@fortawesome/react-fontawesome";
+import Loader from "components/Loader";
+import {apiUrl} from "config";
 import $ from "jquery";
-import Loader from "../../components/Loader";
-import CF from "../../CustomFunctions";
+import PublicLayout from "layouts/PublicLayout";
+import React from "react";
+import {getDate} from "utils";
 
 export default class HistoireVivante extends React.Component {
 
@@ -21,7 +21,7 @@ export default class HistoireVivante extends React.Component {
 
     getArticles() {
         $.ajax({
-            url: Config.apiUrl + "/articles",
+            url: apiUrl + "/articles",
             method: "GET",
             success: res => {
                 res.sort((a, b) => b.created - a.created);
@@ -32,7 +32,7 @@ export default class HistoireVivante extends React.Component {
 
     getTags() {
         $.ajax({
-            url: Config.apiUrl + "/tags",
+            url: apiUrl + "/tags",
             method: "GET",
             success: res => {
                 res.sort((a, b) => a.label.localeCompare(b.label));
@@ -110,7 +110,7 @@ export default class HistoireVivante extends React.Component {
                             <h5 className="m-0">{a.title}</h5>
                             <small className="small-caps text-muted">
                                 {"Par " + a.author.firstName + " " + a.author.lastName + " | " +
-                                CF.getDate(a.created)}
+                                getDate(a.created)}
                             </small>
                         </div>
                     </button>

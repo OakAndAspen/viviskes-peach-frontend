@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import PrivateNav from "../components/PrivateNav";
 
 export default class PrivateLayout extends React.Component {

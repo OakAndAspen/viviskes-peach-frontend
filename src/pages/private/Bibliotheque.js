@@ -1,11 +1,11 @@
-import React from 'react';
-import PrivateLayout from "../../layouts/PrivateLayout";
-import $ from "jquery";
-import Config from "../../Config";
 import {FontAwesomeIcon as FAI} from "@fortawesome/react-fontawesome";
-import ModalLayout from "../../layouts/ModalLayout";
-import Loader from "../../components/Loader";
-import CF from "../../CustomFunctions";
+import Loader from "components/Loader";
+import {apiUrl} from "config";
+import $ from "jquery";
+import ModalLayout from "layouts/ModalLayout";
+import PrivateLayout from "layouts/PrivateLayout";
+import React from "react";
+import {getDate, getName} from "utils";
 
 export default class Bibliotheque extends React.Component {
 
@@ -41,7 +41,7 @@ export default class Bibliotheque extends React.Component {
 
     getAllBooks() {
         $.ajax({
-            url: Config.apiUrl + "/library",
+            url: apiUrl + "/library",
             method: "GET",
             success: res => {
                 res.sort((a, b) => a.name.localeCompare(b.name));
@@ -52,7 +52,7 @@ export default class Bibliotheque extends React.Component {
 
     getAllUsers() {
         $.ajax({
-            url: Config.apiUrl + "/users",
+            url: apiUrl + "/users",
             method: "GET",
             success: res => {
                 res.sort((a, b) => a.firstName.localeCompare(b.firstName));
@@ -72,7 +72,7 @@ export default class Bibliotheque extends React.Component {
     showDetails(id) {
         this.setState({detailsModal: true});
         $.ajax({
-            url: Config.apiUrl + "/library/" + id,
+            url: apiUrl + "/library/" + id,
             method: "GET",
             success: res => {
                 this.setState({book: res});
@@ -108,7 +108,7 @@ export default class Bibliotheque extends React.Component {
         let data = this.state.form;
 
         $.ajax({
-            url: Config.apiUrl + "/library",
+            url: apiUrl + "/library",
             method: "POST",
             data: data,
             success: res => {
@@ -121,7 +121,7 @@ export default class Bibliotheque extends React.Component {
     sendLoan(user, book) {
         if (!user || !book) return null;
         $.ajax({
-            url: Config.apiUrl + "/library/loan",
+            url: apiUrl + "/library/loan",
             method: "POST",
             data: {
                 userId: user,
@@ -214,9 +214,9 @@ export default class Bibliotheque extends React.Component {
                     </tr>
                     {book.loans.sort((a, b) => b.start - a.start).map((l, i) =>
                         <tr key={i}>
-                            <td>{CF.getName(l.user)}</td>
-                            <td>{CF.getDate(l.start)}</td>
-                            <td>{CF.getDate(l.end) ||
+                            <td>{getName(l.user)}</td>
+                            <td>{getDate(l.start)}</td>
+                            <td>{getDate(l.end) ||
                             <button className="btn btn-info" onClick={() => this.sendLoan(l.user.id, book.id)}>
                                 <FAI icon={["far", "check"]}/>
                                 <span className="ml-1">Rendu</span>
@@ -230,7 +230,7 @@ export default class Bibliotheque extends React.Component {
                             <select className="form-control" value={this.state.selectedUser}
                                     onChange={e => this.setState({selectedUser: e.target.value})}>
                                 {this.state.allUsers.map(u =>
-                                    <option value={u.id} key={u.id}>{CF.getName(u)}</option>
+                                    <option value={u.id} key={u.id}>{getName(u)}</option>
                                 )}
                             </select>
                         </td>

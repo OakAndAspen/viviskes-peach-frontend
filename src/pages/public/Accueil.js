@@ -1,9 +1,9 @@
-import React from 'react';
-import PublicLayout from "../../layouts/PublicLayout";
-import Config from "../../Config";
-import $ from "jquery";
 import {FontAwesomeIcon as FAI} from "@fortawesome/react-fontawesome";
-import CF from "../../CustomFunctions";
+import {apiUrl} from "config";
+import $ from "jquery";
+import PublicLayout from "layouts/PublicLayout";
+import React from "react";
+import {getDate, isFuture} from "utils";
 
 export default class Accueil extends React.Component {
 
@@ -20,7 +20,7 @@ export default class Accueil extends React.Component {
 
     getPartners() {
         $.ajax({
-            url: Config.apiUrl + "/partners",
+            url: apiUrl + "/partners",
             method: "GET",
             success: res => {
                 res.sort((a, b) => a.label.localeCompare(b.label));
@@ -31,11 +31,11 @@ export default class Accueil extends React.Component {
 
     getEvents() {
         $.ajax({
-            url: Config.apiUrl + "/calendar",
+            url: apiUrl + "/calendar",
             method: "GET",
             success: res => {
                 res = res
-                    .filter(e => CF.isFuture(e.start) && e.privacy === "p")
+                    .filter(e => isFuture(e.start) && e.privacy === "p")
                     .sort((a, b) => a.start.localeCompare(b.start));
                 this.setState({events: res});
             }
@@ -87,8 +87,8 @@ export default class Accueil extends React.Component {
                                 <span className="mr-2">{e.location}</span>
                                 <FAI icon={"calendar-day"} className="mr-2"/>
                                 <span className="mr-2">
-                                    {CF.getDate(e.start) +
-                                    (e.end ? " - " + CF.getDate(e.end) : "")}
+                                    {getDate(e.start) +
+                                    (e.end ? " - " + getDate(e.end) : "")}
                                 </span>
                             </span>
                             </div>

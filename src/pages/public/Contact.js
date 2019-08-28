@@ -1,6 +1,6 @@
-import React from 'react';
-import Tabs from "../../components/Tabs";
-import PublicLayout from "../../layouts/PublicLayout";
+import Tabs from "components/Tabs";
+import PublicLayout from "layouts/PublicLayout";
+import React from "react";
 
 export default class Contact extends React.Component {
 

@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import "./TableLayout.css";
 
 export default class TableLayout extends React.Component {

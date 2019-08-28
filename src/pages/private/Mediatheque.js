@@ -1,13 +1,13 @@
-import React from 'react';
-import PrivateLayout from "../../layouts/PrivateLayout";
-import $ from "jquery";
-import Config from "../../Config";
-import TableLayout from "../../layouts/TableLayout";
-import Breadcrumbs from "../../components/Breadcrumbs";
-import Loader from "../../components/Loader";
-import MediaElement from "../../components/MediaElement";
 import {FontAwesomeIcon as FAI} from "@fortawesome/react-fontawesome";
-import ModalLayout from "../../layouts/ModalLayout";
+import Breadcrumbs from "components/Breadcrumbs";
+import Loader from "components/Loader";
+import MediaElement from "components/MediaElement";
+import {apiUrl} from "config";
+import $ from "jquery";
+import ModalLayout from "layouts/ModalLayout";
+import PrivateLayout from "layouts/PrivateLayout";
+import TableLayout from "layouts/TableLayout";
+import React from "react";
 
 export default class Mediatheque extends React.Component {
 
@@ -41,7 +41,7 @@ export default class Mediatheque extends React.Component {
         this.setState({loading: true});
         if (id) {
             $.ajax({
-                url: Config.apiUrl + "/folders/" + id,
+                url: apiUrl + "/folders/" + id,
                 method: "GET",
                 success: res => {
                     res.documents.sort((a, b) => a.name.localeCompare(b.name));
@@ -51,7 +51,7 @@ export default class Mediatheque extends React.Component {
             });
         } else {
             $.ajax({
-                url: Config.apiUrl + "/folders",
+                url: apiUrl + "/folders",
                 method: "GET",
                 success: res => {
                     this.setState({
@@ -77,7 +77,7 @@ export default class Mediatheque extends React.Component {
             if (this.state.folder.id) data.parent = this.state.folder.id;
 
             $.ajax({
-                url: Config.apiUrl + "/folders",
+                url: apiUrl + "/folders",
                 method: "POST",
                 data: data,
                 success: res => {
@@ -101,7 +101,7 @@ export default class Mediatheque extends React.Component {
         formData.append("folder", this.state.folder.id);
 
         $.ajax({
-            url: Config.apiUrl + "/documents",
+            url: apiUrl + "/documents",
             method: "POST",
             data: formData,
             processData: false,
@@ -129,7 +129,7 @@ export default class Mediatheque extends React.Component {
         if (!newName) return null;
 
         $.ajax({
-            url: Config.apiUrl + "/" + this.state.currentMediaType + "s/" + this.state.currentMedia.id,
+            url: apiUrl + "/" + this.state.currentMediaType + "s/" + this.state.currentMedia.id,
             method: "PATCH",
             data: {
                 name: newName
@@ -143,10 +143,10 @@ export default class Mediatheque extends React.Component {
 
     onDownload(media, type) {
         $.ajax({
-            url: Config.apiUrl + "/" + type + "s/download/" + media.id,
+            url: apiUrl + "/" + type + "s/download/" + media.id,
             method: "GET",
             success: res => {
-                this.setState({downloadLink: Config.apiUrl + "/" + res.url}, () => {
+                this.setState({downloadLink: apiUrl + "/" + res.url}, () => {
                     console.log(this.state.downloadLink);
                     console.log($('#DownloadLink').attr("href"));
                     //$('#DownloadLink').click();

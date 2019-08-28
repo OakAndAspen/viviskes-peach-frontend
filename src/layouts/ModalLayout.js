@@ -1,5 +1,5 @@
-import React from 'react';
 import {FontAwesomeIcon as FAI} from "@fortawesome/react-fontawesome/index";
+import React from "react";
 
 export default class ModalLayout extends React.Component {
 

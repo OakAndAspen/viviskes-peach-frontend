@@ -1,7 +1,7 @@
-import React from 'react';
-import "./Nav.css";
-import {Link} from 'react-router-dom';
 import {FontAwesomeIcon as FAI} from '@fortawesome/react-fontawesome'
+import React from "react";
+import {Link} from 'react-router-dom';
+import "./Nav.css";
 
 export default class PrivateNav extends React.Component {
 

@@ -1,6 +1,6 @@
-import React from 'react';
-import {Link} from "react-router-dom";
 import {FontAwesomeIcon as FAI} from "@fortawesome/react-fontawesome";
+import React from "react";
+import {Link} from "react-router-dom";
 
 export default class Breadcrumbs extends React.Component {
 

@@ -1,8 +1,8 @@
-import React from 'react';
-import PrivateLayout from "../../layouts/PrivateLayout";
-import Config from "../../Config";
+import ImageUpload from "components/ImageUpload";
+import {apiUrl} from "config";
 import $ from "jquery";
-import ImageUpload from "../../components/ImageUpload";
+import PrivateLayout from "layouts/PrivateLayout";
+import React from "react";
 
 export default class Profil extends React.Component {
 
@@ -34,7 +34,7 @@ export default class Profil extends React.Component {
 
     getUser() {
         $.ajax({
-            url: Config.apiUrl + "/users/profile",
+            url: apiUrl + "/users/profile",
             method: "GET",
             success: res => {
                 res.mentor = res.mentor ? res.mentor.id : 0;
@@ -46,7 +46,7 @@ export default class Profil extends React.Component {
 
     getAllUsers() {
         $.ajax({
-            url: Config.apiUrl + "/users",
+            url: apiUrl + "/users",
             method: "GET",
             success: res => {
                 res = res.sort((a, b) => a.firstName - b.firstName);
@@ -84,7 +84,7 @@ export default class Profil extends React.Component {
         if (this.state.password1) data.password = this.state.password1;
 
         $.ajax({
-            url: Config.apiUrl + "/users/profile",
+            url: apiUrl + "/users/profile",
             method: "PATCH",
             data: data,
             success: res => {
@@ -259,8 +259,8 @@ export default class Profil extends React.Component {
                     </div>
                 </div>
                 <div className="col-12 py-2">
-                    <ImageUpload to={Config.apiUrl+"/users/image"} method="POST"
-                                default={Config.apiUrl+"/uploads/users/"+this.state.user.id+".jpg"}/>
+                    <ImageUpload to={apiUrl+"/users/image"} method="POST"
+                                default={apiUrl+"/uploads/users/"+this.state.user.id+".jpg"}/>
                 </div>
             </div>
         );

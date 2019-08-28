@@ -1,9 +1,9 @@
-import React from 'react';
-import PrivateLayout from "../../layouts/PrivateLayout";
-import $ from "jquery";
-import Config from "../../Config";
 import {FontAwesomeIcon as FAI} from "@fortawesome/react-fontawesome";
-import ModalLayout from "../../layouts/ModalLayout";
+import {apiUrl} from "config";
+import $ from "jquery";
+import ModalLayout from "layouts/ModalLayout";
+import PrivateLayout from "layouts/PrivateLayout";
+import React from "react";
 
 export default class Membres extends React.Component {
 
@@ -41,7 +41,7 @@ export default class Membres extends React.Component {
 
     getAllUsers() {
         $.ajax({
-            url: Config.apiUrl + "/users",
+            url: apiUrl + "/users",
             method: "GET",
             success: res => {
                 res.sort((a, b) => a.firstName.localeCompare(b.firstName));
@@ -53,7 +53,7 @@ export default class Membres extends React.Component {
     showDetails(id) {
         this.setState({detailsModal: true});
         $.ajax({
-            url: Config.apiUrl + "/users/" + id,
+            url: apiUrl + "/users/" + id,
             method: "GET",
             success: res => {
                 this.setState({user: res});
@@ -106,7 +106,7 @@ export default class Membres extends React.Component {
         data.password = this.state.password1;
 
         $.ajax({
-            url: Config.apiUrl + "/users",
+            url: apiUrl + "/users",
             method: "POST",
             data: data,
             success: res => {
@@ -186,7 +186,7 @@ export default class Membres extends React.Component {
         return (
             <ModalLayout title={this.getFullName(u)}
                          onClose={() => this.setState({detailsModal: false, user: null})}>
-                <img className="card-img-top mb-2 rounded" src={Config.apiUrl + "/uploads/users/" + u.id + ".jpg"}
+                <img className="card-img-top mb-2 rounded" src={apiUrl + "/uploads/users/" + u.id + ".jpg"}
                      alt={u.firstName + " n'a pas encore choisi d'avatar."}/>
 
                 <table className="table table-borderless">

@@ -1,18 +1,18 @@
-import React from 'react';
-import $ from "jquery";
-import Config from "../../Config";
-import moment from "moment";
 import {FontAwesomeIcon as FAI} from "@fortawesome/react-fontawesome";
-import CF from "../../CustomFunctions";
+import Breadcrumbs from "components/Breadcrumbs";
+import Loader from "components/Loader";
+import ParticipationBadge from "components/ParticipationBadge";
+import PinnedBadge from "components/PinnedBadge";
+import TopicForm from "components/TopicForm";
+import UnreadBadge from "components/UnreadBadge";
+import {apiUrl, privacy} from "config";
+import $ from "jquery";
+import PrivateLayout from "layouts/PrivateLayout";
+import TableLayout from "layouts/TableLayout";
+import moment from "moment";
+import React from "react";
 import {Link} from "react-router-dom";
-import PrivateLayout from "../../layouts/PrivateLayout";
-import TableLayout from "../../layouts/TableLayout";
-import ParticipationBadge from "../../components/ParticipationBadge";
-import UnreadBadge from "../../components/UnreadBadge";
-import PinnedBadge from "../../components/PinnedBadge";
-import TopicForm from "../../components/TopicForm";
-import Loader from "../../components/Loader";
-import Breadcrumbs from "../../components/Breadcrumbs";
+import {fromNow, getDate, getDatesBetween, getName, objectToArray} from "utils";
 
 export default class Evenement extends React.Component {
 
@@ -32,7 +32,7 @@ export default class Evenement extends React.Component {
 
     getEvent() {
         $.ajax({
-            url: Config.apiUrl + "/calendar/" + this.props.match.params.event,
+            url: apiUrl + "/calendar/" + this.props.match.params.event,
             method: "GET",
             success: res => {
                 res.topics = res.topics.sort((a, b) => b.lastMessage.created.localeCompare(a.lastMessage.created));
@@ -88,7 +88,7 @@ export default class Evenement extends React.Component {
                     <li className="list-group-item">{this.renderDate(event)}</li>
                     <li className="list-group-item">
                         <FAI icon="eye" className="mr-2"/>
-                        {Config.privacy[event.privacy]}
+                        {privacy[event.privacy]}
                     </li>
                 </ul>
             </div>
@@ -99,11 +99,11 @@ export default class Evenement extends React.Component {
         return (
             <span>
                 <FAI icon={["far", "calendar-alt"]} className="mr-2"/>
-                <span>{CF.getDate(event.start)}</span>
+                <span>{getDate(event.start)}</span>
                 {(event.end && event.end !== event.start) &&
                 <span>
                     <FAI icon="arrow-right" className="mx-2"/>
-                    <span>{CF.getDate(event.end)}</span>
+                    <span>{getDate(event.end)}</span>
                 </span>
                 }
             </span>
@@ -111,7 +111,7 @@ export default class Evenement extends React.Component {
     }
 
     renderParticipants(event) {
-        let dates = CF.getDatesBetween(event.start, event.end);
+        let dates = getDatesBetween(event.start, event.end);
         let defaultParticipations = {};
         for (let date of dates) defaultParticipations[date] = {
             date: date,
@@ -130,9 +130,9 @@ export default class Evenement extends React.Component {
             members[p.user.id].participations[date].status = p.status;
         }
 
-        members = CF.objectToArray(members);
+        members = objectToArray(members);
         members = members.map(m => {
-            m.participations = CF.objectToArray(m.participations);
+            m.participations = objectToArray(m.participations);
             return m;
         });
 
@@ -153,7 +153,7 @@ export default class Evenement extends React.Component {
                     </tr>
                     {members.map(m =>
                         <tr>
-                            <td>{CF.getName(m.user, true)}</td>
+                            <td>{getName(m.user, true)}</td>
                             {m.participations.map(p =>
                                 <td className="text-center"><ParticipationBadge status={p.status}/></td>
                             )}
@@ -176,7 +176,7 @@ export default class Evenement extends React.Component {
                         <div>
                             <span className="d-block small-caps">{t.title}</span>
                             <span className="d-block">
-                        {CF.getName(t.lastMessage.author, true) + " a posté " + CF.fromNow(t.lastMessage.created)}
+                        {getName(t.lastMessage.author, true) + " a posté " + fromNow(t.lastMessage.created)}
                             </span>
                         </div>
                     </Link>

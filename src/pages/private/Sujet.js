@@ -1,15 +1,15 @@
-import React from 'react';
-import $ from "jquery";
 import {FontAwesomeIcon as FAI} from "@fortawesome/react-fontawesome";
-import CF from "../../CustomFunctions";
-import Config from "../../Config";
-import PrivateLayout from "../../layouts/PrivateLayout";
-import ModalLayout from "../../layouts/ModalLayout";
-import TableLayout from "../../layouts/TableLayout";
-import Breadcrumbs from "../../components/Breadcrumbs";
-import Avatar from "../../components/Avatar";
-import Loader from "../../components/Loader";
-import PinnedBadge from "../../components/PinnedBadge";
+import Avatar from "components/Avatar";
+import Breadcrumbs from "components/Breadcrumbs";
+import Loader from "components/Loader";
+import PinnedBadge from "components/PinnedBadge";
+import {apiUrl} from "config";
+import $ from "jquery";
+import ModalLayout from "layouts/ModalLayout";
+import PrivateLayout from "layouts/PrivateLayout";
+import TableLayout from "layouts/TableLayout";
+import React from "react";
+import {fromNow, getName} from "utils";
 
 export default class Sujet extends React.Component {
 
@@ -32,7 +32,7 @@ export default class Sujet extends React.Component {
 
     getTopic() {
         $.ajax({
-            url: Config.apiUrl + "/topic/" + this.props.match.params.topic,
+            url: apiUrl + "/topic/" + this.props.match.params.topic,
             method: "GET",
             success: res => {
                 this.setState({topic: res});
@@ -51,7 +51,7 @@ export default class Sujet extends React.Component {
         };
 
         $.ajax({
-            url: Config.apiUrl + "/message",
+            url: apiUrl + "/message",
             method: "POST",
             data: data,
             success: res => {
@@ -67,7 +67,7 @@ export default class Sujet extends React.Component {
         this.setState({topic: topic});
 
         $.ajax({
-            url: Config.apiUrl + "/topic/" + this.state.topic.id,
+            url: apiUrl + "/topic/" + this.state.topic.id,
             method: "PATCH",
             data: {
                 pinned: this.state.topic.pinned
@@ -122,8 +122,8 @@ export default class Sujet extends React.Component {
                         <td><Avatar/></td>
                         <td>
                             <div className="d-flex mb-2">
-                                <span className="text-muted small-caps">{CF.getName(m.author, true)}</span>
-                                <span className="text-muted ml-auto">{CF.fromNow(m.created)}</span> <br/>
+                                <span className="text-muted small-caps">{getName(m.author, true)}</span>
+                                <span className="text-muted ml-auto">{fromNow(m.created)}</span> <br/>
                             </div>
                             <span>{m.content}</span>
                         </td>

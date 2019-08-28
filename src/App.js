@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component} from "react";
 import {BrowserRouter as Router, Redirect, Route, Switch} from 'react-router-dom';
 import Loadable from 'react-loadable';
 import './App.css';

@@ -1,6 +1,6 @@
-import React from 'react';
 import $ from "jquery";
-import Config from "../Config";
+import React from "react";
+import {apiUrl} from "../config";
 import ModalLayout from "../layouts/ModalLayout";
 
 export default class TopicForm extends React.Component {
@@ -28,7 +28,7 @@ export default class TopicForm extends React.Component {
         if(event) data.event = event.id;
 
         $.ajax({
-            url: Config.apiUrl + "/topic",
+            url: apiUrl + "/topic",
             method: "POST",
             data: data,
             success: res => {

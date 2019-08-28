@@ -1,7 +1,7 @@
-import React from 'react';
-import $ from "jquery";
-import Config from "../Config";
 import {FontAwesomeIcon as FAI} from "@fortawesome/react-fontawesome";
+import $ from "jquery";
+import React from "react";
+import {apiUrl} from "../config";
 import Loader from "./Loader";
 
 
@@ -29,7 +29,7 @@ export default class ImageUpload extends React.Component {
             processData: false,
             contentType: false,
             success: res => {
-                this.setState({fileUrl: Config.apiUrl + res.url})
+                this.setState({fileUrl: apiUrl + res.url})
             }
         });
     }

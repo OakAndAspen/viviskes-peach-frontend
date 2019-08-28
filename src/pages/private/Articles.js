@@ -1,11 +1,11 @@
-import React from 'react';
-import PrivateLayout from "../../layouts/PrivateLayout";
-import $ from "jquery";
-import Config from "../../Config";
-import {FontAwesomeIcon as FAI} from "@fortawesome/react-fontawesome";
-import ModalLayout from "../../layouts/ModalLayout";
-import CKEditor from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import CKEditor from '@ckeditor/ckeditor5-react';
+import {FontAwesomeIcon as FAI} from "@fortawesome/react-fontawesome";
+import {apiUrl} from "config";
+import $ from "jquery";
+import ModalLayout from "layouts/ModalLayout";
+import PrivateLayout from "layouts/PrivateLayout";
+import React from "react";
 
 export default class Articles extends React.Component {
 
@@ -40,7 +40,7 @@ export default class Articles extends React.Component {
 
     getAllArticles() {
         $.ajax({
-            url: Config.apiUrl + "/articles",
+            url: apiUrl + "/articles",
             method: "GET",
             success: res => {
                 res.sort((a, b) => b.created - a.created);
@@ -52,7 +52,7 @@ export default class Articles extends React.Component {
     showDetails(id) {
         this.setState({modal: true});
         $.ajax({
-            url: Config.apiUrl + "/articles/" + id,
+            url: apiUrl + "/articles/" + id,
             method: "GET",
             success: res => {
                 this.setState({article: res});
@@ -91,7 +91,7 @@ export default class Articles extends React.Component {
         let data = this.state.article || this.state.newArticle;
 
         $.ajax({
-            url: Config.apiUrl + "/articles" + (this.state.article ? "/" + this.state.article.id : ""),
+            url: apiUrl + "/articles" + (this.state.article ? "/" + this.state.article.id : ""),
             method: this.state.article ? "PATCH" : "POST",
             data: data,
             success: res => {

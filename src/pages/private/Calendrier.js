@@ -1,12 +1,12 @@
-import React from 'react';
-import PrivateLayout from "../../layouts/PrivateLayout";
-import Config from "../../Config";
-import $ from "jquery";
 import {FontAwesomeIcon as FAI} from "@fortawesome/react-fontawesome";
-import TableLayout from "../../layouts/TableLayout";
-import CF from "../../CustomFunctions";
-import UnreadBadge from "../../components/UnreadBadge";
-import Breadcrumbs from "../../components/Breadcrumbs";
+import Breadcrumbs from "components/Breadcrumbs";
+import UnreadBadge from "components/UnreadBadge";
+import {apiUrl, privacy} from "config";
+import $ from "jquery";
+import PrivateLayout from "layouts/PrivateLayout";
+import TableLayout from "layouts/TableLayout";
+import React from "react";
+import {fromNow, getDate, isFuture} from "utils";
 
 export default class Calendrier extends React.Component {
 
@@ -21,12 +21,12 @@ export default class Calendrier extends React.Component {
 
     getEvents() {
         $.ajax({
-            url: Config.apiUrl + "/calendar",
+            url: apiUrl + "/calendar",
             method: "GET",
             success: res => {
                 res.sort((a, b) => a.start.localeCompare(b.start));
-                let futureEvents = res.filter(e => CF.isFuture(e.start));
-                let pastEvents = res.filter(e => !CF.isFuture(e.start));
+                let futureEvents = res.filter(e => isFuture(e.start));
+                let pastEvents = res.filter(e => !isFuture(e.start));
                 this.setState({
                     futureEvents: futureEvents,
                     pastEvents: pastEvents,
@@ -69,9 +69,9 @@ export default class Calendrier extends React.Component {
                             <span className="small-caps">{e.title}</span><br/>
                             <span className="text-muted">
                                         <FAI icon="eye" className="mr-2"/>
-                                {Config.privacy[e.privacy]}
+                                {privacy[e.privacy]}
                                 <FAI icon="calendar" className="mx-2"/>
-                                {CF.getDate(e.start)} ({CF.fromNow(e.start)})
+                                {getDate(e.start)} ({fromNow(e.start)})
                                     </span>
                         </td>
                     </tr>

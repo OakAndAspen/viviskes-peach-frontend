@@ -1,5 +1,5 @@
-import React from 'react';
 import {FontAwesomeIcon as FAI} from "@fortawesome/react-fontawesome";
+import React from "react";
 
 export default class Loader extends React.Component {
     render() {

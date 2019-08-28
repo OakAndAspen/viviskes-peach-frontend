@@ -1,7 +1,7 @@
-import React from 'react';
 import {FontAwesomeIcon as FAI} from "@fortawesome/react-fontawesome";
+import React from "react";
 import {Link} from "react-router-dom";
-import CF from "../CustomFunctions";
+import {getDate} from "utils";
 
 export default class MediaElement extends React.Component {
 
@@ -35,7 +35,7 @@ export default class MediaElement extends React.Component {
                         : media.name
                     }
                 </td>
-                <td className="text-center d-none d-md-block">{CF.getDate(media.created)}</td>
+                <td className="text-center d-none d-md-block">{getDate(media.created)}</td>
                 <td className="text-right">
                     {this.props.type === "document" &&
                     <FAI icon={["fal", "eye"]} className="mx-2 pointer" title="Aperçu"
