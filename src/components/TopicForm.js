@@ -1,5 +1,6 @@
 import $ from "jquery";
 import React from "react";
+import {api} from "utils";
 import {apiUrl} from "../config";
 import ModalLayout from "../layouts/ModalLayout";
 
@@ -27,11 +28,8 @@ export default class TopicForm extends React.Component {
         if(category) data.category = category.id;
         if(event) data.event = event.id;
 
-        $.ajax({
-            url: apiUrl + "/topic",
-            method: "POST",
-            data: data,
-            success: res => {
+        api("POST", "/topic", data, ({status, data}) => {
+            if (status === 201) {
                 this.setState({
                     title: "",
                     message: ""

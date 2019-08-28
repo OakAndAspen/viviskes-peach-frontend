@@ -3,6 +3,7 @@ import $ from 'jquery';
 import PublicLayout from "layouts/PublicLayout";
 import React from "react";
 import {Redirect} from "react-router-dom";
+import {api} from "utils";
 
 export default class Login extends React.Component {
 
@@ -25,12 +26,7 @@ export default class Login extends React.Component {
         let email = $('#email').val();
         let password = $('#password').val();
 
-        $.ajax({
-            method: 'POST',
-            url: apiUrl + '/login',
-            data: {email: email, password: password},
-            context: this
-        }).done((data) => {
+        api("POST", "/login", {email: email, password: password}, ({status, data}) => {
             if (data.error) this.setState({loginError: data.error});
             else {
                 localStorage.authKey = data.authKey;

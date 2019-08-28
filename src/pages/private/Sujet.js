@@ -3,13 +3,11 @@ import Avatar from "components/Avatar";
 import Breadcrumbs from "components/Breadcrumbs";
 import Loader from "components/Loader";
 import PinnedBadge from "components/PinnedBadge";
-import {apiUrl} from "config";
-import $ from "jquery";
 import ModalLayout from "layouts/ModalLayout";
 import PrivateLayout from "layouts/PrivateLayout";
 import TableLayout from "layouts/TableLayout";
 import React from "react";
-import {fromNow, getName} from "utils";
+import {api, fromNow, getName} from "utils";
 
 export default class Sujet extends React.Component {
 
@@ -31,12 +29,8 @@ export default class Sujet extends React.Component {
     }
 
     getTopic() {
-        $.ajax({
-            url: apiUrl + "/topic/" + this.props.match.params.topic,
-            method: "GET",
-            success: res => {
-                this.setState({topic: res});
-            }
+        api("GET", "/topic/" + this.props.match.params.topic, {}, ({status, data}) => {
+            if (data) this.setState({topic: data});
         });
     }
 
@@ -50,11 +44,8 @@ export default class Sujet extends React.Component {
             content: this.state.message
         };
 
-        $.ajax({
-            url: apiUrl + "/message",
-            method: "POST",
-            data: data,
-            success: res => {
+        api("POST", "/message", data, ({status, data}) => {
+            if (status === 201) {
                 this.getTopic();
                 this.setState({loading: false, message: ""});
             }
@@ -66,20 +57,15 @@ export default class Sujet extends React.Component {
         topic.pinned = !topic.pinned;
         this.setState({topic: topic});
 
-        $.ajax({
-            url: apiUrl + "/topic/" + this.state.topic.id,
-            method: "PATCH",
-            data: {
-                pinned: this.state.topic.pinned
-            }
-        });
+        let data = {pinned: this.state.topic.pinned};
+        api("PATCH", "/topic/" + this.state.topic.id, data, ({status, data}) => {});
     }
 
     render() {
         if (!this.state.topic) return <Loader/>;
         let topic = this.state.topic;
         let levels = [];
-        if(topic.category) {
+        if (topic.category) {
             levels = [
                 {label: "Forum", url: "/intranet/forum"},
                 {label: topic.category.label, url: "/intranet/forum/" + topic.category.id},

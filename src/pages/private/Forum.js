@@ -1,12 +1,10 @@
 import {FontAwesomeIcon as FAI} from "@fortawesome/react-fontawesome";
 import Breadcrumbs from "components/Breadcrumbs";
 import UnreadBadge from "components/UnreadBadge";
-import {apiUrl} from "config";
-import $ from "jquery";
 import PrivateLayout from "layouts/PrivateLayout";
 import React from "react";
 import {Link} from "react-router-dom";
-import {fromNow, getName} from "utils";
+import {api, fromNow, getName} from "utils";
 
 export default class Forum extends React.Component {
 
@@ -21,23 +19,17 @@ export default class Forum extends React.Component {
     }
 
     getCategories() {
-        $.ajax({
-            url: apiUrl + "/category",
-            method: "GET",
-            success: res => {
-                this.setState({categories: res});
-            }
+        api("GET", "/category", {}, ({status, data}) => {
+            if (data) this.setState({categories: data});
         });
     }
 
     getTopics() {
-        $.ajax({
-            url: apiUrl + "/topic",
-            method: "GET",
-            success: res => {
-                res = res.sort((a,b) => b.lastMessage.created.localeCompare(a.lastMessage.created));
-                res = res.slice(0,5);
-                this.setState({recentTopics: res});
+        api("GET", "/topic", {}, ({status, data}) => {
+            if (data) {
+                data = data.sort((a,b) => b.lastMessage.created.localeCompare(a.lastMessage.created));
+                data = data.slice(0,5);
+                this.setState({recentTopics: data});
             }
         });
     }

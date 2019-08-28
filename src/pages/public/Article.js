@@ -4,7 +4,7 @@ import {apiUrl} from "config";
 import $ from "jquery";
 import PublicLayout from "layouts/PublicLayout";
 import React from "react";
-import {getDate} from "utils";
+import {api, getDate} from "utils";
 
 let HtmlToReactParser = require('html-to-react').Parser;
 
@@ -19,12 +19,8 @@ export default class Article extends React.Component {
     }
 
     getArticle() {
-        $.ajax({
-            url: apiUrl + "/articles/" + this.props.match.params.article,
-            method: "GET",
-            success: res => {
-                this.setState({article: res});
-            }
+        api("GET", "/articles/" + this.props.match.params.article, {}, ({status, data}) => {
+            if (data) this.setState({article: data});
         });
     }
 

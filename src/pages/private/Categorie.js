@@ -4,12 +4,10 @@ import Loader from "components/Loader";
 import PinnedBadge from "components/PinnedBadge";
 import TopicForm from "components/TopicForm";
 import UnreadBadge from "components/UnreadBadge";
-import {apiUrl} from "config";
-import $ from "jquery";
 import PrivateLayout from "layouts/PrivateLayout";
 import React from "react";
 import {Link} from "react-router-dom";
-import {fromNow, getName} from "utils";
+import {api, fromNow, getName} from "utils";
 
 export default class Categorie extends React.Component {
 
@@ -28,13 +26,11 @@ export default class Categorie extends React.Component {
     }
 
     getCategory() {
-        $.ajax({
-            url: apiUrl + "/category/" + this.props.match.params.category,
-            method: "GET",
-            success: res => {
-                res.topics = res.topics.sort((a, b) => b.lastMessage.created.localeCompare(a.lastMessage.created));
-                res.topics = res.topics.sort((a, b) => b.pinned - a.pinned);
-                this.setState({category: res});
+        api("GET", "/category/" + this.props.match.params.category, {}, ({status, data}) => {
+            if(data) {
+                data.topics = data.topics.sort((a, b) => b.lastMessage.created.localeCompare(a.lastMessage.created));
+                data.topics = data.topics.sort((a, b) => b.pinned - a.pinned);
+                this.setState({category: data});
             }
         });
     }

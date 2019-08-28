@@ -3,7 +3,7 @@ import {apiUrl} from "config";
 import $ from "jquery";
 import PublicLayout from "layouts/PublicLayout";
 import React from "react";
-import {getDate, isFuture} from "utils";
+import {api, getDate, isFuture} from "utils";
 
 export default class Accueil extends React.Component {
 
@@ -19,25 +19,20 @@ export default class Accueil extends React.Component {
     }
 
     getPartners() {
-        $.ajax({
-            url: apiUrl + "/partners",
-            method: "GET",
-            success: res => {
-                res.sort((a, b) => a.label.localeCompare(b.label));
-                this.setState({partners: res});
+        api("GET", "/partners", {}, ({status, data}) => {
+            if (data) {
+                data.sort((a, b) => a.label.localeCompare(b.label));
+                this.setState({partners: data});
             }
         });
     }
 
     getEvents() {
-        $.ajax({
-            url: apiUrl + "/calendar",
-            method: "GET",
-            success: res => {
-                res = res
-                    .filter(e => isFuture(e.start) && e.privacy === "p")
+        api("GET", "/calendar", {}, ({status, data}) => {
+            if (data) {
+                data = data.filter(e => isFuture(e.start) && e.privacy === "u")
                     .sort((a, b) => a.start.localeCompare(b.start));
-                this.setState({events: res});
+                this.setState({events: data});
             }
         });
     }
@@ -93,7 +88,7 @@ export default class Accueil extends React.Component {
                             </span>
                             </div>
                             <FAI icon={["far", "info-circle"]} className="text-info display-3 ml-auto"
-                                             title="Plus d'infos..."/>
+                                 title="Plus d'infos..."/>
                         </div>
                         {this.state.selectedEvent === e.id && <div className="mt-3">{e.description}</div>}
                     </button>

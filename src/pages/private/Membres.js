@@ -1,9 +1,9 @@
 import {FontAwesomeIcon as FAI} from "@fortawesome/react-fontawesome";
 import {apiUrl} from "config";
-import $ from "jquery";
 import ModalLayout from "layouts/ModalLayout";
 import PrivateLayout from "layouts/PrivateLayout";
 import React from "react";
+import {api} from "utils";
 
 export default class Membres extends React.Component {
 
@@ -40,24 +40,18 @@ export default class Membres extends React.Component {
     }
 
     getAllUsers() {
-        $.ajax({
-            url: apiUrl + "/users",
-            method: "GET",
-            success: res => {
-                res.sort((a, b) => a.firstName.localeCompare(b.firstName));
-                this.setState({allUsers: res});
+        api("GET", "/users", {}, ({status, data}) => {
+            if (data) {
+                data.sort((a, b) => a.firstName.localeCompare(b.firstName));
+                this.setState({allUsers: data});
             }
         });
     }
 
     showDetails(id) {
         this.setState({detailsModal: true});
-        $.ajax({
-            url: apiUrl + "/users/" + id,
-            method: "GET",
-            success: res => {
-                this.setState({user: res});
-            }
+        api("GET", "/users/" + id, {}, ({status, data}) => {
+            if (data) this.setState({user: data});
         });
     }
 
@@ -105,11 +99,8 @@ export default class Membres extends React.Component {
         let data = this.state.form;
         data.password = this.state.password1;
 
-        $.ajax({
-            url: apiUrl + "/users",
-            method: "POST",
-            data: data,
-            success: res => {
+        api("POST", "/users", data, ({status, data}) => {
+            if (status === 201) {
                 this.setState({alert: this.messages.success, alertType: "success"});
                 this.getAllUsers();
             }

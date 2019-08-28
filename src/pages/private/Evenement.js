@@ -5,14 +5,13 @@ import ParticipationBadge from "components/ParticipationBadge";
 import PinnedBadge from "components/PinnedBadge";
 import TopicForm from "components/TopicForm";
 import UnreadBadge from "components/UnreadBadge";
-import {apiUrl, privacy} from "config";
-import $ from "jquery";
+import {privacy} from "config";
 import PrivateLayout from "layouts/PrivateLayout";
 import TableLayout from "layouts/TableLayout";
 import moment from "moment";
 import React from "react";
 import {Link} from "react-router-dom";
-import {fromNow, getDate, getDatesBetween, getName, objectToArray} from "utils";
+import {api, fromNow, getDate, getDatesBetween, getName, objectToArray} from "utils";
 
 export default class Evenement extends React.Component {
 
@@ -31,13 +30,11 @@ export default class Evenement extends React.Component {
     }
 
     getEvent() {
-        $.ajax({
-            url: apiUrl + "/calendar/" + this.props.match.params.event,
-            method: "GET",
-            success: res => {
-                res.topics = res.topics.sort((a, b) => b.lastMessage.created.localeCompare(a.lastMessage.created));
-                res.topics = res.topics.sort((a, b) => b.pinned - a.pinned);
-                this.setState({event: res});
+        api("GET", "/calendar/" + this.props.match.params.event, {}, ({status, data}) => {
+            if (data) {
+                data.topics = data.topics.sort((a, b) => b.lastMessage.created.localeCompare(a.lastMessage.created));
+                data.topics = data.topics.sort((a, b) => b.pinned - a.pinned);
+                this.setState({event: data});
             }
         });
     }

@@ -4,7 +4,7 @@ import {apiUrl} from "config";
 import $ from "jquery";
 import PublicLayout from "layouts/PublicLayout";
 import React from "react";
-import {getDate} from "utils";
+import {api, getDate} from "utils";
 
 export default class HistoireVivante extends React.Component {
 
@@ -20,24 +20,14 @@ export default class HistoireVivante extends React.Component {
     }
 
     getArticles() {
-        $.ajax({
-            url: apiUrl + "/articles",
-            method: "GET",
-            success: res => {
-                res.sort((a, b) => b.created - a.created);
-                this.setState({articles: res});
-            }
+        api("GET", "/articles", {}, ({status, data}) => {
+            if (data) this.setState({articles: data.sort((a, b) => b.created.localeCompare(a.created))});
         });
     }
 
     getTags() {
-        $.ajax({
-            url: apiUrl + "/tags",
-            method: "GET",
-            success: res => {
-                res.sort((a, b) => a.label.localeCompare(b.label));
-                this.setState({tags: res});
-            }
+        api("GET", "/tags", {}, ({status, data}) => {
+            if (data) this.setState({tags: data.sort((a, b) => a.label.localeCompare(b.label))});
         });
     }
 

@@ -1,11 +1,9 @@
 import {FontAwesomeIcon as FAI} from "@fortawesome/react-fontawesome";
 import Loader from "components/Loader";
-import {apiUrl} from "config";
-import $ from "jquery";
 import ModalLayout from "layouts/ModalLayout";
 import PrivateLayout from "layouts/PrivateLayout";
 import React from "react";
-import {getDate, getName} from "utils";
+import {api, getDate, getName} from "utils";
 
 export default class Bibliotheque extends React.Component {
 
@@ -40,24 +38,17 @@ export default class Bibliotheque extends React.Component {
     }
 
     getAllBooks() {
-        $.ajax({
-            url: apiUrl + "/library",
-            method: "GET",
-            success: res => {
-                res.sort((a, b) => a.name.localeCompare(b.name));
-                this.setState({allBooks: res});
-            }
+        api("GET", "/library", {}, ({status, data}) => {
+            if (data) this.setState({allBooks: data.sort((a, b) => a.name.localeCompare(b.name))});
         });
     }
 
     getAllUsers() {
-        $.ajax({
-            url: apiUrl + "/users",
-            method: "GET",
-            success: res => {
-                res.sort((a, b) => a.firstName.localeCompare(b.firstName));
-                this.setState({allUsers: res, selectedUser: res[0].id});
-            }
+        api("GET", "/users", {}, ({status, data}) => {
+            if (data) this.setState({
+                allUsers: data.sort((a, b) => a.firstName.localeCompare(b.firstName)),
+                selectedUser: data[0].id
+            });
         });
     }
 
@@ -71,12 +62,9 @@ export default class Bibliotheque extends React.Component {
 
     showDetails(id) {
         this.setState({detailsModal: true});
-        $.ajax({
-            url: apiUrl + "/library/" + id,
-            method: "GET",
-            success: res => {
-                this.setState({book: res});
-            }
+
+        api("GET", "/library/" + id, {}, ({status, data}) => {
+            if (data) this.setState({book: data});
         });
     }
 
@@ -107,11 +95,8 @@ export default class Bibliotheque extends React.Component {
         this.setState({alert: null});
         let data = this.state.form;
 
-        $.ajax({
-            url: apiUrl + "/library",
-            method: "POST",
-            data: data,
-            success: res => {
+        api("POST", "/library", data, ({status, data}) => {
+            if (status === 201) {
                 this.setState({alert: this.messages.success, alertType: "success"});
                 this.getAllBooks();
             }
@@ -120,14 +105,10 @@ export default class Bibliotheque extends React.Component {
 
     sendLoan(user, book) {
         if (!user || !book) return null;
-        $.ajax({
-            url: apiUrl + "/library/loan",
-            method: "POST",
-            data: {
-                userId: user,
-                bookId: book
-            },
-            success: res => {
+
+        let data = {userId: user, bookId: book};
+        api("POST", "/library/loan", data, ({status, data}) => {
+            if (status === 200) {
                 this.setState({
                     alert: null,
                     detailsModal: false,
@@ -180,11 +161,11 @@ export default class Bibliotheque extends React.Component {
                     <button type="button" className="list-group-item list-group-item-action d-flex align-items-center"
                             key={b.id} onClick={() => this.showDetails(b.id)}>
                         <FAI icon={["fal", "book"]}
-                                         title={this.isLoaned(b) ? "Emprunté" : "Disponible"}
-                                         className={"text-" + (this.isLoaned(b) ? "warning" : "success")}/>
+                             title={this.isLoaned(b) ? "Emprunté" : "Disponible"}
+                             className={"text-" + (this.isLoaned(b) ? "warning" : "success")}/>
                         <span className="mx-3">{b.name}</span>
                         <FAI icon={["fal", "info-square"]} className="ml-auto text-info"
-                                         title={"Voir le détail des emprunts"}/>
+                             title={"Voir le détail des emprunts"}/>
                     </button>
                 )}
             </ul>

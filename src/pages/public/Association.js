@@ -1,9 +1,9 @@
 import {FontAwesomeIcon as FAI} from "@fortawesome/react-fontawesome";
 import Tabs from "components/Tabs";
 import {apiUrl} from "config";
-import $ from "jquery";
 import PublicLayout from "layouts/PublicLayout";
 import React from "react";
+import {api} from "utils";
 
 export default class Association extends React.Component {
 
@@ -16,12 +16,8 @@ export default class Association extends React.Component {
     }
 
     getMembers() {
-        $.ajax({
-            url: apiUrl + "/public/members",
-            method: "GET",
-            success: res => {
-                this.setState({members: res});
-            }
+        api("GET", "/public/members", {}, ({status, data}) => {
+            if (data) this.setState({members: data});
         });
     }
 

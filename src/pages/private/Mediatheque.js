@@ -8,6 +8,7 @@ import ModalLayout from "layouts/ModalLayout";
 import PrivateLayout from "layouts/PrivateLayout";
 import TableLayout from "layouts/TableLayout";
 import React from "react";
+import {api} from "utils";
 
 export default class Mediatheque extends React.Component {
 
@@ -40,24 +41,20 @@ export default class Mediatheque extends React.Component {
     getFolder(id) {
         this.setState({loading: true});
         if (id) {
-            $.ajax({
-                url: apiUrl + "/folders/" + id,
-                method: "GET",
-                success: res => {
-                    res.documents.sort((a, b) => a.name.localeCompare(b.name));
-                    res.folders.sort((a, b) => a.name.localeCompare(b.name));
-                    this.setState({folder: res, loading: false});
+            api("GET", "/folders/" + id, {}, ({status, data}) => {
+                if (data) {
+                    data.documents.sort((a, b) => a.name.localeCompare(b.name));
+                    data.folders.sort((a, b) => a.name.localeCompare(b.name));
+                    this.setState({folder: data, loading: false});
                 }
             });
         } else {
-            $.ajax({
-                url: apiUrl + "/folders",
-                method: "GET",
-                success: res => {
+            api("GET", "/folders", {}, ({status, data}) => {
+                if (data) {
                     this.setState({
                         folder: {
                             name: "Médiathèque",
-                            folders: res.filter(f => !f.parent).sort((a, b) => a.name.localeCompare(b.name)),
+                            folders: data.filter(f => !f.parent).sort((a, b) => a.name.localeCompare(b.name)),
                             documents: []
                         },
                         loading: false
@@ -76,11 +73,8 @@ export default class Mediatheque extends React.Component {
             };
             if (this.state.folder.id) data.parent = this.state.folder.id;
 
-            $.ajax({
-                url: apiUrl + "/folders",
-                method: "POST",
-                data: data,
-                success: res => {
+            api("POST", "/folders", data, ({status, data}) => {
+                if (status === 201) {
                     this.getFolder(this.state.folder.id);
                     this.setState({creatingFolder: false});
                     $("#NewFolderName").val("");
@@ -128,13 +122,9 @@ export default class Mediatheque extends React.Component {
         let newName = $("#NewName").val();
         if (!newName) return null;
 
-        $.ajax({
-            url: apiUrl + "/" + this.state.currentMediaType + "s/" + this.state.currentMedia.id,
-            method: "PATCH",
-            data: {
-                name: newName
-            },
-            success: res => {
+        let url = "/" + this.state.currentMediaType + "s/" + this.state.currentMedia.id;
+        api("PATCH", url, {name: newName}, ({status, data}) => {
+            if (data) {
                 this.setState({renameModal: false});
                 this.getFolder(this.state.folder.id || null);
             }
@@ -142,11 +132,11 @@ export default class Mediatheque extends React.Component {
     }
 
     onDownload(media, type) {
-        $.ajax({
-            url: apiUrl + "/" + type + "s/download/" + media.id,
-            method: "GET",
-            success: res => {
-                this.setState({downloadLink: apiUrl + "/" + res.url}, () => {
+        let url = "/" + type + "s/download/" + media.id;
+
+        api("GET", url, {}, ({status, data}) => {
+            if (data) {
+                this.setState({downloadLink: apiUrl + "/" + data.url}, () => {
                     console.log(this.state.downloadLink);
                     console.log($('#DownloadLink').attr("href"));
                     //$('#DownloadLink').click();

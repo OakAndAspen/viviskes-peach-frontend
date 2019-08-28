@@ -1,8 +1,8 @@
 import ImageUpload from "components/ImageUpload";
 import {apiUrl} from "config";
-import $ from "jquery";
 import PrivateLayout from "layouts/PrivateLayout";
 import React from "react";
+import {api} from "utils";
 
 export default class Profil extends React.Component {
 
@@ -33,24 +33,20 @@ export default class Profil extends React.Component {
     }
 
     getUser() {
-        $.ajax({
-            url: apiUrl + "/users/profile",
-            method: "GET",
-            success: res => {
-                res.mentor = res.mentor ? res.mentor.id : 0;
-                res.newbie = res.newbie ? res.newbie.id : 0;
-                this.setState({user: res});
+        api("GET", "/users/profile", {}, ({status, data}) => {
+            if (data) {
+                data.mentor = data.mentor ? data.mentor.id : 0;
+                data.newbie = data.newbie ? data.newbie.id : 0;
+                this.setState({user: data});
             }
         });
     }
 
     getAllUsers() {
-        $.ajax({
-            url: apiUrl + "/users",
-            method: "GET",
-            success: res => {
-                res = res.sort((a, b) => a.firstName - b.firstName);
-                this.setState({allUsers: res});
+        api("GET", "/users", {}, ({status, data}) => {
+            if (data) {
+                data = data.sort((a, b) => a.firstName.localeCompare(b.firstName));
+                this.setState({allUsers: data});
             }
         });
     }
@@ -83,11 +79,8 @@ export default class Profil extends React.Component {
         let data = this.state.user;
         if (this.state.password1) data.password = this.state.password1;
 
-        $.ajax({
-            url: apiUrl + "/users/profile",
-            method: "PATCH",
-            data: data,
-            success: res => {
+        api("PATCH", "/users/profile", data, ({status, data}) => {
+            if (status === 200) {
                 this.setState({
                     alert: this.messages.success,
                     alertType: "success",
@@ -259,8 +252,8 @@ export default class Profil extends React.Component {
                     </div>
                 </div>
                 <div className="col-12 py-2">
-                    <ImageUpload to={apiUrl+"/users/image"} method="POST"
-                                default={apiUrl+"/uploads/users/"+this.state.user.id+".jpg"}/>
+                    <ImageUpload to={apiUrl + "/users/image"} method="POST"
+                                 default={apiUrl + "/uploads/users/" + this.state.user.id + ".jpg"}/>
                 </div>
             </div>
         );

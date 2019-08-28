@@ -1,12 +1,11 @@
 import {FontAwesomeIcon as FAI} from "@fortawesome/react-fontawesome";
 import Breadcrumbs from "components/Breadcrumbs";
 import UnreadBadge from "components/UnreadBadge";
-import {apiUrl, privacy} from "config";
-import $ from "jquery";
+import {privacy} from "config";
 import PrivateLayout from "layouts/PrivateLayout";
 import TableLayout from "layouts/TableLayout";
 import React from "react";
-import {fromNow, getDate, isFuture} from "utils";
+import {api, fromNow, getDate, isFuture} from "utils";
 
 export default class Calendrier extends React.Component {
 
@@ -20,13 +19,11 @@ export default class Calendrier extends React.Component {
     }
 
     getEvents() {
-        $.ajax({
-            url: apiUrl + "/calendar",
-            method: "GET",
-            success: res => {
-                res.sort((a, b) => a.start.localeCompare(b.start));
-                let futureEvents = res.filter(e => isFuture(e.start));
-                let pastEvents = res.filter(e => !isFuture(e.start));
+        api("GET", "/calendar", {}, ({status, data}) => {
+            if(data) {
+                data.sort((a, b) => a.start.localeCompare(b.start));
+                let futureEvents = data.filter(e => isFuture(e.start));
+                let pastEvents = data.filter(e => !isFuture(e.start));
                 this.setState({
                     futureEvents: futureEvents,
                     pastEvents: pastEvents,

@@ -1,10 +1,9 @@
 import {FontAwesomeIcon as FAI} from "@fortawesome/react-fontawesome";
-import {apiUrl} from "config";
-import $ from "jquery";
 import ModalLayout from "layouts/ModalLayout";
 import PrivateLayout from "layouts/PrivateLayout";
 import TableLayout from "layouts/TableLayout";
 import React from "react";
+import {api} from "utils";
 
 export default class Partenaires extends React.Component {
 
@@ -39,12 +38,8 @@ export default class Partenaires extends React.Component {
     }
 
     getPartners() {
-        $.ajax({
-            url: apiUrl + "/partners",
-            method: "GET",
-            success: res => {
-                this.setState({partners: res});
-            }
+        api("GET", "/partners", {}, ({status, data}) => {
+            if (data) this.setState({partners: data});
         });
     }
 
@@ -75,11 +70,10 @@ export default class Partenaires extends React.Component {
         if (!this.checkErrors()) return null;
         let cp = this.state.currentPartner;
 
-        $.ajax({
-            url: apiUrl + "/partners" + (cp.id ? "/" + cp.id : ""),
-            method: cp.id ? "PATCH" : "POST",
-            data: cp,
-            success: res => {
+        let url = "/partners" + (cp.id ? "/" + cp.id : "");
+        let method = cp.id ? "PATCH" : "POST";
+        api(method, url, cp, ({status, data}) => {
+            if (status === 200 || status === 201) {
                 this.getPartners();
                 this.setState({alert: this.messages.success, alertType: "success"});
             }
@@ -88,10 +82,8 @@ export default class Partenaires extends React.Component {
 
     delete(id) {
         this.setState({loading: id});
-        $.ajax({
-            url: apiUrl + "/partners/" + id,
-            method: "DELETE",
-            success: res => {
+        api("DELETE", "/partners/" + id, {}, ({status, data}) => {
+            if (status === 204) {
                 this.getPartners();
                 this.setState({loading: false});
             }
@@ -128,13 +120,13 @@ export default class Partenaires extends React.Component {
                         <td><a href={"https://" + p.url}>{p.url}</a></td>
                         <td>
                             <FAI icon="pencil-alt" className="pointer text-info"
-                                             onClick={() => this.setState({modal: true, currentPartner: p})}/>
+                                 onClick={() => this.setState({modal: true, currentPartner: p})}/>
                         </td>
                         <td>
                             {(this.state.loading === p.id) ?
                                 <FAI icon="spinner" className="pointer text-danger fa-spin"/> :
                                 <FAI icon={"trash-alt"} className="pointer text-danger"
-                                                 onClick={() => this.delete(p.id)}/>
+                                     onClick={() => this.delete(p.id)}/>
                             }
                         </td>
                     </tr>

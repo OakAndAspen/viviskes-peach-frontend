@@ -1,11 +1,10 @@
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import CKEditor from '@ckeditor/ckeditor5-react';
 import {FontAwesomeIcon as FAI} from "@fortawesome/react-fontawesome";
-import {apiUrl} from "config";
-import $ from "jquery";
 import ModalLayout from "layouts/ModalLayout";
 import PrivateLayout from "layouts/PrivateLayout";
 import React from "react";
+import {api, getDate} from "utils";
 
 export default class Articles extends React.Component {
 
@@ -39,24 +38,15 @@ export default class Articles extends React.Component {
     }
 
     getAllArticles() {
-        $.ajax({
-            url: apiUrl + "/articles",
-            method: "GET",
-            success: res => {
-                res.sort((a, b) => b.created - a.created);
-                this.setState({allArticles: res});
-            }
+        api("GET", "/articles", {}, ({status, data}) => {
+            if (data) this.setState({allArticles: data.sort((a, b) => b.created.localeCompare(a.created))});
         });
     }
 
     showDetails(id) {
         this.setState({modal: true});
-        $.ajax({
-            url: apiUrl + "/articles/" + id,
-            method: "GET",
-            success: res => {
-                this.setState({article: res});
-            }
+        api("GET", "/articles/"+id, {}, ({status, data}) => {
+            if (data) this.setState({article: data});
         });
     }
 
@@ -90,20 +80,17 @@ export default class Articles extends React.Component {
         if (!this.checkErrors()) return null;
         let data = this.state.article || this.state.newArticle;
 
-        $.ajax({
-            url: apiUrl + "/articles" + (this.state.article ? "/" + this.state.article.id : ""),
-            method: this.state.article ? "PATCH" : "POST",
-            data: data,
-            success: res => {
-                this.setState({
-                    alert: this.messages.success,
-                    alertType: "success",
-                    modal: false,
-                    newArticle: this.defaultArticle,
-                    article: null
-                });
-                this.getAllArticles();
-            }
+        let method = this.state.article ? "PATCH" : "POST";
+        let url = "/articles" + (this.state.article ? "/" + this.state.article.id : "");
+        api(method, url, data, ({status, data}) => {
+            this.setState({
+                alert: this.messages.success,
+                alertType: "success",
+                modal: false,
+                newArticle: this.defaultArticle,
+                article: null
+            });
+            this.getAllArticles();
         });
     }
 
@@ -152,7 +139,8 @@ export default class Articles extends React.Component {
                             onClick={() => this.showDetails(a.id)}>
                         <span><FAI icon={["fal", "feather-alt"]}/></span>
                         <span className="mx-3">{a.title}</span>
-                        <span className="ml-auto text-info" title="Modifier l'article">
+                        <span className="ml-auto">{getDate(a.created)}</span>
+                        <span className="ml-2 text-info" title="Modifier l'article">
                             <FAI icon={["fal", "pen"]}/>
                         </span>
                     </button>
