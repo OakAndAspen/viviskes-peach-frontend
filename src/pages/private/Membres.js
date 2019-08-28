@@ -159,7 +159,12 @@ export default class Membres extends React.Component {
                             onClick={() => this.showDetails(u.id)}>
                         <span><FAI icon={["fal", "user-circle"]}/></span>
                         <span className="mx-3">{this.getFullName(u)}</span>
-                        <span className="ml-auto text-info" title={"Plus d'informations sur " + u.firstName}>
+                        <span className="ml-auto">
+                            {u.isAdmin && <FAI icon={["fal", "user-cog"]} className="mx-1" title={"Admin"}/>}
+                            {u.isFighting && <FAI icon={["fal", "swords"]} className="mx-1" title={"Combattant"}/>}
+                            {u.isActive && <FAI icon={["fal", "user-check"]} className="mx-1" title={"Membre actif"}/>}
+                                </span>
+                        <span className="ml-2 text-info" title={"Plus d'informations sur " + u.firstName}>
                             <FAI icon={["fal", "info-square"]}/>
                         </span>
                     </button>
@@ -181,19 +186,30 @@ export default class Membres extends React.Component {
         return (
             <ModalLayout title={this.getFullName(u)}
                          onClose={() => this.setState({detailsModal: false, user: null})}>
-                <img className="card-img-top mb-2 rounded" src={Config.apiUrl+"/uploads/users/" + u.id + ".jpg"}
+                <img className="card-img-top mb-2 rounded" src={Config.apiUrl + "/uploads/users/" + u.id + ".jpg"}
                      alt={u.firstName + " n'a pas encore choisi d'avatar."}/>
 
                 <table className="table table-borderless">
                     <tbody>
+                    {(u.isActive || u.isFighting || u.isAdmin) &&
                     <tr>
                         <td className="small-caps">Statut</td>
                         <td>
-                            <span className={"badge badge-" + (u.isActive ? "info" : "secondary")}>
-                                {"Membre" + (u.isActive ? " actif" : "")}
-                            </span>
+                            {u.isActive && <span>
+                                <FAI icon={["fal", "user-check"]} className="mr-2"/>
+                                Membre actif
+                            </span>}
+                            {u.isFighting && <p>
+                                <FAI icon={["fal", "swords"]} className="mr-2"/>
+                                Combattant
+                            </p>}
+                            {u.isAdmin && <p>
+                                <FAI icon={["fal", "user-cog"]} className="mr-2"/>
+                                Administrateur du site
+                            </p>}
                         </td>
                     </tr>
+                    }
                     {u.address &&
                     <tr>
                         <td className="small-caps">Adresse</td>

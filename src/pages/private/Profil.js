@@ -165,10 +165,15 @@ export default class Profil extends React.Component {
                 <div className="col-12 mb-2 text-justify">
                     <input type="checkbox" className="mr-2" checked={u.isActive}
                            onChange={e => this.updateField("isActive", e.target.checked)}/>
-                    <span>Je suis membre actif de Viviskes. Je m'engage à participer régulièrement aux activités
+                    <span>Je suis <b>membre actif</b> de Viviskes. Je m'engage à participer régulièrement aux activités
                         et aux entraînements, et à avertir suffisamment à l'avance le responsable des entraînements en
                         cas d'absence. Je m'engage à me tenir au courant de ce qui se passe dans l'association et à
                         présenter un costume historiquement correct lors des ses activités.</span>
+                </div>
+                <div className="col-12 mb-2 text-justify">
+                    <input type="checkbox" className="mr-2" checked={u.isFighting}
+                           onChange={e => this.updateField("isFighting", e.target.checked)}/>
+                    <span>Je suis <b>combattant</b>. Je participe par défaut aux combats lors des activités de Viviskes.</span>
                 </div>
                 <div className="col-12 mb-2">
                     <input type="text" className="form-control" placeholder="Nom celte" value={u.celticName}
