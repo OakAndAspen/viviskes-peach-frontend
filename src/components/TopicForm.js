@@ -1,7 +1,5 @@
-import $ from "jquery";
 import React from "react";
 import {api} from "utils";
-import {apiUrl} from "../config";
 import ModalLayout from "../layouts/ModalLayout";
 
 export default class TopicForm extends React.Component {

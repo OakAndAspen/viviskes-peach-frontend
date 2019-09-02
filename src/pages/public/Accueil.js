@@ -1,6 +1,4 @@
 import {FontAwesomeIcon as FAI} from "@fortawesome/react-fontawesome";
-import {apiUrl} from "config";
-import $ from "jquery";
 import PublicLayout from "layouts/PublicLayout";
 import React from "react";
 import {api, getDate, isFuture} from "utils";
@@ -19,7 +17,7 @@ export default class Accueil extends React.Component {
     }
 
     getPartners() {
-        api("GET", "/partners", {}, ({status, data}) => {
+        api("GET", "/public/partners", {}, ({status, data}) => {
             if (data) {
                 data.sort((a, b) => a.label.localeCompare(b.label));
                 this.setState({partners: data});
@@ -28,7 +26,7 @@ export default class Accueil extends React.Component {
     }
 
     getEvents() {
-        api("GET", "/calendar", {}, ({status, data}) => {
+        api("GET", "/public/events", {}, ({status, data}) => {
             if (data) {
                 data = data.filter(e => isFuture(e.start) && e.privacy === "u")
                     .sort((a, b) => a.start.localeCompare(b.start));
