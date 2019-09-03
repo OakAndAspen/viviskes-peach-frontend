@@ -83,7 +83,7 @@ export default class Forum extends React.Component {
         return (
             <div className="col-6 pb-2" key={c.id}>
                 <Link type="button" to={"/intranet/forum/" + c.id}
-                      className="btn btn-light w-100 d-flex align-items-center justify-content-center">
+                      className="btn btn-light w-100 h-100 d-flex align-items-center justify-content-center">
                     {!c.read && <span className="mr-2"><UnreadBadge read={c.read}/></span>}
                     <span className="display-4 small-caps">{c.label}</span>
                 </Link>

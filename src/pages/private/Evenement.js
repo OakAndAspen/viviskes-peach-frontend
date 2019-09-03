@@ -75,6 +75,7 @@ export default class Evenement extends React.Component {
     }
 
     renderDetails(event) {
+        if (!event) return null;
         return (
             <div className="card">
                 <div className="card-body">
@@ -124,7 +125,9 @@ export default class Evenement extends React.Component {
                     participations: JSON.parse(JSON.stringify(defaultParticipations))
                 };
             }
-            members[p.user.id].participations[date].status = p.status;
+            if (members[p.user.id].participations[date]) {
+                members[p.user.id].participations[date].status = p.status;
+            }
         }
 
         members = objectToArray(members);
