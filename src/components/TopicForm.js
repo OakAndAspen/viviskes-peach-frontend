@@ -19,21 +19,26 @@ export default class TopicForm extends React.Component {
         let event = this.props.event;
         if (!this.state.title || !this.state.message || (!category && !event)) return null;
 
-        let data = {
+        let topic = {
             title: this.state.title,
-            message: this.state.message
+            pinned: false
         };
-        if(category) data.category = category.id;
-        if(event) data.event = event.id;
+        if(category) topic.category = category.id;
+        if(event) topic.event = event.id;
 
-        api("POST", "/topic", data, ({status, data}) => {
+        api("POST", "/topic", {topic:topic}, ({status, data}) => {
             if (status === 201) {
-                this.setState({
-                    title: "",
-                    message: ""
+                let message = {
+                    topic: data.id,
+                    content: this.state.message
+                };
+
+                api("POST", "/message", {message:message}, ({status, data}) => {
+                    if (status === 201) {
+                        this.props.onSend();
+                        this.props.onClose();
+                    }
                 });
-                this.props.onSend();
-                this.props.onClose();
             }
         });
     }

@@ -32,8 +32,9 @@ export default class Evenement extends React.Component {
     getEvent() {
         api("GET", "/event/" + this.props.match.params.event, {}, ({status, data}) => {
             if (data) {
-                data.topics = data.topics.sort((a, b) => b.lastMessage.created.localeCompare(a.lastMessage.created));
-                data.topics = data.topics.sort((a, b) => b.pinned - a.pinned);
+                data.topics = data.topics
+                    .sort((a, b) => b.lastMessage.created.localeCompare(a.lastMessage.created))
+                    .sort((a, b) => b.pinned - a.pinned);
                 this.setState({event: data});
             }
         });

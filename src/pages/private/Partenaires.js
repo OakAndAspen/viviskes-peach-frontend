@@ -38,7 +38,7 @@ export default class Partenaires extends React.Component {
     }
 
     getPartners() {
-        api("GET", "/partners", {}, ({status, data}) => {
+        api("GET", "/partner", {}, ({status, data}) => {
             if (data) this.setState({partners: data});
         });
     }
@@ -70,8 +70,8 @@ export default class Partenaires extends React.Component {
         if (!this.checkErrors()) return null;
         let cp = this.state.currentPartner;
 
-        let url = "/partners" + (cp.id ? "/" + cp.id : "");
-        let method = cp.id ? "PATCH" : "POST";
+        let url = "/partner" + (cp.id ? "/" + cp.id : "");
+        let method = cp.id ? "PUT" : "POST";
         api(method, url, cp, ({status, data}) => {
             if (status === 200 || status === 201) {
                 this.getPartners();
@@ -82,7 +82,7 @@ export default class Partenaires extends React.Component {
 
     delete(id) {
         this.setState({loading: id});
-        api("DELETE", "/partners/" + id, {}, ({status, data}) => {
+        api("DELETE", "/partner/" + id, {}, ({status, data}) => {
             if (status === 204) {
                 this.getPartners();
                 this.setState({loading: false});

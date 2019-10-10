@@ -33,7 +33,7 @@ export default class Profil extends React.Component {
     }
 
     getUser() {
-        api("GET", "/users/profile", {}, ({status, data}) => {
+        api("GET", "/user/profile", {}, ({status, data}) => {
             if (data) {
                 data.mentor = data.mentor ? data.mentor.id : 0;
                 data.newbie = data.newbie ? data.newbie.id : 0;
@@ -43,7 +43,7 @@ export default class Profil extends React.Component {
     }
 
     getAllUsers() {
-        api("GET", "/users", {}, ({status, data}) => {
+        api("GET", "/user", {}, ({status, data}) => {
             if (data) {
                 data = data.sort((a, b) => a.firstName.localeCompare(b.firstName));
                 this.setState({allUsers: data});
@@ -79,7 +79,7 @@ export default class Profil extends React.Component {
         let data = this.state.user;
         if (this.state.password1) data.password = this.state.password1;
 
-        api("PATCH", "/users/profile", data, ({status, data}) => {
+        api("PUT", "/user/profile", data, ({status, data}) => {
             if (status === 200) {
                 this.setState({
                     alert: this.messages.success,

@@ -40,7 +40,7 @@ export default class Membres extends React.Component {
     }
 
     getAllUsers() {
-        api("GET", "/users", {}, ({status, data}) => {
+        api("GET", "/user", {}, ({status, data}) => {
             if (data) {
                 data.sort((a, b) => a.firstName.localeCompare(b.firstName));
                 this.setState({allUsers: data});
@@ -50,7 +50,7 @@ export default class Membres extends React.Component {
 
     showDetails(id) {
         this.setState({detailsModal: true});
-        api("GET", "/users/" + id, {}, ({status, data}) => {
+        api("GET", "/user/" + id, {}, ({status, data}) => {
             if (data) this.setState({user: data});
         });
     }
@@ -99,7 +99,7 @@ export default class Membres extends React.Component {
         let data = this.state.form;
         data.password = this.state.password1;
 
-        api("POST", "/users", data, ({status, data}) => {
+        api("POST", "/user", data, ({status, data}) => {
             if (status === 201) {
                 this.setState({alert: this.messages.success, alertType: "success"});
                 this.getAllUsers();

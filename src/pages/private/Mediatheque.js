@@ -41,7 +41,7 @@ export default class Mediatheque extends React.Component {
     getFolder(id) {
         this.setState({loading: true});
         if (id) {
-            api("GET", "/folders/" + id, {}, ({status, data}) => {
+            api("GET", "/folder/" + id, {}, ({status, data}) => {
                 if (data) {
                     data.documents.sort((a, b) => a.name.localeCompare(b.name));
                     data.folders.sort((a, b) => a.name.localeCompare(b.name));
@@ -49,7 +49,7 @@ export default class Mediatheque extends React.Component {
                 }
             });
         } else {
-            api("GET", "/folders", {}, ({status, data}) => {
+            api("GET", "/folder", {}, ({status, data}) => {
                 if (data) {
                     this.setState({
                         folder: {
@@ -73,7 +73,7 @@ export default class Mediatheque extends React.Component {
             };
             if (this.state.folder.id) data.parent = this.state.folder.id;
 
-            api("POST", "/folders", data, ({status, data}) => {
+            api("POST", "/folder", data, ({status, data}) => {
                 if (status === 201) {
                     this.getFolder(this.state.folder.id);
                     this.setState({creatingFolder: false});
@@ -95,7 +95,7 @@ export default class Mediatheque extends React.Component {
         formData.append("folder", this.state.folder.id);
 
         $.ajax({
-            url: apiUrl + "/documents",
+            url: apiUrl + "/document",
             method: "POST",
             data: formData,
             processData: false,
@@ -122,8 +122,8 @@ export default class Mediatheque extends React.Component {
         let newName = $("#NewName").val();
         if (!newName) return null;
 
-        let url = "/" + this.state.currentMediaType + "s/" + this.state.currentMedia.id;
-        api("PATCH", url, {name: newName}, ({status, data}) => {
+        let url = "/" + this.state.currentMediaType + "/" + this.state.currentMedia.id;
+        api("PUT", url, {name: newName}, ({status, data}) => {
             if (data) {
                 this.setState({renameModal: false});
                 this.getFolder(this.state.folder.id || null);
@@ -132,7 +132,7 @@ export default class Mediatheque extends React.Component {
     }
 
     onDownload(media, type) {
-        let url = "/" + type + "s/download/" + media.id;
+        let url = "/" + type + "/download/" + media.id;
 
         api("GET", url, {}, ({status, data}) => {
             if (data) {

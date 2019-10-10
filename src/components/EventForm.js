@@ -6,32 +6,22 @@ export default class EventForm extends React.Component {
 
     state = {
         title: "",
+        description: "",
+        start: "",
+        end: "",
+        location: "",
         privacy: "u"
     };
 
     constructor(props) {
         super(props);
-        this.send = this.send.bind(this);
+        this.createEvent = this.createEvent.bind(this);
     }
 
-    send() {
-        let category = this.props.category;
-        let event = this.props.event;
-        if (!this.state.title || !this.state.message || (!category && !event)) return null;
-
-        let data = {
-            title: this.state.title,
-            message: this.state.message
-        };
-        if (category) data.category = category.id;
-        if (event) data.event = event.id;
-
-        api("POST", "/topic", data, ({status, data}) => {
+    createEvent() {
+        let event = this.state;
+        api("POST", "/event", {event: event}, ({status, data}) => {
             if (status === 201) {
-                this.setState({
-                    title: "",
-                    message: ""
-                });
                 this.props.onSend();
                 this.props.onClose();
             }
@@ -67,7 +57,7 @@ export default class EventForm extends React.Component {
                 <textarea className="form-control my-2" placeholder="Description publique"
                           value={this.state.publicDescription}
                           onChange={e => this.setState({publicDescription: e.target.value})}/>
-                <button type="button" className="btn btn-info w-100" onClick={this.send}>Enregistrer</button>
+                <button type="button" className="btn btn-info w-100" onClick={this.createEvent}>Enregistrer</button>
             </ModalLayout>
         );
     }
