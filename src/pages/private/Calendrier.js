@@ -21,7 +21,7 @@ export default class Calendrier extends React.Component {
     }
 
     getEvents() {
-        api("GET", "/calendar", {}, ({status, data}) => {
+        api("GET", "/event", {}, ({status, data}) => {
             if (data) {
                 data.sort((a, b) => a.start.localeCompare(b.start));
                 let futureEvents = data.filter(e => isFuture(e.start));

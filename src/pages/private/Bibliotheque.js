@@ -1,9 +1,9 @@
 import {FontAwesomeIcon as FAI} from "@fortawesome/react-fontawesome";
-import Loader from "components/Loader";
-import ModalLayout from "layouts/ModalLayout";
+import CreateBookModal from "components/CreateBookModal";
+import UpdateBookModal from "components/UpdateBookModal";
 import PrivateLayout from "layouts/PrivateLayout";
 import React from "react";
-import {api, getDate, getName} from "utils";
+import {api} from "utils";
 
 export default class Bibliotheque extends React.Component {
 
@@ -13,109 +13,35 @@ export default class Bibliotheque extends React.Component {
     };
 
     state = {
-        allBooks: [],
+        books: [],
+        users: [],
         search: "",
-        detailsModal: false,
-        createModal: false,
-        book: null,
-        alert: null,
-        alertType: "danger",
-        form: {
-            name: ""
-        },
-        allUsers: [],
-        selectedUser: null
+        activeModal: null,
+        activeBook: null
     };
 
-    constructor(props) {
-        super(props);
-        this.send = this.send.bind(this);
-    }
-
     componentDidMount() {
-        this.getAllBooks();
-        this.getAllUsers();
+        this.getBooks();
+        this.getUsers();
     }
 
-    getAllBooks() {
-        api("GET", "/library", {}, ({status, data}) => {
-            if (data) this.setState({allBooks: data.sort((a, b) => a.name.localeCompare(b.name))});
+    getBooks() {
+        api("GET", "/book", {}, ({status, data}) => {
+            if (data) this.setState({books: data.sort((a, b) => a.name.localeCompare(b.name))});
         });
     }
 
-    getAllUsers() {
-        api("GET", "/users", {}, ({status, data}) => {
+    getBook(id) {
+        api("GET", "/book/" + id, {}, ({status, data}) => {
+            if (data) this.setState({activeBook: data});
+        });
+    }
+
+    getUsers() {
+        api("GET", "/user", {}, ({status, data}) => {
             if (data) this.setState({
-                allUsers: data.sort((a, b) => a.firstName.localeCompare(b.firstName)),
-                selectedUser: data[0].id
+                users: data.sort((a, b) => a.firstName.localeCompare(b.firstName))
             });
-        });
-    }
-
-    isLoaned(book) {
-        let isLoaned = false;
-        for (let loan of book.loans) {
-            if (!loan.end) isLoaned = true;
-        }
-        return isLoaned;
-    }
-
-    showDetails(id) {
-        this.setState({detailsModal: true});
-
-        api("GET", "/library/" + id, {}, ({status, data}) => {
-            if (data) this.setState({book: data});
-        });
-    }
-
-    filterBooks() {
-        let search = this.state.search.toLowerCase();
-        return this.state.allBooks.filter(b => b.name.toLowerCase().includes(search));
-    }
-
-    updateField(field, value) {
-        let form = this.state.form;
-        form[field] = value;
-        this.setState({form: form});
-    }
-
-    checkErrors() {
-        let f = this.state.form;
-
-        if (!f.name) {
-            this.setState({alert: this.messages.emptyField, alertType: "danger"});
-            return false;
-        }
-
-        return true;
-    }
-
-    send() {
-        if (!this.checkErrors()) return null;
-        this.setState({alert: null});
-        let data = this.state.form;
-
-        api("POST", "/library", data, ({status, data}) => {
-            if (status === 201) {
-                this.setState({alert: this.messages.success, alertType: "success"});
-                this.getAllBooks();
-            }
-        });
-    }
-
-    sendLoan(user, book) {
-        if (!user || !book) return null;
-
-        let data = {userId: user, bookId: book};
-        api("POST", "/library/loan", data, ({status, data}) => {
-            if (status === 200) {
-                this.setState({
-                    alert: null,
-                    detailsModal: false,
-                    book: null
-                });
-                this.getAllBooks();
-            }
         });
     }
 
@@ -130,8 +56,17 @@ export default class Bibliotheque extends React.Component {
                         </div>
                     </div>
                 </div>
-                {this.renderDetailsModal()}
-                {this.renderCreateModal()}
+
+                {this.state.activeModal === "create" && <CreateBookModal
+                    onCreate={this.getBooks}
+                    onClose={() => this.setState({activeModal: null, activeBook: null})}/>}
+
+                {this.state.activeModal === "update" && <UpdateBookModal
+                    book={this.state.activeBook} users={this.state.users}
+                    onUpdate={() => {
+                        this.getBook(this.state.activeBook.id);
+                    }}
+                    onClose={() => this.setState({activeModal: null, activeBook: null})}/>}
             </PrivateLayout>
         );
     }
@@ -145,7 +80,7 @@ export default class Bibliotheque extends React.Component {
                 </div>
                 <div className="col-12 col-sm-6">
                     <button type="button" className="btn btn-info w-100 my-2"
-                            onClick={() => this.setState({createModal: true})}>
+                            onClick={() => this.setState({activeModal: "create"})}>
                         <FAI icon={"plus"} className="mr-2"/>
                         <span>Ajouter un livre</span>
                     </button>
@@ -155,14 +90,21 @@ export default class Bibliotheque extends React.Component {
     }
 
     renderList() {
+        let search = this.state.search.toLowerCase();
+        let books = this.state.books.filter(b => b.name.toLowerCase().includes(search));
+
         return (
             <ul className="list-group">
-                {this.filterBooks().map(b =>
-                    <button type="button" className="list-group-item list-group-item-action d-flex align-items-center"
-                            key={b.id} onClick={() => this.showDetails(b.id)}>
+                {books.map(b =>
+                    <button type="button" key={b.id}
+                            className="list-group-item list-group-item-action d-flex align-items-center"
+                            onClick={() => {
+                                this.getBook(b.id);
+                                this.setState({activeModal: "update"});
+                            }}>
                         <FAI icon={["fal", "book"]}
-                             title={this.isLoaned(b) ? "Emprunté" : "Disponible"}
-                             className={"text-" + (this.isLoaned(b) ? "warning" : "success")}/>
+                             title={b.isLoaned ? "Emprunté" : "Disponible"}
+                             className={"text-" + (b.isLoaned ? "warning" : "success")}/>
                         <span className="mx-3">{b.name}</span>
                         <FAI icon={["fal", "info-square"]} className="ml-auto text-info"
                              title={"Voir le détail des emprunts"}/>
@@ -172,86 +114,5 @@ export default class Bibliotheque extends React.Component {
         );
     }
 
-    renderDetailsModal() {
-        if (!this.state.detailsModal) return null;
 
-        let book = this.state.book;
-
-        if (!book) return (
-            <ModalLayout title="Chargement..." onClose={() => this.setState({detailsModal: false, book: null})}>
-                <Loader/>
-            </ModalLayout>
-        );
-
-        return (
-            <ModalLayout title={book.name}
-                         onClose={() => this.setState({detailsModal: false, book: null})}>
-                <table className="table table-borderless">
-                    <tbody>
-                    <tr>
-                        <th>Emprunté par</th>
-                        <th>du</th>
-                        <th>au</th>
-                    </tr>
-                    {book.loans.sort((a, b) => b.start - a.start).map((l, i) =>
-                        <tr key={i}>
-                            <td>{getName(l.user)}</td>
-                            <td>{getDate(l.start)}</td>
-                            <td>{getDate(l.end) ||
-                            <button className="btn btn-info" onClick={() => this.sendLoan(l.user.id, book.id)}>
-                                <FAI icon={["far", "check"]}/>
-                                <span className="ml-1">Rendu</span>
-                            </button>
-                            }</td>
-                        </tr>
-                    )}
-                    {!this.isLoaned(book) &&
-                    <tr>
-                        <td>
-                            <select className="form-control" value={this.state.selectedUser}
-                                    onChange={e => this.setState({selectedUser: e.target.value})}>
-                                {this.state.allUsers.map(u =>
-                                    <option value={u.id} key={u.id}>{getName(u)}</option>
-                                )}
-                            </select>
-                        </td>
-                        <td colSpan={2}>
-                            <button className="btn btn-info w-100"
-                                    onClick={() => this.sendLoan(this.state.selectedUser, book.id)}>
-                                Emprunter
-                            </button>
-                        </td>
-                    </tr>
-                    }
-                    </tbody>
-                </table>
-            </ModalLayout>
-        );
-    }
-
-    renderCreateModal() {
-        if (!this.state.createModal) return null;
-        let f = this.state.form;
-        return (
-            <ModalLayout title="Ajouter un livre"
-                         onClose={() => this.setState({createModal: false})}>
-                <div className="row">
-                    <div className="col-12">
-                        <input type="text" placeholder="Nom" className="form-control my-1"
-                               value={f.name} onChange={e => this.updateField("name", e.target.value)}/>
-                    </div>
-                    {this.state.alert &&
-                    <div className="col-12">
-                        <div className={"my-1 alert alert-" + this.state.alertType}>{this.state.alert}</div>
-                    </div>
-                    }
-                    <div className="col-12">
-                        <button type="button" className="btn btn-info w-100 my-1" onClick={this.send}>
-                            Enregistrer
-                        </button>
-                    </div>
-                </div>
-            </ModalLayout>
-        );
-    }
 }
