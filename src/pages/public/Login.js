@@ -1,4 +1,3 @@
-import {apiUrl} from "config";
 import $ from 'jquery';
 import PublicLayout from "layouts/PublicLayout";
 import React from "react";

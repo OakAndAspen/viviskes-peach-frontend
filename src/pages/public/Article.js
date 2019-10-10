@@ -1,7 +1,5 @@
 import Breadcrumbs from "components/Breadcrumbs";
 import Loader from "components/Loader";
-import {apiUrl} from "config";
-import $ from "jquery";
 import PublicLayout from "layouts/PublicLayout";
 import React from "react";
 import {api, getDate} from "utils";
