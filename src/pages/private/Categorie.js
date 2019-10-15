@@ -13,7 +13,8 @@ export default class Categorie extends React.Component {
 
     state = {
         modal: false,
-        category: null
+        category: null,
+        topics: []
     };
 
     constructor(props) {
@@ -23,14 +24,24 @@ export default class Categorie extends React.Component {
 
     componentDidMount() {
         this.getCategory();
+        this.getTopics();
     }
 
     getCategory() {
         api("GET", "/category/" + this.props.match.params.category, {}, ({status, data}) => {
             if(data) {
-                data.topics = data.topics.sort((a, b) => b.lastMessage.created.localeCompare(a.lastMessage.created));
-                data.topics = data.topics.sort((a, b) => b.pinned - a.pinned);
                 this.setState({category: data});
+            }
+        });
+    }
+
+    getTopics() {
+        let form = {mode: "category", category:this.props.match.params.category};
+        api("GET", "/topic", form, ({status, data}) => {
+            if(data) {
+                data = data.sort((a, b) => b.lastMessage.created.localeCompare(a.lastMessage.created));
+                data = data.sort((a, b) => b.pinned - a.pinned);
+                this.setState({topics: data});
             }
         });
     }
@@ -58,7 +69,7 @@ export default class Categorie extends React.Component {
                         </div>
                     </div>
                     <ul className="list-group">
-                        {this.state.category.topics.map(t => this.renderTopic(t))}
+                        {this.state.topics.map(t => this.renderTopic(t))}
                     </ul>
                 </div>
                 {this.state.modal &&

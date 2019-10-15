@@ -58,7 +58,7 @@ export default class Sujet extends React.Component {
         this.setState({topic: topic});
 
         let data = {pinned: this.state.topic.pinned};
-        api("PUT", "/topic/" + this.state.topic.id, data, ({status, data}) => {});
+        api("PUT", "/topic/" + this.state.topic.id, {topic: data}, ({status, data}) => {});
     }
 
     render() {

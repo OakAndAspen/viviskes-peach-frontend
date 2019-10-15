@@ -25,10 +25,8 @@ export default class Forum extends React.Component {
     }
 
     getTopics() {
-        api("GET", "/topic", {}, ({status, data}) => {
+        api("GET", "/topic", {mode: "recent"}, ({status, data}) => {
             if (data) {
-                data = data.sort((a,b) => b.lastMessage.created.localeCompare(a.lastMessage.created));
-                data = data.slice(0,5);
                 this.setState({recentTopics: data});
             }
         });
