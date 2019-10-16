@@ -1,6 +1,6 @@
-import moment from "moment";
 import {apiUrl} from "config";
 import $ from "jquery";
+import moment from "moment";
 
 export function getName(user, short = false, withCeltic = false) {
     let name = user.firstName + " ";

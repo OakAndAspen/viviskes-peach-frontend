@@ -1,6 +1,6 @@
+import ModalLayout from "layouts/ModalLayout";
 import React from "react";
 import {api} from "utils";
-import ModalLayout from "layouts/ModalLayout";
 
 export default class CreateTopicModal extends React.Component {
 

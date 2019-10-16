@@ -1,10 +1,10 @@
 import {FontAwesomeIcon as FAI} from "@fortawesome/react-fontawesome";
 import Breadcrumbs from "components/Breadcrumbs";
-import CreateEventModal from "modals/CreateEventModal";
 import UnreadBadge from "components/UnreadBadge";
 import {privacy} from "config";
 import PrivateLayout from "layouts/PrivateLayout";
 import TableLayout from "layouts/TableLayout";
+import CreateEventModal from "modals/CreateEventModal";
 import React from "react";
 import {api, fromNow, getDate, isFuture} from "utils";
 

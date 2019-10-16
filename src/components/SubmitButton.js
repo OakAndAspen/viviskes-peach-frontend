@@ -1,7 +1,7 @@
 import cn from "classnames";
 import IconText from "components/IconText";
-import React from "react";
 import PropTypes from 'prop-types';
+import React from "react";
 
 export default class SubmitButton extends React.Component {
     render() {

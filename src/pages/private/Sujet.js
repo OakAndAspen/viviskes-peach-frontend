@@ -3,9 +3,9 @@ import Avatar from "components/Avatar";
 import Breadcrumbs from "components/Breadcrumbs";
 import Loader from "components/Loader";
 import PinnedBadge from "components/PinnedBadge";
-import ModalLayout from "layouts/ModalLayout";
 import PrivateLayout from "layouts/PrivateLayout";
 import TableLayout from "layouts/TableLayout";
+import UpdateMessageModal from "modals/UpdateMessageModal";
 import UpdateTopicModal from "modals/UpdateTopicModal";
 import React from "react";
 import {api, fromNow, getName} from "utils";
@@ -15,7 +15,10 @@ export default class Sujet extends React.Component {
     state = {
         topic: null,
         modal: null,
-        loading: false
+        message: null,
+        textBox: "",
+        loading: false,
+        user: JSON.parse(localStorage.user)
     };
 
     constructor(props) {
@@ -36,19 +39,19 @@ export default class Sujet extends React.Component {
     }
 
     createMessage() {
-        if (!this.state.message) return null;
+        if (!this.state.textBox) return null;
 
         this.setState({loading: true});
 
-        let data = {
+        let message = {
             topic: this.state.topic.id,
-            content: this.state.message
+            content: this.state.textBox
         };
 
-        api("POST", "/message", data, ({status, data}) => {
+        api("POST", "/message", {message: message}, ({status, data}) => {
             if (status === 201) {
                 this.getTopic();
-                this.setState({loading: false, message: ""});
+                this.setState({loading: false, textBox: ""});
             }
         });
     }
@@ -102,7 +105,11 @@ export default class Sujet extends React.Component {
                 {this.state.modal === "updateTopic" && <UpdateTopicModal
                     topic={this.state.topic}
                     onClose={() => this.setState({modal: null})}
-                    onUpdate={updatedTopic => this.setState({topic:updatedTopic})}/>}
+                    onUpdate={updatedTopic => this.setState({topic: updatedTopic})}/>}
+                {this.state.modal === "updateMessage" && <UpdateMessageModal
+                    message={this.state.message}
+                    onClose={() => this.setState({modal: null})}
+                    onUpdate={this.getTopic}/>}
             </PrivateLayout>
         );
     }
@@ -112,11 +119,28 @@ export default class Sujet extends React.Component {
             <TableLayout>
                 {this.state.topic.messages.map(m =>
                     <tr key={m.id}>
-                        <td><Avatar/></td>
+                        <td className="d-none d-sm-table-cell" valign="top">
+                            <Avatar user={m.author}/>
+                        </td>
                         <td>
                             <div className="d-flex mb-2">
                                 <span className="text-muted small-caps">{getName(m.author, true)}</span>
-                                <span className="text-muted ml-auto">{fromNow(m.created)}</span> <br/>
+                                <span className="ml-auto">
+                                    {this.state.user.id === m.author.id &&
+                                    <span className="pointer text-info mr-2" title="Modifier le message"
+                                          onClick={() => this.setState({message: m, modal: "updateMessage"})}>
+                                        <FAI icon="pencil"/>
+                                    </span>
+                                    }
+                                    {m.created !== m.edited &&
+                                    <span className="text-secondary mr-2" title="Ce message a été modifié">
+                                        <FAI icon="pencil"/>
+                                    </span>
+                                    }
+                                    <span className="text-muted">
+                                        {fromNow(m.created)}
+                                    </span>
+                                </span>
                             </div>
                             <span>{m.content}</span>
                         </td>
@@ -129,8 +153,8 @@ export default class Sujet extends React.Component {
     renderForm() {
         return (
             <div className="input-group mt-2">
-                <textarea className="form-control" placeholder="Ma réponse..." value={this.state.message}
-                          onChange={e => this.setState({message: e.target.value})}/>
+                <textarea className="form-control" placeholder="Ma réponse..." value={this.state.textBox}
+                          onChange={e => this.setState({textBox: e.target.value})}/>
                 <div className="input-group-append">
                     <button className="btn btn-info ml-auto w-100" onClick={this.createMessage}>
                         {this.state.loading ?

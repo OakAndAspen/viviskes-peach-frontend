@@ -1,5 +1,6 @@
 import {FontAwesomeIcon as FAI} from "@fortawesome/react-fontawesome";
 import cn from "classnames";
+import PropTypes from "prop-types";
 import React from "react";
 
 export default class IconText extends React.Component {
@@ -12,3 +13,9 @@ export default class IconText extends React.Component {
         );
     }
 }
+
+IconText.propTypes = {
+    icon: PropTypes.string,
+    text: PropTypes.string,
+    spin: PropTypes.bool
+};

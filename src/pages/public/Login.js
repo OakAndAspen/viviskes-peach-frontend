@@ -29,6 +29,7 @@ export default class Login extends React.Component {
             if (data.error) this.setState({loginError: data.error});
             else {
                 localStorage.authKey = data.authKey;
+                localStorage.user = JSON.stringify(data.user);
                 this.setState({authKey: data.authKey});
             }
         });

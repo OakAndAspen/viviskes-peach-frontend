@@ -1,7 +1,7 @@
 import {FontAwesomeIcon as FAI} from "@fortawesome/react-fontawesome";
+import PrivateLayout from "layouts/PrivateLayout";
 import CreateBookModal from "modals/CreateBookModal";
 import UpdateBookModal from "modals/UpdateBookModal";
-import PrivateLayout from "layouts/PrivateLayout";
 import React from "react";
 import {api} from "utils";
 
