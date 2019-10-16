@@ -7,6 +7,6 @@ export default class UnreadBadge extends React.Component {
         let title = this.props.read ? "" : "Y'a du nouveau!";
 
         return <FAI icon={[style, "circle"]} title={title}
-                                className="text-info display-4"/>;
+                    className="text-info"/>;
     }
 }

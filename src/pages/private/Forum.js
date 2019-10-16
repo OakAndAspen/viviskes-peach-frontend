@@ -40,15 +40,11 @@ export default class Forum extends React.Component {
                     <div className="row">
                         <div className="col-12 col-md-8 mb-2">
                             <h2 className="text-center my-3">Sujets récents</h2>
-                            <ul className="list-group">
-                                {this.state.recentTopics.map(t => this.renderRecentTopic(t))}
-                            </ul>
+                            {this.renderRecentTopics()}
                         </div>
                         <div className="col-12 col-md-4 mb-2">
                             <h2 className="text-center my-3">Catégories</h2>
-                            <div className="row">
-                                {this.state.categories.map(c => this.renderCategory(c))}
-                            </div>
+                            {this.renderCategories()}
                         </div>
                     </div>
                 </div>
@@ -56,36 +52,46 @@ export default class Forum extends React.Component {
         );
     }
 
-    renderRecentTopic(t) {
+    renderRecentTopics() {
         return (
-            <Link className="list-group-item list-group-item-action d-flex align-items-center" key={t.id}
-                  to={"/intranet/forum/topic/" + t.id}>
-                <div className="pr-3">
-                    <UnreadBadge read={t.read}/>
-                </div>
-                <div>
-                    <span className="small-caps">
-                        {t.category ? t.category.label : t.event.title}
-                        <FAI icon={["fal", "angle-double-right"]} className="mx-2"/>
-                        {t.title}
-                    </span>
-                    <span className="d-block">
-                    {getName(t.lastMessage.author, true)} a posté {fromNow(t.lastMessage.created)}
-                    </span>
-                </div>
-            </Link>
+            <ul className="list-group">
+                {this.state.recentTopics.map(t => {
+                    return (
+                        <Link className="list-group-item list-group-item-action d-flex align-items-center" key={t.id}
+                              to={"/intranet/forum/topic/" + t.id}>
+                            <div className="pr-3">
+                                <UnreadBadge read={t.read}/>
+                            </div>
+                            <div>
+                                <span className="small-caps">
+                                    {t.category ? t.category.label : t.event.title}
+                                    <FAI icon={["fal", "angle-double-right"]} className="mx-2"/>
+                                    {t.title}
+                                </span>
+                                <span className="d-block">
+                                {getName(t.lastMessage.author, true)} a posté {fromNow(t.lastMessage.created)}
+                                </span>
+                            </div>
+                        </Link>
+                    );
+                })}
+            </ul>
         );
     }
 
-    renderCategory(c) {
+    renderCategories() {
         return (
-            <div className="col-6 pb-2" key={c.id}>
-                <Link type="button" to={"/intranet/forum/" + c.id}
-                      className="btn btn-light w-100 h-100 d-flex align-items-center justify-content-center">
-                    {!c.read && <span className="mr-2"><UnreadBadge read={c.read}/></span>}
-                    <span className="display-4 small-caps">{c.label}</span>
-                </Link>
-            </div>
+            <ul className="list-group">
+                {this.state.categories.map(c => {
+                    return (
+                        <Link to={"/intranet/forum/" + c.id} key={c.id}
+                              className="list-group-item list-group-item-action">
+                            <span className="mr-2"><UnreadBadge read={c.read}/></span>
+                            <span className="small-caps">{c.label}</span>
+                        </Link>
+                    );
+                })}
+            </ul>
         );
     }
 }
