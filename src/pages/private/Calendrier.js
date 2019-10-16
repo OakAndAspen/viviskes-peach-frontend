@@ -1,6 +1,6 @@
 import {FontAwesomeIcon as FAI} from "@fortawesome/react-fontawesome";
 import Breadcrumbs from "components/Breadcrumbs";
-import EventForm from "components/EventForm";
+import CreateEventModal from "modals/CreateEventModal";
 import UnreadBadge from "components/UnreadBadge";
 import {privacy} from "config";
 import PrivateLayout from "layouts/PrivateLayout";
@@ -57,8 +57,8 @@ export default class Calendrier extends React.Component {
                     </div>
                 </div>
                 {this.state.modal &&
-                <EventForm onSend={this.getEvents}
-                           onClose={() => this.setState({modal: false})}/>}
+                <CreateEventModal onSend={this.getEvents}
+                                  onClose={() => this.setState({modal: false})}/>}
             </PrivateLayout>
         );
     }

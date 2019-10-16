@@ -6,6 +6,7 @@ import PinnedBadge from "components/PinnedBadge";
 import ModalLayout from "layouts/ModalLayout";
 import PrivateLayout from "layouts/PrivateLayout";
 import TableLayout from "layouts/TableLayout";
+import UpdateTopicModal from "modals/UpdateTopicModal";
 import React from "react";
 import {api, fromNow, getName} from "utils";
 
@@ -13,14 +14,14 @@ export default class Sujet extends React.Component {
 
     state = {
         topic: null,
-        modal: false,
-        message: "",
+        modal: null,
         loading: false
     };
 
     constructor(props) {
         super(props);
-        this.send = this.send.bind(this);
+        this.getTopic = this.getTopic.bind(this);
+        this.createMessage = this.createMessage.bind(this);
         this.togglePinned = this.togglePinned.bind(this);
     }
 
@@ -34,7 +35,7 @@ export default class Sujet extends React.Component {
         });
     }
 
-    send() {
+    createMessage() {
         if (!this.state.message) return null;
 
         this.setState({loading: true});
@@ -58,7 +59,8 @@ export default class Sujet extends React.Component {
         this.setState({topic: topic});
 
         let data = {pinned: this.state.topic.pinned};
-        api("PUT", "/topic/" + this.state.topic.id, {topic: data}, ({status, data}) => {});
+        api("PUT", "/topic/" + this.state.topic.id, {topic: data}, ({status, data}) => {
+        });
     }
 
     render() {
@@ -79,23 +81,28 @@ export default class Sujet extends React.Component {
             ];
         }
 
-
         return (
             <PrivateLayout>
                 <Breadcrumbs levels={levels}/>
                 <div className="container py-4" id="Sujet">
-                    <div className="d-flex justify-content-start align-items-top mb-2">
-                        <span onClick={this.togglePinned} className="mr-3 display-3 pointer">
+                    <div className="d-flex justify-content-start align-items-center mb-2">
+                        <span onClick={this.togglePinned} className="display-3 pointer">
                             <PinnedBadge pinned={topic.pinned}/>
                         </span>
-                        <h3>{topic.title}</h3>
+                        <h3 className="my-0 mx-2">{topic.title}</h3>
+                        <span onClick={() => this.setState({modal: "updateTopic"})} className="pointer">
+                            <FAI icon={"pencil"} className={"text-info"}/>
+                        </span>
                     </div>
                     {LinkToBottom}
                     {this.renderMessages()}
                     {this.renderForm()}
                     {LinkToTop}
                 </div>
-                {this.state.modal && this.renderModal()}
+                {this.state.modal === "updateTopic" && <UpdateTopicModal
+                    topic={this.state.topic}
+                    onClose={() => this.setState({modal: null})}
+                    onUpdate={updatedTopic => this.setState({topic:updatedTopic})}/>}
             </PrivateLayout>
         );
     }
@@ -125,7 +132,7 @@ export default class Sujet extends React.Component {
                 <textarea className="form-control" placeholder="Ma réponse..." value={this.state.message}
                           onChange={e => this.setState({message: e.target.value})}/>
                 <div className="input-group-append">
-                    <button className="btn btn-info ml-auto w-100" onClick={this.send}>
+                    <button className="btn btn-info ml-auto w-100" onClick={this.createMessage}>
                         {this.state.loading ?
                             <FAI icon="axe" className="fa-spin mr-2"/> :
                             <FAI icon="paper-plane" className="mr-2"/>}
@@ -133,15 +140,6 @@ export default class Sujet extends React.Component {
                     </button>
                 </div>
             </div>
-        );
-    }
-
-    renderModal() {
-        return (
-            <ModalLayout title="Répondre" onClose={() => this.setState({modal: false})}>
-                <textarea className="form-control my-2" placeholder="Message"/>
-                <button type="button" className="btn btn-info w-100">Poster</button>
-            </ModalLayout>
         );
     }
 }

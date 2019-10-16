@@ -2,7 +2,7 @@ import {FontAwesomeIcon as FAI} from "@fortawesome/react-fontawesome";
 import Breadcrumbs from "components/Breadcrumbs";
 import Loader from "components/Loader";
 import PinnedBadge from "components/PinnedBadge";
-import TopicForm from "components/TopicForm";
+import CreateTopicModal from "modals/CreateTopicModal";
 import UnreadBadge from "components/UnreadBadge";
 import PrivateLayout from "layouts/PrivateLayout";
 import React from "react";
@@ -73,8 +73,8 @@ export default class Categorie extends React.Component {
                     </ul>
                 </div>
                 {this.state.modal &&
-                <TopicForm onSend={this.getCategory} category={this.state.category}
-                           onClose={() => this.setState({modal: false})}/>
+                <CreateTopicModal onSend={this.getCategory} category={this.state.category}
+                                  onClose={() => this.setState({modal: false})}/>
                 }
             </PrivateLayout>
         );

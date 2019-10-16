@@ -1,8 +1,8 @@
 import React from "react";
 import {api} from "utils";
-import ModalLayout from "../layouts/ModalLayout";
+import ModalLayout from "layouts/ModalLayout";
 
-export default class TopicForm extends React.Component {
+export default class CreateTopicModal extends React.Component {
 
     state = {
         title: "",

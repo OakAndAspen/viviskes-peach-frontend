@@ -3,7 +3,7 @@ import Breadcrumbs from "components/Breadcrumbs";
 import Loader from "components/Loader";
 import ParticipationBadge from "components/ParticipationBadge";
 import PinnedBadge from "components/PinnedBadge";
-import TopicForm from "components/TopicForm";
+import CreateTopicModal from "modals/CreateTopicModal";
 import UnreadBadge from "components/UnreadBadge";
 import {privacy} from "config";
 import PrivateLayout from "layouts/PrivateLayout";
@@ -68,8 +68,8 @@ export default class Evenement extends React.Component {
                     </div>
                 </div>
                 {this.state.modal &&
-                <TopicForm onSend={this.getEvent} event={this.state.event}
-                           onClose={() => this.setState({modal: false})}/>
+                <CreateTopicModal onSend={this.getEvent} event={this.state.event}
+                                  onClose={() => this.setState({modal: false})}/>
                 }
             </PrivateLayout>
         );
