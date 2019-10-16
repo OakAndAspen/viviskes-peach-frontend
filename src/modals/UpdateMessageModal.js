@@ -1,3 +1,5 @@
+import InlineEditor from "@ckeditor/ckeditor5-build-inline";
+import CKEditor from "@ckeditor/ckeditor5-react";
 import SubmitButton from "components/SubmitButton";
 import ModalLayout from "layouts/ModalLayout";
 import React from "react";
@@ -33,8 +35,18 @@ export default class UpdateMessageModal extends React.Component {
     render() {
         return (
             <ModalLayout title="Modifier le message" onClose={this.props.onClose}>
-                <input type="text" className="form-control my-2" placeholder="Message"
-                       value={this.state.content} onChange={e => this.setState({content: e.target.value})}/>
+                <CKEditor
+                    style={{backgroundColor:"white"}}
+                    editor={InlineEditor}
+                    data={this.state.content}
+                    config={{
+                        placeholder: "Message"
+                    }}
+                    onChange={(event, editor) => {
+                        const data = editor.getData();
+                        this.setState({content: data});
+                    }}
+                />
                 <SubmitButton text={"Enregistrer"} status={this.state.status} onClick={this.send}/>
             </ModalLayout>
         );

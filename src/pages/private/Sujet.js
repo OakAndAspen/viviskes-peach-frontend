@@ -1,3 +1,5 @@
+import InlineEditor from "@ckeditor/ckeditor5-build-inline";
+import CKEditor from '@ckeditor/ckeditor5-react';
 import {FontAwesomeIcon as FAI} from "@fortawesome/react-fontawesome";
 import Avatar from "components/Avatar";
 import Breadcrumbs from "components/Breadcrumbs";
@@ -142,7 +144,13 @@ export default class Sujet extends React.Component {
                                     </span>
                                 </span>
                             </div>
-                            <span>{m.content}</span>
+                            <div>
+                                <CKEditor
+                                    editor={InlineEditor}
+                                    disabled={true}
+                                    data={m.content}
+                                />
+                            </div>
                         </td>
                     </tr>
                 )}
@@ -152,18 +160,43 @@ export default class Sujet extends React.Component {
 
     renderForm() {
         return (
-            <div className="input-group mt-2">
-                <textarea className="form-control" placeholder="Ma réponse..." value={this.state.textBox}
-                          onChange={e => this.setState({textBox: e.target.value})}/>
-                <div className="input-group-append">
-                    <button className="btn btn-info ml-auto w-100" onClick={this.createMessage}>
-                        {this.state.loading ?
-                            <FAI icon="axe" className="fa-spin mr-2"/> :
-                            <FAI icon="paper-plane" className="mr-2"/>}
-                        <span className="d-none d-sm-inline">Envoyer</span>
-                    </button>
+            <div className="mt-2 row">
+                <div className="col-12 col-md-9 pr-md-0">
+                    <CKEditor
+                        style={{backgroundColor:"white"}}
+                        editor={InlineEditor}
+                        data={this.state.textBox}
+                        config={{
+                            placeholder: "Ma réponse..."
+                        }}
+                        onChange={(event, editor) => {
+                            const data = editor.getData();
+                            this.setState({textBox: data});
+                        }}
+                    />
+                </div>
+                <div className="d-none d-md-inline-flex col-md-3 pl-0">
+                    {this.renderSubmitButton(true)}
+                </div>
+                <div className="d-md-none col-12">
+                    {this.renderSubmitButton(false)}
                 </div>
             </div>
+        );
+    }
+
+    renderSubmitButton(inline) {
+        let style = {
+            borderRadius: inline ? "0 5px 5px 0" : "0 0 5px 5px"
+        };
+
+        return (
+            <button className="btn btn-info h-100 w-100" onClick={this.createMessage} style={style}>
+                {this.state.loading ?
+                    <FAI icon="axe" className="fa-spin mr-2"/> :
+                    <FAI icon="paper-plane" className="mr-2"/>}
+                <span>Envoyer</span>
+            </button>
         );
     }
 }
