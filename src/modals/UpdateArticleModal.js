@@ -4,7 +4,7 @@ import ModalLayout from "layouts/ModalLayout";
 import React from "react";
 import {api} from "utils";
 
-export default class UpsertArticleModal extends React.Component {
+export default class UpdateArticleModal extends React.Component {
 
     state = {
         status: "",

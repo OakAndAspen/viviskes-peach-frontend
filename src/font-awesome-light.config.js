@@ -6,6 +6,8 @@ import {
     faAngleDoubleUp,
     faAxe,
     faBook,
+    faCheck,
+    faCheckCircle,
     faCircle,
     faDownload,
     faEye,
@@ -16,6 +18,7 @@ import {
     faSpinner,
     faStar,
     faSwords,
+    faTimes,
     faUserCheck,
     faUserCircle,
     faUserCog
@@ -28,6 +31,8 @@ library.add(
     faAngleDoubleUp,
     faAxe,
     faBook,
+    faCheck,
+    faCheckCircle,
     faCircle,
     faDownload,
     faEye,
@@ -38,6 +43,7 @@ library.add(
     faSpinner,
     faStar,
     faSwords,
+    faTimes,
     faUserCheck,
     faUserCircle,
     faUserCog

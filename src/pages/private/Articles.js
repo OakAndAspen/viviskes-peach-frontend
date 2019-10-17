@@ -1,6 +1,8 @@
 import {FontAwesomeIcon as FAI} from "@fortawesome/react-fontawesome";
+import cn from "classnames";
 import PrivateLayout from "layouts/PrivateLayout";
 import CreateArticleModal from "modals/CreateArticleModal";
+import ShowArticleModal from "modals/ShowArticleModal";
 import UpdateArticleModal from "modals/UpdateArticleModal";
 import React from "react";
 import {api, getDate, getName} from "utils";
@@ -32,9 +34,19 @@ export default class Articles extends React.Component {
         });
     }
 
-    showDetails(id) {
+    showDetails(id, edit) {
         api("GET", "/article/" + id, {}, ({status, data}) => {
-            if (data) this.setState({article: data, modal: "updateArticle"});
+            let modal = edit ? "updateArticle" : "showArticle";
+            if (data) this.setState({article: data, modal: modal});
+        });
+    }
+
+    toggleValidation(article) {
+        let form = {isPublished: !article.isPublished};
+        api("PUT", "/article/" + article.id, {article: form}, ({status, data}) => {
+            if (status === 200) {
+                this.getArticles();
+            }
         });
     }
 
@@ -56,6 +68,9 @@ export default class Articles extends React.Component {
                     article={this.state.article}
                     onClose={() => this.setState({modal: null, article: null})}
                     onUpdate={this.getArticles}/>}
+                {this.state.modal === "showArticle" && <ShowArticleModal
+                    article={this.state.article}
+                    onClose={() => this.setState({modal: null, article: null})}/>}
             </PrivateLayout>
         );
     }
@@ -84,28 +99,65 @@ export default class Articles extends React.Component {
 
         return (
             <ul className="list-group">
-                {articles.map(a =>
-                    <li className="list-group-item d-flex" key={a.id}>
-                        <span>
-                            {a.isPublished ?
-                                <FAI icon={["fal", "check-circle"]} title={"Publié"}/>
-                                : <FAI icon={["fal", "spinner"]} title={"En attente de validation"}/>}
-                        </span>
-                        <span className="mx-3">
-                            <span>{a.title}</span>
-                            {this.state.user.id === a.author.id &&
-                            <span className="ml-2 text-info pointer" title="Modifier l'article"
-                                  onClick={() => this.showDetails(a.id)}>
-                                <FAI icon={["fal", "pen"]}/>
-                            </span>
-                            }
-                            <br/>
-                            <small className="text-muted">Par {getName(a.author)}</small>
-                        </span>
-                        <span className="ml-auto">{getDate(a.created)}</span>
-                    </li>
+                {articles.map(a => {
+                        return (
+                            <li className="list-group-item d-flex" key={a.id}>
+                                <span>
+                                    <FAI icon={["fas", "feather-alt"]}/>
+                                </span>
+                                {this.renderInfo(a)}
+                                {this.renderActions(a)}
+                            </li>
+                        );
+                    }
                 )}
             </ul>
+        );
+    }
+
+    renderInfo(article) {
+        return (
+            <span className="mx-3">
+                <span>
+                    <span className="text-center mr-2">
+                    {article.isPublished ?
+                        <FAI icon={["fal", "check-circle"]} title={"Publié"}/> :
+                        <FAI icon={["fal", "spinner"]} title={"En attente de validation"}/>}
+                    </span>
+                    {article.title}
+                </span>
+                <br/>
+                <small className="text-muted">
+                    Par {getName(article.author)} | {getDate(article.created)}
+                </small>
+            </span>
+        );
+    }
+
+    renderActions(article) {
+        let isAdmin = this.state.user.isAdmin;
+        let isPublished = article.isPublished;
+
+        return (
+            <span className="ml-auto d-flex justify-content-end">
+                {this.state.user.id === article.author.id &&
+                <span className="ml-2 text-info pointer" title="Modifier l'article"
+                      onClick={() => this.showDetails(article.id, true)}>
+                    <FAI icon={["fal", "pen"]}/>
+                </span>}
+
+                {isAdmin &&
+                <span className={cn("pointer ml-2", isPublished ? "text-danger" : "text-success")}
+                      title={isPublished ? "Dépublier" : "Publier"}
+                      onClick={() => this.toggleValidation(article)}>
+                    <FAI icon={["fal", isPublished ? "times" : "check"]}/>
+                </span>}
+
+                <span className="ml-2 text-info pointer" title="Lire l'article"
+                      onClick={() => this.showDetails(article.id, false)}>
+                    <FAI icon={["fal", "eye"]}/>
+                </span>
+            </span>
         );
     }
 }
