@@ -1,8 +1,7 @@
-import InlineEditor from "@ckeditor/ckeditor5-build-inline";
-import CKEditor from '@ckeditor/ckeditor5-react';
 import {FontAwesomeIcon as FAI} from "@fortawesome/react-fontawesome";
 import Avatar from "components/Avatar";
 import Breadcrumbs from "components/Breadcrumbs";
+import CustomEditor from 'components/CustomEditor';
 import Loader from "components/Loader";
 import PinnedBadge from "components/PinnedBadge";
 import WysiwygDisplay from "components/WysiwygDisplay";
@@ -159,18 +158,8 @@ export default class Sujet extends React.Component {
         return (
             <div className="mt-2 row">
                 <div className="col-12 col-md-9 pr-md-0">
-                    <CKEditor
-                        style={{backgroundColor:"white"}}
-                        editor={InlineEditor}
-                        data={this.state.textBox}
-                        config={{
-                            placeholder: "Ma réponse..."
-                        }}
-                        onChange={(event, editor) => {
-                            const data = editor.getData();
-                            this.setState({textBox: data});
-                        }}
-                    />
+                    <CustomEditor content={this.state.textBox} placeholder={"Ma réponse..."}
+                                  onChange={data => this.setState({textBox: data})} />
                 </div>
                 <div className="d-none d-md-inline-flex col-md-3 pl-0">
                     {this.renderSubmitButton(true)}

@@ -11,7 +11,8 @@ export default class Articles extends React.Component {
         articles: [],
         search: "",
         modal: null,
-        article: null
+        article: null,
+        user: JSON.parse(localStorage.getItem("user"))
     };
 
     constructor(props) {
@@ -84,18 +85,25 @@ export default class Articles extends React.Component {
         return (
             <ul className="list-group">
                 {articles.map(a =>
-                    <button type="button" className="list-group-item list-group-item-action d-flex" key={a.id}
-                            onClick={() => this.showDetails(a.id)}>
-                        <span><FAI icon={["fal", "feather-alt"]}/></span>
+                    <li className="list-group-item d-flex" key={a.id}>
+                        <span>
+                            {a.isPublished ?
+                                <FAI icon={["fal", "check-circle"]} title={"Publié"}/>
+                                : <FAI icon={["fal", "spinner"]} title={"En attente de validation"}/>}
+                        </span>
                         <span className="mx-3">
-                            <span>{a.title}</span><br/>
+                            <span>{a.title}</span>
+                            {this.state.user.id === a.author.id &&
+                            <span className="ml-2 text-info pointer" title="Modifier l'article"
+                                  onClick={() => this.showDetails(a.id)}>
+                                <FAI icon={["fal", "pen"]}/>
+                            </span>
+                            }
+                            <br/>
                             <small className="text-muted">Par {getName(a.author)}</small>
                         </span>
                         <span className="ml-auto">{getDate(a.created)}</span>
-                        <span className="ml-2 text-info" title="Modifier l'article">
-                            <FAI icon={["fal", "pen"]}/>
-                        </span>
-                    </button>
+                    </li>
                 )}
             </ul>
         );

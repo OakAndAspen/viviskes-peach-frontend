@@ -1,16 +1,12 @@
-import {library} from "@fortawesome/fontawesome-svg-core";
-import {fab} from "@fortawesome/free-brands-svg-icons";
-import {fal} from "@fortawesome/pro-light-svg-icons";
-import {far} from "@fortawesome/pro-regular-svg-icons";
-import {fas} from "@fortawesome/pro-solid-svg-icons";
+import "font-awesome-light.config";
+import "font-awesome-regular.config";
+import "font-awesome-solid.config";
 import React, {Component} from "react";
 import Loadable from 'react-loadable';
 import {BrowserRouter as Router, Redirect, Route, Switch} from 'react-router-dom';
 import './App.css';
 import Footer from "./components/Footer";
 import Loader from "./components/Loader";
-
-library.add(fab, far, fas, fal);
 
 class App extends Component {
     render() {
