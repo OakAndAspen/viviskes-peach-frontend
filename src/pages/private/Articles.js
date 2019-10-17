@@ -50,6 +50,14 @@ export default class Articles extends React.Component {
         });
     }
 
+    deleteArticle(article) {
+        api("DELETE", "/article/" + article.id, [],({status, data}) => {
+            if (status === 200) {
+                this.getArticles();
+            }
+        });
+    }
+
     render() {
         return (
             <PrivateLayout>
@@ -157,6 +165,12 @@ export default class Articles extends React.Component {
                       onClick={() => this.showDetails(article.id, false)}>
                     <FAI icon={["fal", "eye"]}/>
                 </span>
+
+                {isAdmin &&
+                <span className="pointer ml-2 text-danger" title="Supprimer (attention, pas de confirmation!)"
+                      onClick={() => this.deleteArticle(article)}>
+                    <FAI icon={["fas", "trash-alt"]}/>
+                </span>}
             </span>
         );
     }
