@@ -1,96 +1,39 @@
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-import CKEditor from '@ckeditor/ckeditor5-react';
 import {FontAwesomeIcon as FAI} from "@fortawesome/react-fontawesome";
-import ModalLayout from "layouts/ModalLayout";
 import PrivateLayout from "layouts/PrivateLayout";
+import CreateArticleModal from "modals/CreateArticleModal";
+import UpdateArticleModal from "modals/UpdateArticleModal";
 import React from "react";
-import {api, getDate} from "utils";
+import {api, getDate, getName} from "utils";
 
 export default class Articles extends React.Component {
 
-    messages = {
-        emptyField: "Le titre et le contenu sont obligatoires.",
-        success: "L'article a bien été enregistré!"
-    };
-
-    defaultArticle = {
-        title: "",
-        content: ""
-    };
-
     state = {
-        allArticles: [],
+        articles: [],
         search: "",
-        modal: false,
-        article: null,
-        newArticle: this.defaultArticle,
-        alert: null,
-        alertType: "danger",
+        modal: null,
+        article: null
     };
 
     constructor(props) {
         super(props);
-        this.send = this.send.bind(this);
+        this.getArticles = this.getArticles.bind(this);
     }
 
     componentDidMount() {
-        this.getAllArticles();
+        this.getArticles();
     }
 
-    getAllArticles() {
+    getArticles() {
         api("GET", "/article", {}, ({status, data}) => {
-            if (data) this.setState({allArticles: data.sort((a, b) => b.created.localeCompare(a.created))});
+            if (data) {
+                this.setState({articles: data.sort((a, b) => b.created.localeCompare(a.created))});
+            }
         });
     }
 
     showDetails(id) {
-        this.setState({modal: true});
-        api("GET", "/article/"+id, {}, ({status, data}) => {
-            if (data) this.setState({article: data});
-        });
-    }
-
-    filterArticles() {
-        let search = this.state.search.toLowerCase();
-        let filtered = this.state.allArticles.filter(u => {
-            if (u.title.toLowerCase().includes(search)) return true;
-            return false;
-        });
-        return filtered;
-    }
-
-    updateField(field, value) {
-        let a = this.state.article || this.state.newArticle;
-        a[field] = value;
-        this.setState({newArticle: a});
-    }
-
-    checkErrors() {
-        let a = this.state.article || this.state.newArticle;
-
-        if (!a.title || !a.content) {
-            this.setState({alert: this.messages.emptyField, alertType: "danger"});
-            return false;
-        }
-
-        return true;
-    }
-
-    send() {
-        if (!this.checkErrors()) return null;
-        let data = this.state.article || this.state.newArticle;
-
-        let method = this.state.article ? "PUT" : "POST";
-        let url = "/article" + (this.state.article ? "/" + this.state.article.id : "");
-        api(method, url, data, ({status, data}) => {
-            this.setState({
-                alert: this.messages.success,
-                alertType: "success",
-                modal: false,
-                newArticle: this.defaultArticle,
-                article: null
-            });
-            this.getAllArticles();
+        api("GET", "/article/" + id, {}, ({status, data}) => {
+            if (data) this.setState({article: data, modal: "updateArticle"});
         });
     }
 
@@ -101,14 +44,17 @@ export default class Articles extends React.Component {
                     <div className="row">
                         <div className="col-12 col-md-8 col-lg-6 mx-auto">
                             {this.renderSearchAndNew()}
-                            {this.state.alert &&
-                            <div className={"alert alert-" + this.state.alertType}>{this.state.alert}</div>
-                            }
                             {this.renderList()}
                         </div>
                     </div>
                 </div>
-                {this.renderModal()}
+                {this.state.modal === "createArticle" && <CreateArticleModal
+                    onClose={() => this.setState({modal: null})}
+                    onCreate={this.getArticles}/>}
+                {this.state.modal === "updateArticle" && <UpdateArticleModal
+                    article={this.state.article}
+                    onClose={() => this.setState({modal: null, article: null})}
+                    onUpdate={this.getArticles}/>}
             </PrivateLayout>
         );
     }
@@ -122,7 +68,7 @@ export default class Articles extends React.Component {
                 </div>
                 <div className="col-12 col-sm-6">
                     <button type="button" className="btn btn-info w-100 my-2"
-                            onClick={() => this.setState({modal: true})}>
+                            onClick={() => this.setState({modal: "createArticle"})}>
                         <FAI icon={"pen-fancy"} className="mr-2"/>
                         <span>Nouvel article</span>
                     </button>
@@ -132,13 +78,19 @@ export default class Articles extends React.Component {
     }
 
     renderList() {
+        let search = this.state.search.toLowerCase();
+        let articles = this.state.articles.filter(u => u.title.toLowerCase().includes(search));
+
         return (
             <ul className="list-group">
-                {this.filterArticles().map(a =>
+                {articles.map(a =>
                     <button type="button" className="list-group-item list-group-item-action d-flex" key={a.id}
                             onClick={() => this.showDetails(a.id)}>
                         <span><FAI icon={["fal", "feather-alt"]}/></span>
-                        <span className="mx-3">{a.title}</span>
+                        <span className="mx-3">
+                            <span>{a.title}</span><br/>
+                            <small className="text-muted">Par {getName(a.author)}</small>
+                        </span>
                         <span className="ml-auto">{getDate(a.created)}</span>
                         <span className="ml-2 text-info" title="Modifier l'article">
                             <FAI icon={["fal", "pen"]}/>
@@ -146,25 +98,6 @@ export default class Articles extends React.Component {
                     </button>
                 )}
             </ul>
-        );
-    }
-
-    renderModal() {
-        if (!this.state.modal) return null;
-        let a = this.state.article || this.state.newArticle;
-
-        return (
-            <ModalLayout title={this.state.article ? "Modifier l'article" : "Nouvel article"}
-                         onClose={() => this.setState({
-                             modal: false, article: null,
-                             newArticle: this.defaultArticle
-                         })}>
-                <input type="text" className="form-control mb-3" placeholder="Titre de l'article"
-                       value={a.title} onChange={e => this.updateField("title", e.target.value)}/>
-                <CKEditor editor={ClassicEditor} data={a.content}
-                          onChange={(event, editor) => this.updateField("content", editor.getData())}/>
-                <button className="btn btn-info w-100 mt-3" onClick={this.send}>Enregistrer</button>
-            </ModalLayout>
         );
     }
 }

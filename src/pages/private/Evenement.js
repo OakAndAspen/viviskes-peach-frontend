@@ -4,6 +4,7 @@ import Loader from "components/Loader";
 import ParticipationBadge from "components/ParticipationBadge";
 import PinnedBadge from "components/PinnedBadge";
 import UnreadBadge from "components/UnreadBadge";
+import WysiwygDisplay from "components/WysiwygDisplay";
 import {privacy} from "config";
 import PrivateLayout from "layouts/PrivateLayout";
 import TableLayout from "layouts/TableLayout";
@@ -81,7 +82,9 @@ export default class Evenement extends React.Component {
             <div className="card">
                 <div className="card-body">
                     <h3 className="card-title">{event.title}</h3>
-                    <p className="card-text">{event.description}</p>
+                    <p className="card-text">
+                        <WysiwygDisplay content={event.description}/>
+                    </p>
                 </div>
                 <ul className="list-group list-group-flush">
                     <li className="list-group-item">{this.renderDate(event)}</li>

@@ -1,3 +1,4 @@
+import CustomEditor from "components/CustomEditor";
 import ModalLayout from "layouts/ModalLayout";
 import React from "react";
 import {api} from "utils";
@@ -48,8 +49,10 @@ export default class CreateTopicModal extends React.Component {
             <ModalLayout title="Créer un sujet" onClose={this.props.onClose}>
                 <input type="text" className="form-control my-2" placeholder="Titre du sujet"
                        value={this.state.title} onChange={e => this.setState({title: e.target.value})}/>
-                <textarea className="form-control my-2" placeholder="Premier message"
-                          value={this.state.message} onChange={e => this.setState({message: e.target.value})}/>
+                <CustomEditor
+                    content={this.state.message} placeholder="Premier message"
+                    onChange={data => this.setState({message: data})}
+                />
                 <button type="button" className="btn btn-info w-100" onClick={this.send}>Poster</button>
             </ModalLayout>
         );

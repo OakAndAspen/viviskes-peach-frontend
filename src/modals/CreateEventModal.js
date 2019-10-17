@@ -1,3 +1,4 @@
+import CustomEditor from "components/CustomEditor";
 import ModalLayout from "layouts/ModalLayout";
 import React from "react";
 import {api} from "utils";
@@ -7,6 +8,7 @@ export default class CreateEventModal extends React.Component {
     state = {
         title: "",
         description: "",
+        publicDescription: "",
         start: "",
         end: "",
         location: "",
@@ -51,12 +53,14 @@ export default class CreateEventModal extends React.Component {
                 </div>
                 <input type="text" className="form-control my-2" placeholder="Lieu"
                        value={this.state.location} onChange={e => this.setState({location: e.target.value})}/>
-                <textarea className="form-control my-2" placeholder="Description interne"
-                          value={this.state.internalDescription}
-                          onChange={e => this.setState({internalDescription: e.target.value})}/>
-                <textarea className="form-control my-2" placeholder="Description publique"
-                          value={this.state.publicDescription}
-                          onChange={e => this.setState({publicDescription: e.target.value})}/>
+                <CustomEditor
+                    content={this.state.description} placeholder="Description interne"
+                    onChange={data => this.setState({description: data})}
+                />
+                <CustomEditor
+                    content={this.state.publicDescription} placeholder="Description publique"
+                    onChange={data => this.setState({publicDescription: data})}
+                />
                 <button type="button" className="btn btn-info w-100" onClick={this.createEvent}>Enregistrer</button>
             </ModalLayout>
         );

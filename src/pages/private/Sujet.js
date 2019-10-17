@@ -5,6 +5,7 @@ import Avatar from "components/Avatar";
 import Breadcrumbs from "components/Breadcrumbs";
 import Loader from "components/Loader";
 import PinnedBadge from "components/PinnedBadge";
+import WysiwygDisplay from "components/WysiwygDisplay";
 import PrivateLayout from "layouts/PrivateLayout";
 import TableLayout from "layouts/TableLayout";
 import UpdateMessageModal from "modals/UpdateMessageModal";
@@ -145,11 +146,7 @@ export default class Sujet extends React.Component {
                                 </span>
                             </div>
                             <div>
-                                <CKEditor
-                                    editor={InlineEditor}
-                                    disabled={true}
-                                    data={m.content}
-                                />
+                                <WysiwygDisplay content={m.content}/>
                             </div>
                         </td>
                     </tr>

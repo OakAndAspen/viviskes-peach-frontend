@@ -16,6 +16,11 @@ export default class Calendrier extends React.Component {
         modal: false
     };
 
+    constructor(props) {
+        super(props);
+        this.getEvents = this.getEvents.bind(this);
+    }
+
     componentDidMount() {
         this.getEvents();
     }
@@ -28,7 +33,7 @@ export default class Calendrier extends React.Component {
                 let pastEvents = data.filter(e => !isFuture(e.start));
                 this.setState({
                     futureEvents: futureEvents,
-                    pastEvents: pastEvents,
+                    pastEvents: pastEvents
                 });
             }
         });

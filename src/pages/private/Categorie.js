@@ -24,7 +24,6 @@ export default class Categorie extends React.Component {
 
     componentDidMount() {
         this.getCategory();
-        this.getTopics();
     }
 
     getCategory() {
@@ -33,6 +32,7 @@ export default class Categorie extends React.Component {
                 this.setState({category: data});
             }
         });
+        this.getTopics();
     }
 
     getTopics() {
