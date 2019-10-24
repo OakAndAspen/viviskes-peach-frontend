@@ -29,7 +29,7 @@ export default class ParticipationBadge extends React.Component {
         let part = this.participation[this.props.status];
 
         return <FAI icon={["fas", part.icon]}
-                                title={part.label}
-                                className={"display-4 text-" + part.color}/>;
+                    title={part.label}
+                    className={"display-4 text-" + part.color}/>;
     }
 }

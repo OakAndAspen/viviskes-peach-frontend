@@ -12,13 +12,14 @@ import CreateTopicModal from "modals/CreateTopicModal";
 import moment from "moment";
 import React from "react";
 import {Link} from "react-router-dom";
-import {api, fromNow, getDate, getDatesBetween, getName, objectToArray} from "utils";
+import {api, fromNow, getDate, getDatesBetween, getName} from "utils";
 
 export default class Evenement extends React.Component {
 
     state = {
         event: null,
-        modal: false
+        modal: false,
+        user: JSON.parse(localStorage.getItem("user"))
     };
 
     constructor(props) {
@@ -41,6 +42,54 @@ export default class Evenement extends React.Component {
         });
     }
 
+    calculateParticipations(dates) {
+        let event = this.state.event;
+        let participations = event.participations;
+        let authUser = this.state.user;
+
+        // Create default participations array
+        let defaultParticipations = [];
+        for (let date of dates) {
+            defaultParticipations.push({
+                date: date,
+                status: "t"
+            });
+        }
+
+        // Create users array with default participations
+        let members = [];
+        members.push({
+            user: authUser,
+            participations: defaultParticipations
+        });
+
+        for (let p of participations) {
+            let existingUser = members.find(u => u.user.id === p.user.id);
+            if (!existingUser) {
+                members.push({
+                    user: p.user,
+                    participations: JSON.parse(JSON.stringify(defaultParticipations))
+                });
+            }
+        }
+
+        // Assign existing participations
+        for (let p of participations) {
+            let date = moment(p.day).format("YYYY-MM-DD");
+            members = members.map(m => {
+                if (m.user.id === p.user.id) {
+                    m.participations = m.participations.map(part => {
+                        if (part.date === date) part.status = p.status;
+                        return part;
+                    });
+                }
+                return m;
+            });
+        }
+
+        return members;
+    }
+
     render() {
         let event = this.state.event;
         if (!event) return <Loader/>;
@@ -54,7 +103,7 @@ export default class Evenement extends React.Component {
                 <div className="container py-4">
                     <div className="row">
                         <div className="col-12 col-md-6 py-2">
-                            {this.renderDetails(event)}
+                            {this.renderDetails()}
                         </div>
                         <div className="col-12 col-md-6 py-2">
                             <button className="btn btn-info w-100 mb-2" onClick={() => this.setState({modal: true})}>
@@ -64,7 +113,7 @@ export default class Evenement extends React.Component {
                             {this.renderTopics()}
                         </div>
                         <div className="col-12 py-2">
-                            {this.renderParticipants(event)}
+                            {this.renderParticipants()}
                         </div>
                     </div>
                 </div>
@@ -76,8 +125,8 @@ export default class Evenement extends React.Component {
         );
     }
 
-    renderDetails(event) {
-        if (!event) return null;
+    renderDetails() {
+        let event = this.state.event;
         return (
             <div className="card">
                 <div className="card-body">
@@ -97,7 +146,8 @@ export default class Evenement extends React.Component {
         );
     }
 
-    renderDate(event) {
+    renderDate() {
+        let event = this.state.event;
         return (
             <span>
                 <FAI icon={["far", "calendar-alt"]} className="mr-2"/>
@@ -112,33 +162,10 @@ export default class Evenement extends React.Component {
         );
     }
 
-    renderParticipants(event) {
+    renderParticipants() {
+        let event = this.state.event;
         let dates = getDatesBetween(event.start, event.end);
-        let defaultParticipations = {};
-        for (let date of dates) defaultParticipations[date] = {
-            date: date,
-            status: "t"
-        };
-
-        let members = {};
-        for (let p of event.participations) {
-            let date = moment(p.day).format("YYYY-MM-DD");
-            if (!members[p.user.id]) {
-                members[p.user.id] = {
-                    user: p.user,
-                    participations: JSON.parse(JSON.stringify(defaultParticipations))
-                };
-            }
-            if (members[p.user.id].participations[date]) {
-                members[p.user.id].participations[date].status = p.status;
-            }
-        }
-
-        members = objectToArray(members);
-        members = members.map(m => {
-            m.participations = objectToArray(m.participations);
-            return m;
-        });
+        let array = this.calculateParticipations(dates);
 
         return (
             <div className="w-100 overflow-auto my-3">
@@ -155,11 +182,13 @@ export default class Evenement extends React.Component {
                             );
                         })}
                     </tr>
-                    {members.map(m =>
-                        <tr>
+                    {array.map(m =>
+                        <tr key={m.user.id}>
                             <td>{getName(m.user, true)}</td>
                             {m.participations.map(p =>
-                                <td className="text-center"><ParticipationBadge status={p.status}/></td>
+                                <td className="text-center" key={m.id + "-" + p.date}>
+                                    <ParticipationBadge status={p.status}/>
+                                </td>
                             )}
                         </tr>
                     )}

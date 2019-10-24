@@ -42,7 +42,6 @@ export function getDatesBetween(start, end) {
             dates.push(currentDay.format("YYYY-MM-DD"));
         }
     }
-    console.log("Dates", dates);
     return dates;
 }
 

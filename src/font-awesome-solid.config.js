@@ -1,9 +1,10 @@
 import {library} from "@fortawesome/fontawesome-svg-core";
 
 import {
+    faArrowRight,
     faAxe,
     faCalendar,
-    faCalendarDay,
+    faCalendarDay, faCheck,
     faCircle,
     faEye,
     faFeatherAlt,
@@ -46,5 +47,7 @@ library.add(
     faTimes,
     faTrashAlt,
     faUserCircle,
-    faUserFriends
+    faUserFriends,
+    faArrowRight,
+    faCheck
 );
