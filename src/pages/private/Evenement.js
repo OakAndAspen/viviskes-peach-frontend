@@ -10,6 +10,7 @@ import {privacy} from "config";
 import PrivateLayout from "layouts/PrivateLayout";
 import TableLayout from "layouts/TableLayout";
 import CreateTopicModal from "modals/CreateTopicModal";
+import UpdateEventModal from "modals/UpdateEventModal";
 import UpdateParticipationModal from "modals/UpdateParticipationModal";
 import moment from "moment";
 import React from "react";
@@ -120,8 +121,14 @@ export default class Evenement extends React.Component {
                         </div>
                     </div>
                 </div>
+
+                {/* --- MODALS --- >*/}
                 {this.state.modal === "createTopic" &&
                 <CreateTopicModal onSend={this.getEvent} event={this.state.event}
+                                  onClose={() => this.setState({modal: null})}/>
+                }
+                {this.state.modal === "updateEvent" &&
+                <UpdateEventModal onSend={this.getEvent} event={this.state.event}
                                   onClose={() => this.setState({modal: null})}/>
                 }
                 {this.state.modal === "updateParticipation" &&
@@ -141,13 +148,25 @@ export default class Evenement extends React.Component {
         return (
             <div className="card">
                 <div className="card-body">
-                    <h3 className="card-title">{event.title}</h3>
+                    <h3 className="card-title">
+                        {event.title}
+                        <small className="ml-2 pointer text-info" title="Modifier l'évènement"
+                               onClick={() => this.setState({modal: "updateEvent"})}>
+                            <FAI icon="pencil"/>
+                        </small>
+                    </h3>
                     <p className="card-text">
                         <WysiwygDisplay content={event.description}/>
                     </p>
                 </div>
                 <ul className="list-group list-group-flush">
-                    <li className="list-group-item">{this.renderDate(event)}</li>
+                    <li className="list-group-item">
+                        {this.renderDate(event)}
+                    </li>
+                    <li className="list-group-item">
+                        <FAI icon="map-marker-alt" className="mr-2"/>
+                        {event.location}
+                    </li>
                     <li className="list-group-item">
                         <FAI icon="eye" className="mr-2"/>
                         {privacy[event.privacy]}
