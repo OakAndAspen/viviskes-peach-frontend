@@ -1,5 +1,6 @@
 import {FontAwesomeIcon as FAI} from "@fortawesome/react-fontawesome";
 import React from "react";
+import PropTypes from 'prop-types';
 
 export default class ParticipationBadge extends React.Component {
     participation = {
@@ -33,3 +34,7 @@ export default class ParticipationBadge extends React.Component {
                     className={"display-4 text-" + part.color}/>;
     }
 }
+
+ParticipationBadge.propTypes = {
+    status: PropTypes.string.isRequired
+};

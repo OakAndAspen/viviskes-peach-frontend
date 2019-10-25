@@ -1,4 +1,5 @@
 import {FontAwesomeIcon as FAI} from "@fortawesome/react-fontawesome";
+import cn from "classnames";
 import Breadcrumbs from "components/Breadcrumbs";
 import Loader from "components/Loader";
 import ParticipationBadge from "components/ParticipationBadge";
@@ -9,6 +10,7 @@ import {privacy} from "config";
 import PrivateLayout from "layouts/PrivateLayout";
 import TableLayout from "layouts/TableLayout";
 import CreateTopicModal from "modals/CreateTopicModal";
+import UpdateParticipationModal from "modals/UpdateParticipationModal";
 import moment from "moment";
 import React from "react";
 import {Link} from "react-router-dom";
@@ -18,7 +20,7 @@ export default class Evenement extends React.Component {
 
     state = {
         event: null,
-        modal: false,
+        modal: null,
         user: JSON.parse(localStorage.getItem("user"))
     };
 
@@ -106,7 +108,8 @@ export default class Evenement extends React.Component {
                             {this.renderDetails()}
                         </div>
                         <div className="col-12 col-md-6 py-2">
-                            <button className="btn btn-info w-100 mb-2" onClick={() => this.setState({modal: true})}>
+                            <button className="btn btn-info w-100 mb-2"
+                                    onClick={() => this.setState({modal: "createTopic"})}>
                                 <FAI icon={"plus"} className="mr-2"/>
                                 Nouveau sujet
                             </button>
@@ -117,9 +120,17 @@ export default class Evenement extends React.Component {
                         </div>
                     </div>
                 </div>
-                {this.state.modal &&
+                {this.state.modal === "createTopic" &&
                 <CreateTopicModal onSend={this.getEvent} event={this.state.event}
-                                  onClose={() => this.setState({modal: false})}/>
+                                  onClose={() => this.setState({modal: null})}/>
+                }
+                {this.state.modal === "updateParticipation" &&
+                <UpdateParticipationModal
+                    event={this.state.event}
+                    user={this.state.user}
+                    date={this.state.currentDate}
+                    onUpdate={this.getEvent}
+                    onClose={() => this.setState({modal: null})}/>
                 }
             </PrivateLayout>
         );
@@ -182,16 +193,26 @@ export default class Evenement extends React.Component {
                             );
                         })}
                     </tr>
-                    {array.map(m =>
-                        <tr key={m.user.id}>
-                            <td>{getName(m.user, true)}</td>
-                            {m.participations.map(p =>
-                                <td className="text-center" key={m.id + "-" + p.date}>
-                                    <ParticipationBadge status={p.status}/>
-                                </td>
-                            )}
-                        </tr>
-                    )}
+                    {array.map(m => {
+                        let isAuthUser = this.state.user.id === m.user.id;
+                        let style = {backgroundColor: "rgba(219,211,203,0.3)"};
+                        return (
+                            <tr key={m.user.id} style={isAuthUser ? style : null}>
+                                <td>{getName(m.user, true)}</td>
+                                {m.participations.map(p =>
+                                    <td className="text-center" key={m.id + "-" + p.date}>
+                                        <span className={cn(isAuthUser && "rounded border pointer bg-light p-2")}
+                                              onClick={!isAuthUser ? null : () => this.setState({
+                                                  modal: "updateParticipation",
+                                                  currentDate: p.date
+                                              })}>
+                                            <ParticipationBadge status={p.status}/>
+                                        </span>
+                                    </td>
+                                )}
+                            </tr>
+                        );
+                    })}
                 </TableLayout>
             </div>
         );
