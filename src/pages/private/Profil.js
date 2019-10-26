@@ -252,7 +252,7 @@ export default class Profil extends React.Component {
                     </div>
                 </div>
                 <div className="col-12 py-2">
-                    <ImageUpload to={apiUrl + "/users/image"} method="POST"
+                    <ImageUpload to={apiUrl + "/users/image"}
                                  default={apiUrl + "/uploads/users/" + this.state.user.id + ".jpg"}/>
                 </div>
             </div>

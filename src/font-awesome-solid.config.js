@@ -9,7 +9,7 @@ import {
     faEye,
     faFeatherAlt,
     faFileImage,
-    faFolder,
+    faFolder, faImages,
     faMapMarkerAlt,
     faPaperPlane,
     faPencil,
@@ -49,5 +49,6 @@ library.add(
     faUserCircle,
     faUserFriends,
     faArrowRight,
-    faCheck
+    faCheck,
+    faImages
 );

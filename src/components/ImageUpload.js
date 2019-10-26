@@ -3,6 +3,7 @@ import $ from "jquery";
 import React from "react";
 import {apiUrl} from "../config";
 import Loader from "./Loader";
+import PropTypes from 'prop-types';
 
 
 export default class ImageUpload extends React.Component {
@@ -24,7 +25,7 @@ export default class ImageUpload extends React.Component {
         formData.append("file", file);
         $.ajax({
             url: this.props.to,
-            method: this.props.method,
+            method: "POST",
             data: formData,
             processData: false,
             contentType: false,
@@ -57,3 +58,8 @@ export default class ImageUpload extends React.Component {
         );
     }
 }
+
+ImageUpload.propTypes = {
+    default: PropTypes.string,
+    to: PropTypes.string
+};

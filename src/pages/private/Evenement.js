@@ -11,6 +11,7 @@ import PrivateLayout from "layouts/PrivateLayout";
 import TableLayout from "layouts/TableLayout";
 import CreateTopicModal from "modals/CreateTopicModal";
 import UpdateEventModal from "modals/UpdateEventModal";
+import UpdateGalleryModal from "modals/UpdateGalleryModal";
 import UpdateParticipationModal from "modals/UpdateParticipationModal";
 import moment from "moment";
 import React from "react";
@@ -131,6 +132,10 @@ export default class Evenement extends React.Component {
                 <UpdateEventModal onSend={this.getEvent} event={this.state.event}
                                   onClose={() => this.setState({modal: null})}/>
                 }
+                {this.state.modal === "updateGallery" &&
+                <UpdateGalleryModal event={this.state.event}
+                                    onClose={() => this.setState({modal: null})}/>
+                }
                 {this.state.modal === "updateParticipation" &&
                 <UpdateParticipationModal
                     event={this.state.event}
@@ -154,6 +159,12 @@ export default class Evenement extends React.Component {
                                onClick={() => this.setState({modal: "updateEvent"})}>
                             <FAI icon="pencil"/>
                         </small>
+                        {this.state.user.isAdmin &&
+                        <small className="ml-2 pointer text-info" title="Gérer la galerie"
+                               onClick={() => this.setState({modal: "updateGallery"})}>
+                            <FAI icon="images"/>
+                        </small>
+                        }
                     </h3>
                     <p className="card-text">
                         <WysiwygDisplay content={event.description}/>

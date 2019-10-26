@@ -78,4 +78,30 @@ export function api(method, url, data = [], callback) {
         });
 }
 
-export default {getName, getDate, fromNow, toNow, isFuture, getDatesBetween, objectToArray}
+export function apiPostImages(url, data, callback) {
+    $.ajax({
+        method: "POST",
+        url: apiUrl + url,
+        data: data,
+        processData: false,
+        contentType: false
+    })
+        .done((data, textStatus, jqXHR) => {
+            callback({
+                status: jqXHR.status,
+                data: data
+            });
+        })
+        .fail((jqXHR, textStatus, errorThrown) => {
+            if (jqXHR.status === 401) {
+                localStorage.removeItem("authKey");
+                window.location.reload();
+            }
+            callback({
+                status: jqXHR.status,
+                data: null
+            });
+        });
+}
+
+export default {getName, getDate, fromNow, toNow, isFuture, getDatesBetween, objectToArray, api, apiPostImages}
