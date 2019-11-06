@@ -4,12 +4,16 @@ import {
     faArrowRight,
     faAxe,
     faCalendar,
-    faCalendarDay, faCheck,
+    faCalendarDay,
+    faCheck,
+    faChevronLeft,
+    faChevronRight,
     faCircle,
     faEye,
     faFeatherAlt,
     faFileImage,
-    faFolder, faImages,
+    faFolder,
+    faImages,
     faMapMarkerAlt,
     faPaperPlane,
     faPencil,
@@ -50,5 +54,7 @@ library.add(
     faUserFriends,
     faArrowRight,
     faCheck,
-    faImages
+    faImages,
+    faChevronLeft,
+    faChevronRight
 );
