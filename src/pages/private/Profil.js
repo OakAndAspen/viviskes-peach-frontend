@@ -7,7 +7,8 @@ import {api} from "utils";
 export default class Profil extends React.Component {
 
     messages = {
-        pwsDontMatch: "Les mots de passe indiqués ne correspondent pas.",
+        pwsDontMatch: "Les mots de passe ne correspondent pas.",
+        noOldPwd: "L'ancien mot de passe est obligatoire",
         emptyField: "Le nom, le prénom et l'adresse email sont obligatoires.",
         success: "Les informations ont bien été modifiées!"
     };
@@ -15,6 +16,7 @@ export default class Profil extends React.Component {
     state = {
         user: null,
         allUsers: [],
+        oldPassword: "",
         password1: "",
         password2: "",
         alert: null,
@@ -33,7 +35,8 @@ export default class Profil extends React.Component {
     }
 
     getUser() {
-        api("GET", "/user/profile", {}, ({status, data}) => {
+        let user = JSON.parse(localStorage.getItem("user"));
+        api("GET", "/user/" + user.id, {}, ({status, data}) => {
             if (data) {
                 data.mentor = data.mentor ? data.mentor.id : 0;
                 data.newbie = data.newbie ? data.newbie.id : 0;
@@ -58,9 +61,13 @@ export default class Profil extends React.Component {
     }
 
     checkErrors() {
-        if (this.state.password1 || this.state.password2) {
+        if (this.state.password1 || this.state.password2 || this.state.oldPassword) {
             if (this.state.password1 !== this.state.password2) {
                 this.setState({alert: this.messages.pwsDontMatch, alertType: "danger"});
+                return false;
+            }
+            if (!this.state.oldPassword) {
+                this.setState({alert: this.messages.noOldPwd, alertType: "danger"});
                 return false;
             }
         }
@@ -76,10 +83,13 @@ export default class Profil extends React.Component {
 
     send() {
         if (!this.checkErrors()) return null;
-        let data = this.state.user;
-        if (this.state.password1) data.password = this.state.password1;
+        let user = this.state.user;
+        if (this.state.password1 && this.state.oldPassword) {
+            user.newPassword = this.state.password1;
+            user.oldPassword = this.state.oldPassword;
+        }
 
-        api("PUT", "/user/profile", data, ({status, data}) => {
+        api("PUT", "/user/" + user.id, {user: user}, ({status, data}) => {
             if (status === 200) {
                 this.setState({
                     alert: this.messages.success,
@@ -210,6 +220,10 @@ export default class Profil extends React.Component {
                 <div className="col-12">
                     <h2>Modifier le mot de passe</h2>
                 </div>
+                <div className="col-12 mb-2">
+                    <input type="password" className="form-control" placeholder="Ancien mot de passe"
+                           value={this.state.oldPassword} onChange={e => this.setState({oldPassword: e.target.value})}/>
+                </div>
                 <div className="col-12 col-sm-6 mb-2">
                     <input type="password" className="form-control" placeholder="Nouveau mot de passe"
                            value={this.state.password1} onChange={e => this.setState({password1: e.target.value})}/>
@@ -252,7 +266,7 @@ export default class Profil extends React.Component {
                     </div>
                 </div>
                 <div className="col-12 py-2">
-                    <ImageUpload to={apiUrl + "/users/image"}
+                    <ImageUpload to={apiUrl + "/user/image"}
                                  default={apiUrl + "/uploads/users/" + this.state.user.id + ".jpg"}/>
                 </div>
             </div>
