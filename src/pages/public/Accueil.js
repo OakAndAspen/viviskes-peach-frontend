@@ -1,4 +1,5 @@
 import {FontAwesomeIcon as FAI} from "@fortawesome/react-fontawesome";
+import WysiwygDisplay from "components/WysiwygDisplay";
 import PublicLayout from "layouts/PublicLayout";
 import React from "react";
 import {api, getDate, isFuture} from "utils";
@@ -28,7 +29,8 @@ export default class Accueil extends React.Component {
     getEvents() {
         api("GET", "/public/events", {}, ({status, data}) => {
             if (data) {
-                data = data.filter(e => isFuture(e.start) && e.privacy === "u")
+                data = data
+                    .filter(e => isFuture(e.start) && e.privacy === "u" && e.isConfirmed)
                     .sort((a, b) => a.start.localeCompare(b.start));
                 this.setState({events: data});
             }
@@ -88,7 +90,9 @@ export default class Accueil extends React.Component {
                             <FAI icon={["far", "info-circle"]} className="text-info display-3 ml-auto"
                                  title="Plus d'infos..."/>
                         </div>
-                        {this.state.selectedEvent === e.id && <div className="mt-3">{e.description}</div>}
+                        {this.state.selectedEvent === e.id && <div className="mt-3">
+                            <WysiwygDisplay content={e.description}/>
+                        </div>}
                     </button>
                 )}
             </ul>

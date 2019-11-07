@@ -16,5 +16,5 @@ export default class WysiwygDisplay extends React.Component {
 }
 
 WysiwygDisplay.propTypes = {
-    content: PropTypes.string
+    content: PropTypes.string.isRequired
 };
