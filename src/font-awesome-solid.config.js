@@ -9,6 +9,7 @@ import {
     faChevronLeft,
     faChevronRight,
     faCircle,
+    faClock,
     faEye,
     faFeatherAlt,
     faFileImage,
@@ -31,14 +32,20 @@ import {
 
 
 library.add(
+    faArrowRight,
     faAxe,
     faCalendar,
     faCalendarDay,
+    faCheck,
+    faChevronLeft,
+    faChevronRight,
     faCircle,
+    faClock,
     faEye,
     faFeatherAlt,
     faFileImage,
     faFolder,
+    faImages,
     faMapMarkerAlt,
     faPaperPlane,
     faPencil,
@@ -51,10 +58,5 @@ library.add(
     faTimes,
     faTrashAlt,
     faUserCircle,
-    faUserFriends,
-    faArrowRight,
-    faCheck,
-    faImages,
-    faChevronLeft,
-    faChevronRight
+    faUserFriends
 );

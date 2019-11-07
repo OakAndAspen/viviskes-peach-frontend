@@ -32,6 +32,14 @@ export default class UpdateEventModal extends React.Component {
                     <option value="p">Privé</option>
                     <option value="i">Interne</option>
                 </select>
+                <div className="form-check">
+                    <input className="form-check-input" type="checkbox" id="isConfirmed"
+                           onChange={e => this.setState({isConfirmed: e.target.checked})}
+                           checked={this.state.isConfirmed}/>
+                    <label className="form-check-label" htmlFor="isConfirmed">
+                        Confirmé (décocher si c'est au statut de proposition)
+                    </label>
+                </div>
                 <div className="input-group my-2">
                     <div className="input-group-prepend"><span className="input-group-text">Du</span></div>
                     <input type="date" className="form-control"

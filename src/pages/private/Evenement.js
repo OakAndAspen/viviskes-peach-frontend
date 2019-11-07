@@ -181,6 +181,8 @@ export default class Evenement extends React.Component {
                     <li className="list-group-item">
                         <FAI icon="eye" className="mr-2"/>
                         {privacy[event.privacy]}
+                        <FAI icon={event.isConfirmed ? "check" : "clock"} className="mx-2"/>
+                        {event.isConfirmed ? "Confirmé" : "Proposition"}
                     </li>
                 </ul>
             </div>
