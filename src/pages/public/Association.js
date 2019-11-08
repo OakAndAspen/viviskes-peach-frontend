@@ -138,14 +138,14 @@ export default class Association extends React.Component {
                         </div>
                     );
                 })}
-                <div className="col-12 small-caps display-4 my-4">
+                <div className="col-12 small-caps display-4 my-4 text-center">
                     {this.state.members.map(u => {
                         if (u.hasPhoto) return null;
                         return (
-                            <span>
+                            <div className="d-inline-block mb-1">
                                 <FAI icon={["fal", "swords"]}/>
                                 <span className="mx-2">{u.celticName}</span>
-                            </span>
+                            </div>
                         );
                     })}
                 </div>

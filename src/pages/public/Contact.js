@@ -1,6 +1,7 @@
 import Tabs from "components/Tabs";
 import PublicLayout from "layouts/PublicLayout";
 import React from "react";
+import Iframe from "react-iframe";
 
 export default class Contact extends React.Component {
 
@@ -117,7 +118,9 @@ export default class Contact extends React.Component {
     renderAcces() {
         return (
             <div>
-
+                <Iframe
+                    src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d1798.8727131082815!2d6.851137556292346!3d46.46126821715848!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e1!3m2!1sen!2sse!4v1573240872291!5m2!1sen!2sse"
+                    width="100%" height="450"/>
             </div>
         );
     }

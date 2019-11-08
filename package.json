@@ -22,6 +22,7 @@
         "prop-types": "^15.7.2",
         "react": "^16.10.2",
         "react-dom": "^16.10.2",
+        "react-iframe": "^1.8.0",
         "react-images-uploader": "^1.2.0-rc1",
         "react-loadable": "^5.5.0",
         "react-progress-button": "^5.1.0",
