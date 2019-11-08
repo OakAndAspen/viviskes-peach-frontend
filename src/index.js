@@ -19,7 +19,7 @@ $.ajaxSetup({
         if (jqXHR.status === 403) {
             localStorage.clear();
         } else {
-            alert('An error occured (' + jqXHR.status + ' ' + jqXHR.statusText + ')');
+            //alert('An error occured (' + jqXHR.status + ' ' + jqXHR.statusText + ')');
         }
     }
 });

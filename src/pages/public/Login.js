@@ -10,7 +10,7 @@ export default class Login extends React.Component {
         super(props);
         this.state = {
             authKey: localStorage.authKey,
-            loginError: null
+            error: null
         };
         this.render();
         this.keyDown = this.keyDown.bind(this);
@@ -25,13 +25,33 @@ export default class Login extends React.Component {
         let email = $('#email').val();
         let password = $('#password').val();
 
+        if(!email || !password) {
+            this.setState({error: "Tous les champs sont obligatoires."});
+            return null;
+        }
+
         api("POST", "/login", {email: email, password: password}, ({status, data}) => {
-            if (data.error) this.setState({loginError: data.error});
-            else {
-                localStorage.authKey = data.authKey;
-                localStorage.user = JSON.stringify(data.user);
-                this.setState({authKey: data.authKey});
+            let error = null;
+            switch (status) {
+                case 404:
+                    error = "Cette adresse email n'existe pas.";
+                    break;
+                case 403:
+                    error = "Cet utilisateur a été désactivé.";
+                    break;
+                case 400:
+                    error = "Le mot de passe est erroné.";
+                    break;
+                case 200:
+                    localStorage.authKey = data.authKey;
+                    localStorage.user = JSON.stringify(data.user);
+                    this.setState({authKey: data.authKey});
+                    break;
+                default:
+                    error = "Une erreur inconnue est survenue.";
             }
+
+            if (error) this.setState({error: error});
         });
     }
 
@@ -54,11 +74,10 @@ export default class Login extends React.Component {
                         <button type='button' className='btn btn-info w-100' id='logIn' onClick={this.login}>
                             Connexion
                         </button>
-                        {this.state.loginError ?
-                            <div className='alert alert-warning mt-3' role='alert'>
-                                {this.state.loginError}
-                            </div>
-                            : null}
+                        {this.state.error &&
+                        <div className='alert alert-warning mt-3' role='alert'>
+                            {this.state.error}
+                        </div>}
                     </form>
                 </div>
             </PublicLayout>
