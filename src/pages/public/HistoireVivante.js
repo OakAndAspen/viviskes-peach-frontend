@@ -18,13 +18,13 @@ export default class HistoireVivante extends React.Component {
     }
 
     getArticles() {
-        api("GET", "/articles", {}, ({status, data}) => {
+        api("GET", "/public/articles", {}, ({status, data}) => {
             if (data) this.setState({articles: data.sort((a, b) => b.created.localeCompare(a.created))});
         });
     }
 
     getTags() {
-        api("GET", "/tags", {}, ({status, data}) => {
+        api("GET", "/public/tags", {}, ({status, data}) => {
             if (data) this.setState({tags: data.sort((a, b) => a.label.localeCompare(b.label))});
         });
     }
@@ -87,9 +87,17 @@ export default class HistoireVivante extends React.Component {
     }
 
     renderArticles() {
+
+        let articles = this.filterArticles();
+        if (!articles.length) return (
+            <div className="alert alert-light mt-2 text-center">
+                Aucun article ne correspond à vos critères.
+            </div>
+        );
+
         return (
             <ul className="list-group">
-                {this.filterArticles().map(a =>
+                {articles.map(a =>
                     <button className="list-group-item list-group-item-action d-flex align-items-center"
                             onClick={() => this.props.history.push("/histoire-vivante/" + a.id)}
                             key={a.id}>
@@ -100,6 +108,12 @@ export default class HistoireVivante extends React.Component {
                                 {"Par " + a.author.firstName + " " + a.author.lastName + " | " +
                                 getDate(a.created)}
                             </small>
+                            <br/>
+                            <span>
+                            {a.tags.map(t =>
+                                <span className="badge badge-secondary pointer font-weight-light p-1 mr-2"
+                                      key={t.id}>{t.label}</span>)}
+                            </span>
                         </div>
                     </button>
                 )}

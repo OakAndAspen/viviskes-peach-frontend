@@ -1,5 +1,6 @@
 import Breadcrumbs from "components/Breadcrumbs";
 import Loader from "components/Loader";
+import WysiwygDisplay from "components/WysiwygDisplay";
 import PublicLayout from "layouts/PublicLayout";
 import React from "react";
 import {api, getDate} from "utils";
@@ -17,7 +18,7 @@ export default class Article extends React.Component {
     }
 
     getArticle() {
-        api("GET", "/articles/" + this.props.match.params.article, {}, ({status, data}) => {
+        api("GET", "/public/articles/" + this.props.match.params.article, {}, ({status, data}) => {
             if (data) this.setState({article: data});
         });
     }
@@ -39,7 +40,6 @@ export default class Article extends React.Component {
 
     renderArticle() {
         let a = this.state.article;
-        let parser = new HtmlToReactParser();
         return (
             <div className="card">
                 <div className="card-body">
@@ -47,11 +47,13 @@ export default class Article extends React.Component {
                 </div>
                 <ul className="list-group list-group-flush">
                     <li className="list-group-item text-muted small-caps">
-                        {a.author.firstName} {a.author.lastName}, {getDate(a.created)}
+                        <span className="mr-3">{a.author.firstName} {a.author.lastName} | {getDate(a.created)}</span>
+                        {a.tags.map(t => <span className="badge badge-secondary pointer font-weight-light p-1 mr-2"
+                                               key={t.id}>{t.label}</span>)}
                     </li>
                 </ul>
                 <div className="card-body">
-                    {parser.parse(a.content)}
+                    <WysiwygDisplay content={a.content}/>
                 </div>
             </div>
         );
