@@ -1,7 +1,7 @@
 import {FontAwesomeIcon as FAI} from "@fortawesome/react-fontawesome";
 import $ from "jquery";
 import React from "react";
-import {apiUrl} from "../config";
+import {apiUrl} from "config";
 import Loader from "./Loader";
 import PropTypes from 'prop-types';
 

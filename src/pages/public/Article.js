@@ -5,8 +5,6 @@ import PublicLayout from "layouts/PublicLayout";
 import React from "react";
 import {api, getDate} from "utils";
 
-let HtmlToReactParser = require('html-to-react').Parser;
-
 export default class Article extends React.Component {
 
     state = {

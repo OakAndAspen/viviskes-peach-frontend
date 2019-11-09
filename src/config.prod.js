@@ -1,5 +1,5 @@
-export const apiUrl = 'http://localhost:8000';
-export const imgFolder = 'http://localhost:3000/images';
+export const apiUrl = 'https://api.viviskes.ch';
+export const imgFolder = 'https://viviskes.ch/images';
 export const theme = {};
 export const privacy = {
     p: "Privé",
