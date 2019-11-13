@@ -2,8 +2,36 @@ import Tabs from "components/Tabs";
 import PublicLayout from "layouts/PublicLayout";
 import React from "react";
 import Iframe from "react-iframe";
+import {api} from "utils";
 
 export default class Contact extends React.Component {
+
+    state = {
+        name: "",
+        email: "",
+        subject: "",
+        message: "",
+        alert: null
+    };
+
+    constructor(props) {
+        super(props);
+        this.sendForm = this.sendForm.bind(this);
+    }
+
+    sendForm() {
+        api("POST", "/contact", this.state, ({status, data}) => {
+            let text = status === 200 ? "Votre message a bien été reçu. Merci!" :
+                "Une erreur s'est produite. Merci d'envoyer votre message à viviskes@gmail.com. Toutes nos excuses pour ce dérangement.";
+            let color = status === 200 ? "success" : "danger";
+            this.setState({
+                alert: {
+                    text: text,
+                    color: color
+                }
+            });
+        });
+    }
 
     render() {
         let entries = [
@@ -105,11 +133,21 @@ export default class Contact extends React.Component {
         return (
             <div className="row">
                 <div className="col-md-8 col-lg-6 mx-auto">
-                    <input type="text" placeholder="Prénom et nom" className="form-control mb-2"/>
-                    <input type="text" placeholder="Email" className="form-control mb-2"/>
-                    <input type="text" placeholder="Sujet" className="form-control mb-2"/>
-                    <textarea placeholder="Votre message" className="form-control mb-2"/>
-                    <button className="btn btn-info w-100">Envoyer</button>
+                    <input type="text" placeholder="Prénom et nom" className="form-control mb-2"
+                           value={this.state.name} onChange={e => this.setState({name: e.target.value})}/>
+                    <input type="text" placeholder="Email" className="form-control mb-2"
+                           value={this.state.email} onChange={e => this.setState({email: e.target.value})}/>
+                    <input type="text" placeholder="Sujet" className="form-control mb-2"
+                           value={this.state.subject} onChange={e => this.setState({subject: e.target.value})}/>
+                    <textarea placeholder="Votre message" className="form-control mb-2"
+                              value={this.state.message} onChange={e => this.setState({message: e.target.value})}/>
+                    <button className="btn btn-info w-100" onClick={this.sendForm}>
+                        Envoyer
+                    </button>
+                    {this.state.alert &&
+                    <div className={"mt-2 alert alert-" + this.state.alert.color}>
+                        {this.state.alert.text}
+                    </div>}
                 </div>
             </div>
         );
@@ -118,6 +156,10 @@ export default class Contact extends React.Component {
     renderAcces() {
         return (
             <div>
+                <span className="d-block mb-2">
+                    Nos entraînements se déroulent de mars à octobre à Vevey au terrain de sport de Crédeiles,
+                    le jeudi à partir de 18h00.
+                </span>
                 <Iframe
                     src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d1798.8727131082815!2d6.851137556292346!3d46.46126821715848!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e1!3m2!1sen!2sse!4v1573240872291!5m2!1sen!2sse"
                     width="100%" height="450"/>

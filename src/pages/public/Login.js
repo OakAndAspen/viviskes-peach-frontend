@@ -1,18 +1,20 @@
 import $ from 'jquery';
 import PublicLayout from "layouts/PublicLayout";
+import RecoverPasswordModal from "modals/RecoverPasswordModal";
 import React from "react";
 import {Redirect} from "react-router-dom";
 import {api} from "utils";
 
 export default class Login extends React.Component {
 
+    state = {
+        authKey: localStorage.authKey,
+        error: null,
+        modal: null
+    };
+
     constructor(props) {
         super(props);
-        this.state = {
-            authKey: localStorage.authKey,
-            error: null
-        };
-        this.render();
         this.keyDown = this.keyDown.bind(this);
         this.login = this.login.bind(this);
     }
@@ -25,7 +27,7 @@ export default class Login extends React.Component {
         let email = $('#email').val();
         let password = $('#password').val();
 
-        if(!email || !password) {
+        if (!email || !password) {
             this.setState({error: "Tous les champs sont obligatoires."});
             return null;
         }
@@ -74,12 +76,18 @@ export default class Login extends React.Component {
                         <button type='button' className='btn btn-info w-100' id='logIn' onClick={this.login}>
                             Connexion
                         </button>
+                        <small className="d-block text-info pointer text-center w-100 my-2"
+                               onClick={() => this.setState({modal: "recoverPassword"})}>
+                            Oups, j'ai oublié mon mot de passe...
+                        </small>
                         {this.state.error &&
                         <div className='alert alert-warning mt-3' role='alert'>
                             {this.state.error}
                         </div>}
                     </form>
                 </div>
+                {this.state.modal === "recoverPassword" &&
+                <RecoverPasswordModal onClose={() => this.setState({modal: null})}/>}
             </PublicLayout>
         );
     }

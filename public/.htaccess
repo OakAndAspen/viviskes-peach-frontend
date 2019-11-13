@@ -1,0 +1,9 @@
+# Redirect http to https
+RewriteEngine on
+RewriteCond %{HTTP:X-Forwarded-Proto} !https
+RewriteRule (.*) https://viviskes.ch/$1 [R=301,L]
+
+# Redirect everything to index.html
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^ index.html [QSA,L]

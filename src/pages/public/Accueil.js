@@ -68,6 +68,10 @@ export default class Accueil extends React.Component {
     }
 
     renderEvents() {
+        if(!this.state.events.length) return <div className="alert alert-light">
+            Nous n'avons pas d'évènements publics prévus pour le moment. Nous sommes ouverts aux propositions!
+        </div>;
+
         return (
             <ul className="list-group">
                 {this.state.events.map(e =>

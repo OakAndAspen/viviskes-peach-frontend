@@ -1,6 +1,5 @@
 import {FontAwesomeIcon as FAI} from "@fortawesome/react-fontawesome";
 import Tabs from "components/Tabs";
-import {apiUrl} from "config";
 import PublicLayout from "layouts/PublicLayout";
 import React from "react";
 import {api} from "utils";
@@ -17,7 +16,7 @@ export default class Association extends React.Component {
 
     getMembers() {
         api("GET", "/public/members", {}, ({status, data}) => {
-            if (data) this.setState({members: data});
+            if (data) this.setState({members: data.sort((a,b) => a.celticName.localeCompare(b.celticName))});
         });
     }
 
@@ -123,14 +122,14 @@ export default class Association extends React.Component {
 
     renderNosMembres() {
         return (
-            <div>
+            <div className="row">
                 {this.state.members.map(u => {
-                    if (!u.hasPhoto) return null;
+                    if (!u.avatar) return null;
                     return (
-                        <div className="col-6 col-md-4 col-lg-3">
+                        <div className="col-6 col-md-4 col-lg-3 mb-2">
                             <div className="card h-100">
                                 <img className="card-img-top" alt={u.celticName}
-                                     src={apiUrl + "/uploads/users/" + u.id + ".jpg"}/>
+                                     src={u.avatar}/>
                                 <div className="card-body text-center">
                                     <span className="card-title display-4">{u.celticName}</span>
                                 </div>
@@ -140,7 +139,7 @@ export default class Association extends React.Component {
                 })}
                 <div className="col-12 small-caps display-4 my-4 text-center">
                     {this.state.members.map(u => {
-                        if (u.hasPhoto) return null;
+                        if (u.avatar) return null;
                         return (
                             <div className="d-inline-block mb-1">
                                 <FAI icon={["fal", "swords"]}/>

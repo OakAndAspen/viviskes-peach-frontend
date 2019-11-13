@@ -19,7 +19,11 @@ export default class HistoireVivante extends React.Component {
 
     getArticles() {
         api("GET", "/public/articles", {}, ({status, data}) => {
-            if (data) this.setState({articles: data.sort((a, b) => b.created.localeCompare(a.created))});
+            if (data) this.setState({
+                articles: data
+                    .filter(a => a.isPublished)
+                    .sort((a, b) => b.created.localeCompare(a.created))
+            });
         });
     }
 
