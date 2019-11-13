@@ -33,7 +33,7 @@ export default class Mediatheque extends React.Component {
         this.getFolder(this.props.match.params.folder);
     }
 
-    componentWillReceiveProps(nextProps, nextContext) {
+    UNSAFE_componentWillReceiveProps(nextProps, nextContext) {
         let folder = nextProps.match.params.folder;
         this.getFolder(folder || null);
     }

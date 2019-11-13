@@ -1,12 +1,30 @@
 import "font-awesome-light.config";
 import "font-awesome-regular.config";
 import "font-awesome-solid.config";
+import Articles from "pages/private/Articles";
+import Bibliotheque from "pages/private/Bibliotheque";
+import Calendrier from "pages/private/Calendrier";
+import Categorie from "pages/private/Categorie";
+import Evenement from "pages/private/Evenement";
+import Forum from "pages/private/Forum";
+import Mediatheque from "pages/private/Mediatheque";
+import Membres from "pages/private/Membres";
+import Partenaires from "pages/private/Partenaires";
+import Profil from "pages/private/Profil";
+import Sujet from "pages/private/Sujet";
+import Accueil from "pages/public/Accueil";
+import Album from "pages/public/Album";
+import Article from "pages/public/Article";
+import Association from "pages/public/Association";
+import Contact from "pages/public/Contact";
+import Galerie from "pages/public/Galerie";
+import HistoireVivante from "pages/public/HistoireVivante";
+import Login from "pages/public/Login";
+import Logout from "pages/public/Logout";
 import React, {Component} from "react";
-import Loadable from 'react-loadable';
 import {BrowserRouter as Router, Redirect, Route, Switch} from 'react-router-dom';
 import './App.css';
 import Footer from "./components/Footer";
-import Loader from "./components/Loader";
 
 class App extends Component {
     render() {
@@ -15,29 +33,28 @@ class App extends Component {
                 <div className='App h-100 d-flex flex-column'>
                     <section className="mb-auto">
                         <Switch>
-                            <Route exact path='/' component={publicRoutes.Accueil}/>
-                            <Route exact path='/association' component={publicRoutes.Association}/>
-                            <Route exact path='/histoire-vivante' component={publicRoutes.HistoireVivante}/>
-                            <Route exact path='/histoire-vivante/:article' component={publicRoutes.Article}/>
-                            <Route exact path='/galerie' component={publicRoutes.Galerie}/>
-                            <Route exact path='/galerie/:id' component={publicRoutes.Album}/>
-                            <Route exact path='/contact' component={publicRoutes.Contact}/>
-                            <Route exact path='/login' component={publicRoutes.Login}/>
-                            <Route exact path='/logout' component={publicRoutes.Logout}/>
+                            <Route exact path='/' component={Accueil}/>
+                            <Route exact path='/association' component={Association}/>
+                            <Route exact path='/histoire-vivante' component={HistoireVivante}/>
+                            <Route exact path='/histoire-vivante/:article' component={Article}/>
+                            <Route exact path='/galerie' component={Galerie}/>
+                            <Route exact path='/galerie/:id' component={Album}/>
+                            <Route exact path='/contact' component={Contact}/>
+                            <Route exact path='/login' component={Login}/>
+                            <Route exact path='/logout' component={Logout}/>
 
-                            <PrivateRoute exact path='/intranet/forum' component={privateRoutes.Forum}/>
-                            <PrivateRoute exact path='/intranet/forum/:category' component={privateRoutes.Categorie}/>
-                            <PrivateRoute exact path='/intranet/forum/topic/:topic'
-                                          component={privateRoutes.Sujet}/>
-                            <PrivateRoute exact path='/intranet/partenaires' component={privateRoutes.Partenaires}/>
-                            <PrivateRoute exact path='/intranet/calendrier' component={privateRoutes.Calendrier}/>
-                            <PrivateRoute exact path='/intranet/calendrier/:event' component={privateRoutes.Evenement}/>
-                            <PrivateRoute exact path='/intranet/membres' component={privateRoutes.Membres}/>
-                            <PrivateRoute exact path='/intranet/articles' component={privateRoutes.Articles}/>
-                            <PrivateRoute exact path='/intranet/bibliotheque' component={privateRoutes.Bibliotheque}/>
-                            <PrivateRoute exact path='/intranet/mediatheque' component={privateRoutes.Mediatheque}/>
-                            <PrivateRoute exact path='/intranet/mediatheque/:folder' component={privateRoutes.Mediatheque}/>
-                            <PrivateRoute exact path='/intranet/profil' component={privateRoutes.Profil}/>
+                            <PrivateRoute exact path='/intranet/forum' component={Forum}/>
+                            <PrivateRoute exact path='/intranet/forum/:category' component={Categorie}/>
+                            <PrivateRoute exact path='/intranet/forum/topic/:topic' component={Sujet}/>
+                            <PrivateRoute exact path='/intranet/partenaires' component={Partenaires}/>
+                            <PrivateRoute exact path='/intranet/calendrier' component={Calendrier}/>
+                            <PrivateRoute exact path='/intranet/calendrier/:event' component={Evenement}/>
+                            <PrivateRoute exact path='/intranet/membres' component={Membres}/>
+                            <PrivateRoute exact path='/intranet/articles' component={Articles}/>
+                            <PrivateRoute exact path='/intranet/bibliotheque' component={Bibliotheque}/>
+                            <PrivateRoute exact path='/intranet/mediatheque' component={Mediatheque}/>
+                            <PrivateRoute exact path='/intranet/mediatheque/:folder' component={Mediatheque}/>
+                            <PrivateRoute exact path='/intranet/profil' component={Profil}/>
                         </Switch>
                     </section>
                     <Footer/>
@@ -64,91 +81,5 @@ const PrivateRoute = ({component: Component, ...rest}) => (
         }
     />
 );
-
-const publicRoutes = {
-    Accueil: Loadable({
-        loader: () => import('./pages/public/Accueil'),
-        loading: Loader,
-    }),
-    Association: Loadable({
-        loader: () => import('./pages/public/Association'),
-        loading: Loader,
-    }),
-    HistoireVivante: Loadable({
-        loader: () => import('./pages/public/HistoireVivante'),
-        loading: Loader,
-    }),
-    Article: Loadable({
-        loader: () => import('./pages/public/Article'),
-        loading: Loader,
-    }),
-    Galerie: Loadable({
-        loader: () => import('./pages/public/Galerie'),
-        loading: Loader,
-    }),
-    Album: Loadable({
-        loader: () => import('./pages/public/Album'),
-        loading: Loader,
-    }),
-    Contact: Loadable({
-        loader: () => import('./pages/public/Contact'),
-        loading: Loader,
-    }),
-    Login: Loadable({
-        loader: () => import('./pages/public/Login'),
-        loading: Loader,
-    }),
-    Logout: Loadable({
-        loader: () => import('./pages/public/Logout'),
-        loading: Loader,
-    }),
-};
-
-const privateRoutes = {
-    Forum: Loadable({
-        loader: () => import('./pages/private/Forum'),
-        loading: Loader,
-    }),
-    Categorie: Loadable({
-        loader: () => import('./pages/private/Categorie'),
-        loading: Loader,
-    }),
-    Sujet: Loadable({
-        loader: () => import('./pages/private/Sujet'),
-        loading: Loader,
-    }),
-    Partenaires: Loadable({
-        loader: () => import('./pages/private/Partenaires'),
-        loading: Loader,
-    }),
-    Calendrier: Loadable({
-        loader: () => import('./pages/private/Calendrier'),
-        loading: Loader,
-    }),
-    Evenement: Loadable({
-        loader: () => import('./pages/private/Evenement'),
-        loading: Loader,
-    }),
-    Membres: Loadable({
-        loader: () => import('./pages/private/Membres'),
-        loading: Loader,
-    }),
-    Articles: Loadable({
-        loader: () => import('./pages/private/Articles'),
-        loading: Loader,
-    }),
-    Bibliotheque: Loadable({
-        loader: () => import('./pages/private/Bibliotheque'),
-        loading: Loader,
-    }),
-    Mediatheque: Loadable({
-        loader: () => import('./pages/private/Mediatheque'),
-        loading: Loader,
-    }),
-    Profil: Loadable({
-        loader: () => import('./pages/private/Profil'),
-        loading: Loader,
-    })
-};
 
 export default App;

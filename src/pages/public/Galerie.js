@@ -48,7 +48,7 @@ export default class Galerie extends React.Component {
             <ul className="list-group">
                 {this.state.events.map(e => {
                     return (
-                        <li className="list-group-item list-group-item-action pointer d-flex"
+                        <li className="list-group-item list-group-item-action pointer d-flex" key={e.id}
                             onClick={() => this.setState({currentEvent: e})}>
                             <span className="display-2 mr-4 text-secondary d-flex align-items-center">
                                 <FAI icon="images"/>

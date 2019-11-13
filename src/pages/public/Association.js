@@ -126,7 +126,7 @@ export default class Association extends React.Component {
                 {this.state.members.map(u => {
                     if (!u.avatar) return null;
                     return (
-                        <div className="col-6 col-md-4 col-lg-3 mb-2">
+                        <div className="col-6 col-md-4 col-lg-3 mb-2" key={u.celticName}>
                             <div className="card h-100">
                                 <img className="card-img-top" alt={u.celticName}
                                      src={u.avatar}/>
@@ -141,7 +141,7 @@ export default class Association extends React.Component {
                     {this.state.members.map(u => {
                         if (u.avatar) return null;
                         return (
-                            <div className="d-inline-block mb-1">
+                            <div className="d-inline-block mb-1" key={u.celticName}>
                                 <FAI icon={["fal", "swords"]}/>
                                 <span className="mx-2">{u.celticName}</span>
                             </div>

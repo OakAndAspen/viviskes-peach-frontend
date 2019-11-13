@@ -166,9 +166,9 @@ export default class Evenement extends React.Component {
                         </small>
                         }
                     </h3>
-                    <p className="card-text">
+                    <div className="card-text">
                         <WysiwygDisplay content={event.description}/>
-                    </p>
+                    </div>
                 </div>
                 <ul className="list-group list-group-flush">
                     <li className="list-group-item">
