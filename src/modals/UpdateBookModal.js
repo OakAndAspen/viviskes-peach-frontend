@@ -7,7 +7,8 @@ import {api, getDate, getName} from "utils";
 export default class UpdateBookModal extends React.Component {
 
     state = {
-        selectedUser: null
+        selectedUser: null,
+        user: JSON.parse(localStorage.getItem("user"))
     };
 
     constructor(props) {
@@ -22,16 +23,21 @@ export default class UpdateBookModal extends React.Component {
 
         let loan = {user: userId, book: this.props.book.id};
         api("POST", "/loan", {loan: loan}, ({status, data}) => {
-            if (status === 201) {
-                this.props.onUpdate();
-            }
+            if (status === 201) this.props.onUpdate();
         });
     }
 
     updateLoan(id) {
         api("PUT", "/loan/" + id, {}, ({status, data}) => {
+            if (status === 200) this.props.onUpdate();
+        });
+    }
+
+    delete(id) {
+        api("DELETE", "/book/" + id, {}, ({status, data}) => {
             if (status === 200) {
-                this.props.onUpdate();
+                this.props.onDelete();
+                this.props.onClose();
             }
         });
     }
@@ -48,6 +54,12 @@ export default class UpdateBookModal extends React.Component {
 
         return (
             <ModalLayout title={book.name} onClose={this.props.onClose}>
+                {this.state.user.isAdmin &&
+                <button className="btn btn-danger my-2" onClick={() => this.delete(book.id)}>
+                    <FAI icon="trash-alt"/>
+                    <span className="ml-2">Supprimer ce livre</span>
+                </button>
+                }
                 <table className="table table-borderless">
                     <tbody>
                     <tr>

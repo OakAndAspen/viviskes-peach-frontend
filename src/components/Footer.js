@@ -32,10 +32,20 @@ export default class Footer extends React.Component {
                             <div className="col-md-4 text-md-left pl-md-4">
                                 <h4>Copyrights</h4>
                                 <p>
-                                    Site - Irina Despot<br/>
+                                    Site internet - Irina Despot<br/>
                                     Artwork - Jonathan Schaffner<br/>
                                     Contenu - Viviskes
                                 </p>
+                            </div>
+                        </div>
+                        <div className="row">
+                            <div className="col-12">
+                                <h4>Ce site est développé et entretenu par</h4>
+                            </div>
+                            <div className="col-12 col-md-8 col-lg-4 mx-auto">
+                                <a href="https://oakandaspen.ch/fr" target="_blank" rel="noopener noreferrer">
+                                    <img src="/images/oakandaspen.png" alt="Oak&Aspen" className="img-fluid my-2"/>
+                                </a>
                             </div>
                         </div>
                     </div>

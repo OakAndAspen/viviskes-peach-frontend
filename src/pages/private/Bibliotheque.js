@@ -20,6 +20,11 @@ export default class Bibliotheque extends React.Component {
         activeBook: null
     };
 
+    constructor(props) {
+        super(props);
+        this.getBooks = this.getBooks.bind(this);
+    }
+
     componentDidMount() {
         this.getBooks();
         this.getUsers();
@@ -66,6 +71,7 @@ export default class Bibliotheque extends React.Component {
                     onUpdate={() => {
                         this.getBook(this.state.activeBook.id);
                     }}
+                    onDelete={this.getBooks}
                     onClose={() => this.setState({activeModal: null, activeBook: null})}/>}
             </PrivateLayout>
         );

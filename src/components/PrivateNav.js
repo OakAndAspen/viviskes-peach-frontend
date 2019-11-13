@@ -40,7 +40,8 @@ export default class PrivateNav extends React.Component {
             url: '/intranet/partenaires',
             title: 'Partenaires',
             style: 'far',
-            icon: 'handshake'
+            icon: 'handshake',
+            admin: true
         },
         {
             url: '/intranet/membres',
@@ -62,12 +63,17 @@ export default class PrivateNav extends React.Component {
         }
     ];
 
+    user = JSON.parse(localStorage.getItem("user"));
+
     render() {
         let iconStyle= {
             width: "25px",
             display: "inline-block",
             textAlign: "center"
         };
+
+        let entries = this.entries;
+        if(!this.user.isAdmin) entries = entries.filter(e => !e.admin);
 
         return (
             <nav className="navbar navbar-expand-sm navbar-light" id="MenuNav">
@@ -81,7 +87,7 @@ export default class PrivateNav extends React.Component {
                     </button>
                     <div className="collapse navbar-collapse" id="navbarNav">
                         <ul className="navbar-nav">
-                            {this.entries.map(entry => {
+                            {entries.map(entry => {
                                     let active = window.location.pathname === entry.url ? " active" : "";
                                     return (
                                         <li className="nav-item small-caps" key={entry.url}>
