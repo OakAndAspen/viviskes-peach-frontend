@@ -9,7 +9,7 @@ import {
     faChevronLeft,
     faChevronRight,
     faCircle,
-    faClock,
+    faClock, faExclamationTriangle,
     faEye,
     faFeatherAlt,
     faFileImage,
@@ -22,10 +22,10 @@ import {
     faPenFancy,
     faPlus,
     faQuestion,
-    faSignOutAlt,
+    faSignOutAlt, faSpinner,
     faStar,
     faTimes,
-    faTrashAlt,
+    faTrashAlt, faUpload,
     faUserCircle,
     faUserFriends
 } from "@fortawesome/pro-solid-svg-icons";
@@ -58,5 +58,8 @@ library.add(
     faTimes,
     faTrashAlt,
     faUserCircle,
-    faUserFriends
+    faUserFriends,
+    faUpload,
+    faExclamationTriangle,
+    faSpinner
 );

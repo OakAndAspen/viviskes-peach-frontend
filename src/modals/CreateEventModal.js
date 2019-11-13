@@ -13,7 +13,8 @@ export default class CreateEventModal extends React.Component {
         end: "",
         location: "",
         privacy: "u",
-        isConfirmed: false
+        isConfirmed: false,
+        alert: null
     };
 
     constructor(props) {
@@ -23,6 +24,16 @@ export default class CreateEventModal extends React.Component {
 
     createEvent() {
         let event = this.state;
+        if (!event.title || !event.start) {
+            this.setState({
+                alert: {
+                    text: "Le titre et la date de début sont obligatoires.",
+                    color: "danger"
+                }
+            });
+            return null;
+        }
+        if (!event.end) event.end = event.start;
         api("POST", "/event", {event: event}, ({status, data}) => {
             if (status === 201) {
                 this.props.onSend();
@@ -71,6 +82,10 @@ export default class CreateEventModal extends React.Component {
                     onChange={data => this.setState({publicDescription: data})}
                 />
                 <button type="button" className="btn btn-info w-100" onClick={this.createEvent}>Enregistrer</button>
+                {this.state.alert &&
+                <div className={"mt-2 alert alert-" + this.state.alert.color}>
+                    {this.state.alert.text}
+                </div>}
             </ModalLayout>
         );
     }

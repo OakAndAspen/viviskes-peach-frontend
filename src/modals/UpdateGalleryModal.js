@@ -1,3 +1,4 @@
+import {FontAwesomeIcon as FAI} from "@fortawesome/react-fontawesome";
 import ModalLayout from "layouts/ModalLayout";
 import PropTypes from 'prop-types';
 import React from "react";
@@ -7,7 +8,8 @@ export default class UpdateGalleryModal extends React.Component {
 
     state = {
         photos: [],
-        fileInputLabel: "Ajouter une photo..."
+        filename: "Ajouter une photo...",
+        status: 0
     };
 
     constructor(props) {
@@ -29,17 +31,19 @@ export default class UpdateGalleryModal extends React.Component {
     }
 
     uploadPhoto(e) {
-        this.setState({fileUrl: null});
-
         let files = e.target.files;
         if (!files.length) return null;
         let file = files[0];
-        this.setState({filename: file.name});
+        this.setState({
+            filename: file.name,
+            status: 1
+        });
 
         let formData = new FormData();
         formData.append("file", file);
         formData.append("event", this.props.event.id);
         apiPostImages("/photo", formData, ({status, data}) => {
+            this.setState({status: status === 201 ? 2 : 3});
             this.getPhotos();
         });
     }
@@ -60,13 +64,21 @@ export default class UpdateGalleryModal extends React.Component {
                         <input type="file" className="custom-file-input" id="addPhoto"
                                onChange={e => this.uploadPhoto(e)} accept="image/png, image/jpeg"/>
                         <label className="custom-file-label" htmlFor="addPhoto">
-                            {this.state.fileInputLabel}
+                            {this.state.filename}
                         </label>
+                    </div>
+                    <div className="input-group-append">
+                        <button className="btn btn-outline-secondary" type="button">
+                            {this.state.status === 0 && <FAI icon="upload"/>}
+                            {this.state.status === 1 && <FAI icon="spinner" spin/>}
+                            {this.state.status === 2 && <FAI icon="check"/>}
+                            {this.state.status === 3 && <FAI icon="exclamation-triangle"/>}
+                        </button>
                     </div>
                 </div>
                 <div className="row">
                     {this.state.photos.map(p =>
-                        <div className="col-12 col-sm-6">
+                        <div className="col-12 col-sm-6" key={p.id}>
                             <img src={p.url} alt={"Photo n°" + p.id} className="img-fluid rounded-top"/>
                             <div className="bg-danger text-center text-light rounded-bottom pointer w-100 mb-2 py-2"
                                  title="Supprimer" onClick={() => this.deletePhoto(p.id)}>
