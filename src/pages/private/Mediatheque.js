@@ -4,9 +4,9 @@ import Loader from "components/Loader";
 import MediaElement from "components/MediaElement";
 import {apiUrl} from "config";
 import $ from "jquery";
-import ModalLayout from "layouts/ModalLayout";
 import PrivateLayout from "layouts/PrivateLayout";
 import TableLayout from "layouts/TableLayout";
+import RenameMediaModal from "modals/RenameMediaModal";
 import React from "react";
 import {api} from "utils";
 
@@ -15,9 +15,9 @@ export default class Mediatheque extends React.Component {
     state = {
         folder: null,
         loading: false,
+        modal: null,
         filename: "Importer un document...",
         creatingFolder: false,
-        renameModal: false,
         currentMedia: null,
         currentMediaType: null,
         downloadLink: ""
@@ -26,7 +26,6 @@ export default class Mediatheque extends React.Component {
     constructor(props) {
         super(props);
         this.onCreateFolder = this.onCreateFolder.bind(this);
-        this.onSendRename = this.onSendRename.bind(this);
     }
 
     componentDidMount() {
@@ -73,7 +72,7 @@ export default class Mediatheque extends React.Component {
             };
             if (this.state.folder.id) data.parent = this.state.folder.id;
 
-            api("POST", "/folder", data, ({status, data}) => {
+            api("POST", "/folder", {folder: data}, ({status, data}) => {
                 if (status === 201) {
                     this.getFolder(this.state.folder.id);
                     this.setState({creatingFolder: false});
@@ -112,22 +111,9 @@ export default class Mediatheque extends React.Component {
 
     onRename(media, type) {
         this.setState({
-            renameModal: true,
+            modal: "renameMedia",
             currentMedia: media,
             currentMediaType: type
-        });
-    }
-
-    onSendRename() {
-        let newName = $("#NewName").val();
-        if (!newName) return null;
-
-        let url = "/" + this.state.currentMediaType + "/" + this.state.currentMedia.id;
-        api("PUT", url, {name: newName}, ({status, data}) => {
-            if (data) {
-                this.setState({renameModal: false});
-                this.getFolder(this.state.folder.id || null);
-            }
         });
     }
 
@@ -137,9 +123,8 @@ export default class Mediatheque extends React.Component {
         api("GET", url, {}, ({status, data}) => {
             if (data) {
                 this.setState({downloadLink: apiUrl + "/" + data.url}, () => {
-                    console.log(this.state.downloadLink);
                     console.log($('#DownloadLink').attr("href"));
-                    //$('#DownloadLink').click();
+                    $('#DownloadLink').click();
                 });
             }
         });
@@ -153,8 +138,16 @@ export default class Mediatheque extends React.Component {
                     {this.renderTools()}
                     {this.renderTable()}
                 </div>
-                {this.renderRenameModal()}
-                <a href={this.state.downloadLink} download id="DownloadLink" className="d-block">Download</a>
+                {this.state.modal === "renameMedia" &&
+                <RenameMediaModal
+                    media={this.state.currentMedia} type={this.state.currentMediaType}
+                    onClose={() => this.setState({modal: null})}
+                    onRename={() => this.getFolder(this.props.match.params.folder)}/>
+                }
+                <a href={this.state.downloadLink} download={this.state.media.name}
+                   id="DownloadLink" className="d-none">
+                    Download
+                </a>
             </PrivateLayout>
         );
     }
@@ -241,18 +234,6 @@ export default class Mediatheque extends React.Component {
                 </tr>
                 }
             </TableLayout>
-        );
-    }
-
-    renderRenameModal() {
-        if (!this.state.renameModal) return null;
-        return (
-            <ModalLayout onClose={() => this.setState({renameModal: false})}
-                         title={"Renommer le " + (this.state.currentMediaType === "folder" ? "dossier" : "document")}>
-                <input type="text" className="form-control my-2" placeholder="Nouveau nom" id="NewName"
-                       defaultValue={this.state.currentMedia.name}/>
-                <button className="btn btn-info w-100" onClick={this.onSendRename}>Renommer</button>
-            </ModalLayout>
         );
     }
 }

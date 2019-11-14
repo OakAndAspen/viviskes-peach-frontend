@@ -11,7 +11,7 @@ import {
     faCircle,
     faClock, faExclamationTriangle,
     faEye,
-    faFeatherAlt,
+    faFeatherAlt, faFile,
     faFileImage,
     faFolder,
     faImages,
@@ -61,5 +61,6 @@ library.add(
     faUserFriends,
     faUpload,
     faExclamationTriangle,
-    faSpinner
+    faSpinner,
+    faFile
 );
