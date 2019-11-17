@@ -24,12 +24,12 @@ export default class PrivateNav extends React.Component {
             style: 'far',
             icon: 'books'
         },
-        {
+        /*{
             url: '/intranet/mediatheque',
             title: 'Médiathèque',
             style: 'far',
             icon: 'file-pdf'
-        },
+        },*/
         {
             url: '/intranet/articles',
             title: 'Articles',
