@@ -1,0 +1,6 @@
+--- POUR DEPLOYER VIVISKES-PEACH-APP ---
+
+1) Sur Filezilla, renommer le dossier current en v1.0.x
+2) copy /Y src\config.prod.js src\config.js
+3) npm run build
+4) annexes\deploy.bat "MotdepasseducompteFTP"
