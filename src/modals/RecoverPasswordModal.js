@@ -19,7 +19,8 @@ export default class RecoverPasswordModal extends React.Component {
         if (!this.state.email) return null;
         api("POST", "/recover", {email: this.state.email}, ({status, data}) => {
             this.setState({
-                message: status === 200 ? "Un nouveau mot de passe a été envoyé par email." : "Cette adresse email n'est pas liée à un compte utilisateur.",
+                message: status === 200 ? "Un nouveau mot de passe a été envoyé par email (vérifier le dossier spam!)" :
+                    "Cette adresse email n'est pas liée à un compte utilisateur.",
                 type: status === 200 ? "success" : "danger"
             });
         });

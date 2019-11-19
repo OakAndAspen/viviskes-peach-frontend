@@ -1,7 +1,7 @@
 @set PASSWORD=%1
-@set USER=pfhd_alerya
-@set SERVER=pfhd.ftp.infomaniak.com
-@set REMOTEFOLDER=web/pawsome/web
+@set USER=nhdn_viviskes
+@set SERVER=nhdn.ftp.infomaniak.com
+@set REMOTEFOLDER=web/app
 @set FULLURL=%USER%@%SERVER%:%REMOTEFOLDER%
 
 @echo ----- DEPLOYING PAWSOME WEBAPP -----
